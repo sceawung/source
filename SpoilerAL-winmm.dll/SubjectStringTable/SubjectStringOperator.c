@@ -395,7 +395,7 @@ __declspec(naked) void __cdecl TSSGSubject_GetSubjectName_GetSubjectName()
 	{
 		#define this ebx
 
-		lea     ecx, [this + 44H]
+		lea     ecx, [this]TSSGSubject.subjectName
 		call    SubjectStringTable_GetString
 		pop     ecx
 		push    eax

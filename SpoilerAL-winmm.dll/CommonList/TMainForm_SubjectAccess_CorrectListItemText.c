@@ -9,7 +9,7 @@ __declspec(naked) void __cdecl TMainForm_SubjectAccess_CorrectListItemText()
 		push    005E0D50H
 		cmp     cl, '+'
 		je      L1
-		ret
+		rep ret
 
 		align   16
 	L1:

@@ -438,6 +438,10 @@ static __inline BOOL ModifyResourceSection()
 	*(LPDWORD)0x00664920 = 's' | ((DWORD)BSWAP16(0x0908) << 8) | ((DWORD)'W' << 24);
 	*(LPDWORD)0x00664924 = BSWAP32('ordW');
 	*(LPDWORD)0x00664928 = BSWAP24('rap') | (0x08 << 24);
+	__movsb((LPBYTE)0x00664943,
+			"\x06" "ssBoth"
+			"\x04" "Hint" "\x06\x08" "Parsing."
+			, 22);
 #if 0
 	__movsb((LPBYTE)0x0066530C,
 			"\x09" "TRichEdit"

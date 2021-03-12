@@ -1,35 +1,33 @@
 #pragma once
 
-#include <stdbool.h>
 #include <windows.h>
 #include "bcb6_std_string.h"
 
+#pragma pack(push, 1)
 typedef struct _Rb_tree_node
 {
 	bool                  _M_color;
-	BYTE                  padding[3];
+	__int8 : 8;
+	__int16 : 16;
 	struct _Rb_tree_node *_M_parent;
 	struct _Rb_tree_node *_M_left;
 	struct _Rb_tree_node *_M_right;
 	BYTE                  _M_value_field[];
 } *_Rb_tree_iterator, bcb6_std_map_node, *bcb6_std_map_iterator, **pbcb6_std_map_iterator;
+#pragma pack(pop)
 
-#define EMBED_BREADTH 1
-
+#pragma pack(push, 1)
 typedef struct _Rb_tree
 {
-	INT                   OuterRepeat;
-	INT32                 RepeatDepth;
+	__int32 : 32;
+	__int32 : 32;
 	struct _Rb_tree_node *_M_header;
-	DWORD                 RepeatIndex;
+	__int32 : 32;
 	size_t                _M_node_count;
-#if EMBED_BREADTH
-	struct _TSSDir       *ParentEntry;
-#else
-	LONG                  Breadth;
-#endif
-	const void           *_M_key_compare[2];
+	__int32 : 32;
+	const void     *const _M_key_compare[2];
 } bcb6_std_map, *pbcb6_std_map;
+#pragma pack(pop)
 
 EXTERN_C void(__cdecl *const _Rb_global_Rebalance)(_Rb_tree_iterator __x, struct _Rb_tree_node **__root);
 EXTERN_C _Rb_tree_iterator(__cdecl *const _Rb_global_Rebalance_for_erase)(

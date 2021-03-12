@@ -376,7 +376,7 @@ __declspec(naked) static void * __cdecl memichr386(const void *buffer, int c, si
 		or      edx, eax                                    // edx = all 4 bytes = [search char]
 		call    internal_memichr386
 	retnull:
-		ret
+		rep ret
 
 		#undef buffer
 		#undef c

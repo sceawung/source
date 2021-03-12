@@ -67,6 +67,7 @@ store_one_word:
 	mov     cx, word ptr [esp + 8]                      ; load c
 	mov     word ptr [eax], cx                          ; store one word
 count_equal_zero:
+	db      0F3h                                        ; rep
 	ret                                                 ; __cdecl return
 wmemsetANY endp
 
@@ -126,6 +127,7 @@ return_dest:
 epilog:
 	pop     edi                                         ; restore edi
 count_equal_zero:
+	db      0F3h                                        ; rep
 	ret                                                 ; __cdecl return
 wmemset386 endp
 

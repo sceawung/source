@@ -26,7 +26,7 @@ void __fastcall TSSGCtrl_ReadSSG_attributeSelector_StartElementCheck(
 	{
 		vector_string flags = { NULL };
 		if (TStringDivision_List(&SSGC->strD, &(string) {
-			(LPSTR)p + 8, string_end(Start), NULL, NULL, p + 8, -1
+			(LPSTR)p + 8, string_end(Start), ._M_end_of_storage = p + 8
 		}, *string_ctor_assign_char(&Token, ','), &flags, etTRIM))
 			for (string key, *it = vector_begin(&flags); it < vector_end(&flags); it++)
 			{

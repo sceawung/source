@@ -2,7 +2,6 @@
 #include "TSSGCtrl.h"
 
 extern const BOOL EnableParserFix;
-extern const DWORD __InitExceptBlockLDTC;
 
 __declspec(naked) void __cdecl Caller_StrToProcessAccessElementVecWithoutRel()
 {

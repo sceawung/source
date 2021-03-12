@@ -118,7 +118,7 @@ __declspec(naked) void __cdecl Caller_ParsingWithRel()
 		mov     eax, dword ptr [Code]
 		lea     ecx, [eax + i + 2]
 		add     eax, dword ptr [PosEnd]
-		push    MAXDWORD
+		push    0
 		push    ecx
 		push    0
 		push    0

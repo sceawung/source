@@ -41,8 +41,7 @@
 #include "TDrawGrid.h"
 #include "ProcessMonitor.h"
 #include "GetFileTitlePointer.h"
-#include "ProcessContainsModule.h"
-#include "FindWindowContainsModule.h"
+#include "ProcessInfoValidation.h"
 #define USING_NAMESPACE_BCB6_STD
 #include "TMainForm.h"
 #define typename PROCESSENTRY32A

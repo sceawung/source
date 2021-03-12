@@ -10,32 +10,6 @@ TSSGSubjectProperty *SubjectProperty = NULL;
 DWORD               SubjectPropertyCount = 0;
 DWORD static        Allocation;
 DWORD               TitleWidth = 0;
-void(__cdecl *const tree_string_double_M_erase)(struct _Rb_tree *this, struct _Rb_tree_node *__x) = (void *)0x0051C168;
-
-void __fastcall TSSGSubjectProperty_dtor(TSSGSubjectProperty *const prop, BOOL const dealloc)
-{
-	if (prop->_M_node_count)
-	{
-		tree_string_double_M_erase(prop, map_end(prop)->_M_parent);
-		if (!dealloc)
-		{
-			map_end(prop)->_M_left   = map_end(prop);
-			map_end(prop)->_M_parent = NULL;
-			map_end(prop)->_M_right  = map_end(prop);
-		}
-		prop->_M_node_count = 0;
-	}
-	if (dealloc)
-	{
-		node_alloc_deallocate(
-			map_end(prop)
-#if !OPTIMIZE_ALLOCATOR
-			, sizeof(struct _Rb_tree_node)
-#endif
-		);
-		map_end(prop) = NULL;
-	}
-}
 
 void __cdecl ClearSubjectProperty()
 {
@@ -48,7 +22,7 @@ void __cdecl ClearSubjectProperty()
 	TitleWidth = 0;
 }
 
-TSSGSubjectProperty * __fastcall GrowSubjectProperty(DWORD *lpdwIndex)
+__declspec(noinline) TSSGSubjectProperty * __fastcall GrowSubjectProperty(DWORD *lpdwIndex)
 {
 	TSSGSubjectProperty *prop;
 	DWORD index;
@@ -60,7 +34,7 @@ TSSGSubjectProperty * __fastcall GrowSubjectProperty(DWORD *lpdwIndex)
 			if (MainForm->ssgCtrl.script.sPos)
 			{
 				DWORD i = SubjectPropertyCount;
-				do if (SubjectProperty[--i].RepeatDepth == MAXDWORD)
+				do if (!SubjectProperty[--i].DirectChild)
 				{
 					 prop = &SubjectProperty[index = i];
 					*prop = (const TSSGSubjectProperty) { .OuterRepeat = MAXDWORD };

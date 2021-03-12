@@ -14,10 +14,10 @@ EXTERN_C void __cdecl TSSBundleFloatCalc_Write_CheckFunnel();
 static __declspec(naked) bool __cdecl TSSCalc_Write_CheckFunnel(TSSGCtrl *SSGC, TSSGSubject *SSGS, unsigned long Val) {
 	extern BOOL FixTheProcedure;
 	__asm {
-		cmp FixTheProcedure, 0
+		cmp FixTheProcedure, FALSE
 		je  PASS
-		mov ecx, [ebp + 0x10]// Arg
-		mov edx, [ecx]TSSArgLong.value
+		mov edx, [ebp + 0x10]// Arg
+		mov edx, [edx]TSSArgLong.value
 		mov [esp + 0x0C], edx// Val
 	PASS:
 		jmp TSSGCtrl_CheckFunnel

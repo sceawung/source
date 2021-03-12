@@ -21,10 +21,12 @@ typedef enum AccessElement {
 	atBIT_DATA          = 14,
 } AccType;
 
+#pragma pack(push, 1)
 typedef struct _TProcessAccessElementBase {
 	LPVOID *VTable;
 	AccType type;
 } TProcessAccessElementBase;
+#pragma pack(pop)
 
 #define TProcessAccessElement_dtor(PAEB, bfDel)\
 	((void(__cdecl *)(void*, BYTE))(PAEB)->VTable[0])(PAEB, bfDel)
@@ -39,11 +41,13 @@ typedef struct _TProcessAccessElementBase {
 #define TProcessAccessElement_SetSize(PAEB, Val, IsTrueMode)\
 	((void(__cdecl *)(void*, unsigned long, BOOLEAN))(PAEB)->VTable[2])(PAEB, Val, IsTrueMode)
 
+#pragma pack(push, 1)
 typedef struct _TProcessAccessElementLoop {
 	LPVOID               *VTable;
 	AccType               type;
 	bcb6_std_vector_dword loopVec;
 	bcb6_std_vector_dword surplusVec;
 	unsigned long         loopCount;
-	DWORD                 paddding;
+	__int32 : 32;
 } TProcessAccessElementLoop;
+#pragma pack(pop)

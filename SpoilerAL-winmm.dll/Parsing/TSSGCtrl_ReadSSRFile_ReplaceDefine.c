@@ -16,6 +16,39 @@ __declspec(naked) void __cdecl TSSGCtrl_ReadSSRFile_ReplaceDefine()
 		#define VIt  esi
 		#define tmpS (ebp - 68H)
 
+#if 1
+		mov     edx, [VIt]bcb6_std_string._M_finish
+		sub     edx, ecx
+		jz      L1
+		cmp     EnableParserFix, FALSE
+		je      L1
+
+		mov     edx, VIt
+		lea     ecx, [tmpS]
+		call    string_ctor_assign
+		push    eax
+		lea     eax, [this]TSSGCtrl.attributeSelector
+		push    eax
+		call    ReplaceDefine
+		push    0
+		mov     edx, esp
+		push    0
+		push    edx
+		push    [eax]bcb6_std_string._M_start
+		call    strtoul
+		add     esp, 12
+		pop     edx
+		lea     ecx, [tmpS]
+		cmp     [ecx]bcb6_std_string._M_start, edx
+		sbb     edx, edx
+		push    edx
+		push    eax
+		call    string_dtor
+		pop     eax
+		pop     edx
+	L1:
+		rep ret
+#else
 		cmp     dword ptr [EnableParserFix], 0
 		je      L2
 		mov     edx, VIt
@@ -50,6 +83,7 @@ __declspec(naked) void __cdecl TSSGCtrl_ReadSSRFile_ReplaceDefine()
 		align   16
 	L2:
 		jmp     dword ptr [TStringDivision_ToULongDef]
+#endif
 
 		#undef this
 		#undef VIt

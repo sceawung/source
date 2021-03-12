@@ -10,7 +10,7 @@ static __declspec(naked) TMainForm* __fastcall TMainForm_DGridDrawCell_DrawTreeC
 		cmp    [eax]TMainForm.userMode, 4
 		cmovae ecx, listener// quiet mode
 		mov    [eax]TMainForm.ssgCtrl.ssgActionListner, ecx
-		mov    ecx, [edx]TDrawGrid.Canvas
+		mov    ecx, [edx]TDrawGrid.FCanvas
 		ret
 	}// Must make ecx into TCanvas*
 }

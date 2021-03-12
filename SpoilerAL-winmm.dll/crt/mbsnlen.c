@@ -65,7 +65,7 @@ __declspec(naked) size_t __cdecl _mbsnlen(const unsigned char *string, size_t ma
 		sub     eax, esi
 		pop     esi
 	L5:
-		ret
+		rep ret
 
 		#undef string
 		#undef maxlen

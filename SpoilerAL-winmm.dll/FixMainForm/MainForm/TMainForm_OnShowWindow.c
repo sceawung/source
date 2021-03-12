@@ -11,7 +11,7 @@ void __stdcall TMainForm_OnShowWindow(HWND hWnd, BOOL bShow, UINT nStatus)
 	nCmdShow = bShow ? SW_SHOWNA : SW_HIDE;
 	if (lpForm->findNameForm)
 		ShowWindow(TWinControl_GetHandle(lpForm->findNameForm), nCmdShow);
-	if (lpForm->searchForm && ((TWinControl *)lpForm->searchForm)->Visible)
+	if (lpForm->searchForm && ((TWinControl *)lpForm->searchForm)->FVisible)
 		ShowWindow(TWinControl_GetHandle(lpForm->searchForm), nCmdShow);
 	if (lpForm->guideForm)
 		ShowWindow(TWinControl_GetHandle(lpForm->guideForm), nCmdShow);

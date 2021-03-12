@@ -1,3 +1,4 @@
+#include "xx.h"
 #define USING_NAMESPACE_BCB6
 #define USING_NAMESPACE_BCB6_STD
 #include "bcb6_operator.h"
@@ -6,7 +7,6 @@
 #pragma warning(disable:4733)
 
 extern BOOL EnableParserFix;
-extern const DWORD __InitExceptBlockLDTC;
 extern const DWORD F004FE200;
 
 __declspec(naked) void __cdecl FixTraceAndCopySetting()
@@ -43,7 +43,7 @@ __declspec(naked) static void __stdcall InternalFixTraceAndCopySetting(void *thi
 		mov     eax, 006164C4H
 		mov     ebp, esp
 		sub     esp, 40
-		call    dword ptr [__InitExceptBlockLDTC]
+		call    __InitExceptBlockLDTC
 #if !OPTIMIZE_ALLOCATOR
 		push    12
 		call    dword ptr [operator_new]

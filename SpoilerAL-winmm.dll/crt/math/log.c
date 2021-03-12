@@ -130,7 +130,7 @@ __declspec(naked) double __cdecl _CIlog(/*st0 x*/)
 		fstp    st(1)                           // x-1 : log(2)
 		fyl2xp1                                 // log(x)
 	L2:
-		ret
+		rep ret
 
 		align   16
 	L3:

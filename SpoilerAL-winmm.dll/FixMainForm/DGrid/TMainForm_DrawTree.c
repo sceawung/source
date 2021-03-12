@@ -72,14 +72,14 @@ TMainForm_DrawTree(TMainForm *this, LPVOID DestCanvas, long LeftOffset, long Top
 			range = si.nMax - si.nMin;
 			if (range)
 			{
-				LeftOffset -= MulDiv(this->DGrid->DefaultColWidth - clientWidth, pos, range);
+				LeftOffset -= MulDiv(this->DGrid->FDefaultColWidth - clientWidth, pos, range);
 			}
 		}
 	}
 
-	span = this->DGrid->DefaultRowHeight;
+	span = this->DGrid->FDefaultRowHeight;
 	rect.left = LeftOffset;
-	rect.right = this->DGrid->DefaultColWidth + LeftOffset;
+	rect.right = this->DGrid->FDefaultColWidth + LeftOffset;
 	if (DestCanvas)
 	{
 		rect.top = TopOffset & LONG_MAX;
@@ -87,17 +87,17 @@ TMainForm_DrawTree(TMainForm *this, LPVOID DestCanvas, long LeftOffset, long Top
 	else
 	{
 		rect.top = 0;
-		DestCanvas = this->DGrid->Canvas;
+		DestCanvas = this->DGrid->FCanvas;
 	}
 	rect.bottom = rect.top + span;
 
-	i = this->DGrid->TopRow;
-	end = clientHeight / this->DGrid->DefaultRowHeight;
-	if (clientHeight % this->DGrid->DefaultRowHeight)
+	i = this->DGrid->FTopLeft.Y;
+	end = clientHeight / this->DGrid->FDefaultRowHeight;
+	if (clientHeight % this->DGrid->FDefaultRowHeight)
 		end++;
 	end += i;
-	if (end > this->DGrid->RowCount)
-		end = this->DGrid->RowCount;
+	if (end > this->DGrid->FRowCount)
+		end = this->DGrid->FRowCount;
 	if (IgnoreDebugString)
 		this->ssgCtrl.ssgActionListner = NULL;// quiet mode
 	for (end--; i < end; i++)
@@ -137,7 +137,7 @@ void __fastcall TMainForm_LockCBoxClick_CellRectAfter(TMainForm *this, RECT *R)
 			range = si.nMax - si.nMin;
 			if (range)
 			{
-				R->left -= MulDiv(this->DGrid->DefaultColWidth - clientWidth, pos, range);
+				R->left -= MulDiv(this->DGrid->FDefaultColWidth - clientWidth, pos, range);
 			}
 		}
 	}

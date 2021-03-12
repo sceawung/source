@@ -8,12 +8,13 @@ typedef struct _TSSCalc
 	TSSGSubject     super;
 	bcb6_std_string lockStr;
 	BYTE            size;
-	BYTE            padCalc[3];
+	__int8 : 8;
+	__int16 : 16;
 	long            min;
 	long            max;
 	bool            isUnsigned;
 	bool            isBigEndian;
-	BYTE            padCalc2[2];
+	__int16 : 16;
 	bcb6_std_string addressStr;
 	bcb6_std_string nowValHeadStr;
 	bcb6_std_string nowValFootStr;

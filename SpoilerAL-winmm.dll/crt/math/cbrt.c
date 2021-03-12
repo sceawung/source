@@ -51,7 +51,7 @@ __declspec(naked) double __cdecl cbrt(double x)
 		jz      L1                              ; Re-direct if x >= 0
 		fchs                                    ; Negate the result
 	L1:
-		ret
+		rep ret
 	}
 }
 #endif

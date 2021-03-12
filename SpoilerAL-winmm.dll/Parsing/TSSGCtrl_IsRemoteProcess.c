@@ -79,7 +79,7 @@ __declspec(naked) BOOL __fastcall TSSGCtrl_IsRemoteProcess(LPCSTR p)
 	L4:
 		mov     eax, 1
 	L5:
-		ret
+		rep ret
 	}
 }
 #endif
@@ -356,7 +356,7 @@ __declspec(naked) static void __fastcall CheckAddress(LPCSTR p)
 		call    GetCurrentProcess
 		mov     dword ptr [esp + 16], eax
 	L1:
-		ret
+		rep ret
 	}
 }
 

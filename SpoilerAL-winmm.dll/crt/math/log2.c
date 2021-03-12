@@ -51,7 +51,7 @@ __declspec(naked) double __cdecl log2(double x)
 		fstp    st(1)                           // x-1 : 1
 		fyl2xp1                                 // log2(x)
 	L2:
-		ret
+		rep ret
 
 		align   16
 	L3:

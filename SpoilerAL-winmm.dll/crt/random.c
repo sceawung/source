@@ -440,7 +440,7 @@ __declspec(naked) static void __cdecl sfmt_gen_rand_all_sse2()
 		LE_ADD  eax, 16
 		jnz     loop2
 
-		ret
+		rep ret
 	}
 }
 #endif
@@ -1254,7 +1254,7 @@ __declspec(naked) uint64_t __msreturn __cdecl internal_randf64ge0lt1()
 
 		pop     esi
 	done:
-		ret
+		rep ret
 	}
 }
 #endif

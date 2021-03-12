@@ -47,7 +47,7 @@ __declspec(naked) double __cdecl exp2(double x)
 		je      L3                              ; Re-direct if x is zero (underflow)
 		fstp    st(0)                           ; Set new top of stack
 	L1:
-		ret
+		rep ret
 
 		align   16
 	L2:

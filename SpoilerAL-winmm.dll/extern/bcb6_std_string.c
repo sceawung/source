@@ -3,7 +3,6 @@
 #define USING_NAMESPACE_BCB6_STD
 #include "bcb6_std_string.h"
 #include "bcb6_std_allocator.h"
-#include <stdbool.h>
 
 #pragma warning(disable:4414)
 

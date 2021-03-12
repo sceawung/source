@@ -15,13 +15,10 @@ static DWORD_DWORD __stdcall TSSGCtrl_AddressAttributeFilter_GetAddress(TReplace
 	TSSGSubject *SSGS = va_arg(fp, void *);
 	switch ((*it)->displace)
 	{
-#if EMBED_BREADTH
-		TSSGSubjectProperty *prop;
 	case TRUE:
-		if (SSGS && (prop = GetSubjectProperty(SSGS)) && prop->ParentEntry)
-			SSGS = &prop->ParentEntry->super;
+		if (SSGS && SSGS->folder)
+			SSGS = &SSGS->folder->super;
 		break;
-#endif
 	case TRUE + TRUE:
 		*va_arg(fp, LPCVOID *) = Address;
 		break;

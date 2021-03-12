@@ -70,7 +70,7 @@ static __declspec(naked) void __cdecl TMainForm_SubjectAccess_CautiousString() {
 		call TMainForm_SubjectAccess_GetCautionHandle
 		test eax, eax
 		jnz  CAUTION
-		ret
+		rep ret
 
 		align 16
 	CAUTION:// TSSArgString.value.c_str()
@@ -168,16 +168,18 @@ static __declspec(naked) void __cdecl TMainForm_DrawTreeCell_ModifyNowValueStrin
 }
 #endif
 
-static enum TFontStyle __fastcall TMainForm_DrawTreeCell_LetStyle(const TSSGSubject *const SSGS, enum TFontStyle Style)
+static enum TFontStyles __fastcall TMainForm_DrawTreeCell_LetStyle(const TSSGSubject *const SSGS, enum TFontStyles Style)
 {
 	return Style & ~fsUnderline | (SSGS && SSGS->type == stDIR && SSGS->isOpen) << 2;
 }
 
 static __declspec(naked) long __cdecl TMainForm_DrawTreeCell_shadowModeStub() {
+	static const DWORD Vcl_Graphics_TFont_GetStyle = 0x055D610;
+	static const DWORD Vcl_Graphics_TFont_SetStyle = 0x055D61C;
+
 	__asm {
 		mov   eax, [esi]TCanvas.FFont
-		mov   ecx, 0x055D610
-		call  ecx// GetStyle
+		call  Vcl_Graphics_TFont_GetStyle
 
 		movzx edx, al
 		mov   ecx, edi
@@ -185,8 +187,7 @@ static __declspec(naked) long __cdecl TMainForm_DrawTreeCell_shadowModeStub() {
 
 		movzx edx, al
 		mov   eax, [esi]TCanvas.FFont
-		mov   ecx, 0x055D61C
-		call  ecx// SetStyle
+		call  Vcl_Graphics_TFont_SetStyle
 
 		mov   eax, [ebx]TMainForm.shadowMode
 		ret

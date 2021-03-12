@@ -10,7 +10,7 @@ __declspec(naked) void __cdecl FixTraceAndCopyWrite()
 		mov     ecx, dword ptr [ebx]
 		test    eax, eax
 		jz      L1
-		ret
+		rep ret
 	L1:
 		jmp     dword ptr [ecx + 4]
 	}

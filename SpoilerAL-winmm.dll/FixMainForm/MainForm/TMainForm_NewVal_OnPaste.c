@@ -43,11 +43,11 @@ __declspec(naked) void __cdecl TMainForm_FormClose_Header()
 		#define this esi
 
 		mov     ecx, dword ptr [TMainForm_PrevNewValProc]
-		mov     eax, dword ptr [this + TMainForm.calcImage]
+		mov     eax, [this]TMainForm.calcImage
 		test    ecx, ecx
 		jz      L1
 		push    ecx
-		mov     eax, dword ptr [eax + TCalcImage.valBox]
+		mov     eax, [eax]TCalcImage.valBox
 		push    GWLP_WNDPROC
 		mov     eax, dword ptr [eax + size TCalcValBox]
 		call    dword ptr [_TWinControl_GetHandle]
@@ -79,7 +79,7 @@ __declspec(naked) void __cdecl TMainForm_LoadCLD_Footer()
 		mov     eax, dword ptr [CalcImage]
 		push    offset TMainForm_NewValProc
 		push    GWLP_WNDPROC
-		mov     eax, dword ptr [eax + TCalcImage.valBox]
+		mov     eax, [eax]TCalcImage.valBox
 		mov     eax, dword ptr [eax + size TCalcValBox]
 		call    dword ptr [_TWinControl_GetHandle]
 		push    eax

@@ -1,3 +1,4 @@
+#include "xx.h"
 #define USING_NAMESPACE_BCB6_STD
 #include "TSSGCtrl.h"
 #include "bcb6_std_allocator.h"
@@ -17,7 +18,6 @@ extern const DWORD F004F21F8;
 extern const DWORD F004F2424;
 extern const DWORD F004F32FC;
 extern const DWORD F004F3410;
-extern const DWORD __InitExceptBlockLDTC;
 
 __declspec(naked) void __cdecl TSSGCtrl_GetSSGDataFile_FixSetSSGDataFile()
 {
@@ -156,7 +156,7 @@ __declspec(naked) void __cdecl TSSGCtrl_GetSSGDataFile_FixSetSSGDataFile()
 		push    ebx
 		lea     ebx, [ebp - 90H]
 		push    esi
-		call    dword ptr [__InitExceptBlockLDTC]
+		call    __InitExceptBlockLDTC
 		mov     eax, dword ptr [Data]
 		mov     edx, 00631A92H
 		push    eax

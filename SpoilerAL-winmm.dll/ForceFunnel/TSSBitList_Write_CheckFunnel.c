@@ -14,7 +14,7 @@ __declspec(naked) unsigned long __cdecl TSSBitList_Write_CheckFunnel()
 		push    ecx
 		push    SSGS
 		push    eax
-		call    dword ptr [TSSGCtrl_CheckFunnel]
+		call    TSSGCtrl_CheckFunnel
 		add     esp, 12
 		mov     eax, reNO_ERROR
 		ret

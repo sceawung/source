@@ -78,7 +78,7 @@ __declspec(naked) static size_t __cdecl strnlenAVX2(const char *string, size_t m
 		pop     esi                                         // restore esi
 		vzeroupper
 	retzero:
-		ret
+		rep ret
 
 		align   16
 	found:
@@ -152,7 +152,7 @@ __declspec(naked) static size_t __cdecl strnlenSSE42(const char *string, size_t 
 	epilog:
 		pop     esi                                         // restore esi
 	retzero:
-		ret
+		rep ret
 
 		#undef string
 		#undef maxlen
@@ -207,7 +207,7 @@ __declspec(naked) static size_t __cdecl strnlenSSE2(const char *string, size_t m
 		jnc     loop_begin
 		pop     esi                                         // restore esi
 	retzero:
-		ret
+		rep ret
 
 		align   16
 	found:
@@ -255,7 +255,7 @@ __declspec(naked) static size_t __cdecl strnlen386(const char *string, size_t ma
 		pop     edi                                         // 00000027 _ 5F
 		pop     esi                                         // 00000028 _ 5E
 	maxlen_equal_zero:
-		ret                                                 // 00000029 _ C3
+		rep ret                                             // 00000029 _ C3
 
 	return_zero:
 		xor     eax, eax                                    // 0000002A _ 33. C0

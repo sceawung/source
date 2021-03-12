@@ -39,7 +39,7 @@ __declspec(naked) void * __cdecl bcb6_calloc(size_t num, size_t size)
 		mov     dword ptr [eax], BCB6_ENOMEM
 		xor     eax, eax
 	L1:
-		ret
+		rep ret
 
 		#undef num
 		#undef size
@@ -80,7 +80,7 @@ __declspec(naked) void * __cdecl bcb6_malloc(size_t size)
 		mov     dword ptr [eax], BCB6_ENOMEM
 		xor     eax, eax
 	L1:
-		ret
+		rep ret
 
 		#undef size
 	}
@@ -109,7 +109,7 @@ __declspec(naked) void __cdecl bcb6_free(void *memblock)
 		push    ecx
 		call    HeapFree
 	L1:
-		ret
+		rep ret
 
 		#undef memblock
 	}
@@ -178,7 +178,7 @@ __declspec(naked) void * __cdecl bcb6_realloc(void *memblock, size_t size)
 	L4:
 		xor     eax, eax
 	L5:
-		ret
+		rep ret
 
 		#undef memblock
 		#undef size

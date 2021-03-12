@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdbool.h>
 #include <windows.h>
 #include "xx.h"
 #include "bcb6_std_string.h"

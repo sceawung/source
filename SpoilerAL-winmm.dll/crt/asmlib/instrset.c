@@ -9,7 +9,7 @@ __declspec(naked) int __cdecl InstructionSet()
 		// Check if this function has been called before
 		test    eax, eax
 		js      FirstTime                                   // Negative means first time
-		ret                                                 // Early return. Has been called before
+		rep ret                                             // Early return. Has been called before
 
 		align   16
 		// Function has not been called before

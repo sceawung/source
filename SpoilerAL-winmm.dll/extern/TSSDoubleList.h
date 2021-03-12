@@ -9,7 +9,8 @@ typedef struct _TSSDoubleList
 	bcb6_std_string lockStr;
 	bool            isOffset;
 	BYTE            size;
-	BYTE            padDoubleList[6];
+	__int16 : 16;
+	__int32 : 32;
 	bcb6_std_vector statusVec;
 	bcb6_std_string addressStr;
 	bcb6_std_string indexFileName;

@@ -15,7 +15,7 @@ __declspec(naked) void __cdecl TSearchForm_ctor()
 		mov     ecx, dword ptr [this]
 		call    ctor
 		mov     eax, dword ptr [ebp - 40H]
-        mov     dword ptr fs:[0], eax
+		mov     dword ptr fs:[0], eax
 		ret
 
 		#undef this

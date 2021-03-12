@@ -534,6 +534,7 @@ return_dest:
 	mov     eax, dword ptr [esp + 8]                    ; return dest
 	pop     edi                                         ; restore edi
 count_equal_zero:
+	db      0F3h                                        ; rep
 	ret                                                 ; __cdecl return
 endif
 memset386 endp

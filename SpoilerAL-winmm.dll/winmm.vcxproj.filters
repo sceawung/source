@@ -303,7 +303,7 @@
     <ClCompile Include="CommonList\TMainForm_SubjectAccess_StoreFileNamePrefix.c">
       <Filter>CommonList</Filter>
     </ClCompile>
-    <ClCompile Include="CommonList\TMainForm_SubjectAccess_ToULongDef.c">
+    <ClCompile Include="CommonList\TSSDoubleList_Read_ToULongDef.c">
       <Filter>CommonList</Filter>
     </ClCompile>
     <ClCompile Include="CommonList\TSSGCtrl_AddressNaming_CommonList.c">
@@ -1860,7 +1860,7 @@
     <ClCompile Include="Parsing\TSSGCtrl_GetSSGDataFile_OpenProcess.c">
       <Filter>Parsing</Filter>
     </ClCompile>
-    <ClCompile Include="Parsing\TSSGCtrl_IsEnabled_except1.c">
+    <ClCompile Include="Parsing\TSSGCtrl_IsEnabled_GetAttribute.c">
       <Filter>Parsing</Filter>
     </ClCompile>
     <ClCompile Include="Parsing\TSSGCtrl_IsRemoteProcess.c">
@@ -1890,7 +1890,7 @@
     <ClCompile Include="ProcessMonitor\Attach_ProcessMonitor.c">
       <Filter>ProcessMonitor</Filter>
     </ClCompile>
-    <ClCompile Include="ProcessMonitor\FindWindowContainsModule.c">
+    <ClCompile Include="ProcessMonitor\FindWindowExceptInvalids.c">
       <Filter>ProcessMonitor</Filter>
     </ClCompile>
     <ClCompile Include="ProcessMonitor\GetFileTitlePointerA.c">
@@ -1911,7 +1911,7 @@
     <ClCompile Include="ProcessMonitor\LoadHeapList_Undocumented.c">
       <Filter>ProcessMonitor</Filter>
     </ClCompile>
-    <ClCompile Include="ProcessMonitor\ProcessContainsModule.c">
+    <ClCompile Include="ProcessMonitor\ProcessInfoValidation.c">
       <Filter>ProcessMonitor</Filter>
     </ClCompile>
     <ClCompile Include="ProcessMonitor\ProcessMonitor.c">
@@ -2562,7 +2562,7 @@
     <ClInclude Include="Plugin\Plugin.h">
       <Filter>Plugin</Filter>
     </ClInclude>
-    <ClInclude Include="ProcessMonitor\FindWindowContainsModule.h">
+    <ClInclude Include="ProcessMonitor\FindWindowExceptInvalids.h">
       <Filter>ProcessMonitor</Filter>
     </ClInclude>
     <ClInclude Include="ProcessMonitor\GetFileTitlePointer.h">
@@ -2571,7 +2571,7 @@
     <ClInclude Include="ProcessMonitor\GetFileTitlePointerT.h">
       <Filter>ProcessMonitor</Filter>
     </ClInclude>
-    <ClInclude Include="ProcessMonitor\ProcessContainsModule.h">
+    <ClInclude Include="ProcessMonitor\ProcessInfoValidation.h">
       <Filter>ProcessMonitor</Filter>
     </ClInclude>
     <ClInclude Include="ProcessMonitor\ProcessMonitor.h">
@@ -2633,6 +2633,9 @@
     </ClInclude>
     <ClInclude Include="WaitCursor\WaitCursor.h">
       <Filter>WaitCursor</Filter>
+    </ClInclude>
+    <ClInclude Include="extern\TCalcImage.h">
+      <Filter>extern</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,7 +15,7 @@ __declspec(naked) void __cdecl TSSGCtrl_Funneling_Write()
 		call    GetCurrentProcess
 		mov     edx, eax
 	L1:
-		ret
+		rep ret
 
 		#undef SHandle
 	}

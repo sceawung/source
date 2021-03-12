@@ -8,7 +8,9 @@ typedef struct _TSSDoubleToggle
 	TSSGSubject     super;
 	bcb6_std_string lockStr;
 	bool            isOffset;
-	BYTE            padDoubleToggle[7];
+	__int8 : 8;
+	__int16 : 16;
+	__int32 : 32;
 	bcb6_std_vector statusVec;
 	bcb6_std_string addressStr;
 	bcb6_std_string indexFileName;

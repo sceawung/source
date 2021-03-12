@@ -1,3 +1,4 @@
+#include "xx.h"
 #define USING_NAMESPACE_BCB6
 #define USING_NAMESPACE_BCB6_STD
 #include "TSSGScriptStruct.h"
@@ -14,7 +15,6 @@ __declspec(naked) void __cdecl TSSGScriptStruct_SetDistinction_cstr_with_length(
 {
 	extern const DWORD F00415878;
 	extern const DWORD F004167F8;
-	extern const DWORD __InitExceptBlockLDTC;
 
 	static const DWORD data1[] = {
 		0x00402634,
@@ -71,7 +71,7 @@ __declspec(naked) void __cdecl TSSGScriptStruct_SetDistinction_cstr_with_length(
 		push    ebx
 		push    esi
 		mov     ebx, dword ptr [this]
-		call    dword ptr [__InitExceptBlockLDTC]
+		call    __InitExceptBlockLDTC
 		mov     edx, dword ptr [ID]
 		lea     ecx, [s1]
 		call    string_ctor_assign_cstr
@@ -187,8 +187,6 @@ const DWORD TSSGScriptStruct_GetTitleTextWidth_CtorData[] = {
 
 __declspec(naked) long __stdcall TSSGScriptStruct_GetTitleTextWidth(const TSSGScriptStruct *this, HDC hDC)
 {
-	extern const DWORD __InitExceptBlockLDTC;
-
 	__asm
 	{
 		#define _lpszTitle 006030FFH
@@ -197,7 +195,7 @@ __declspec(naked) long __stdcall TSSGScriptStruct_GetTitleTextWidth(const TSSGSc
 		mov     eax, offset TSSGScriptStruct_GetTitleTextWidth_CtorData
 		mov     ebp, esp
 		sub     esp, 68
-		call    dword ptr [__InitExceptBlockLDTC]
+		call    __InitExceptBlockLDTC
 		mov     edx, dword ptr [ebp + 8H]
 		lea     ecx, [ebp - 18H]
 		push    _lpszTitle

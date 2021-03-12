@@ -10,7 +10,7 @@ typedef struct _TSSSplit
 	unsigned long   indentType;
 	unsigned char   width;
 	unsigned char   height;
-	BYTE            padSplit[2];
+	__int16 : 16;
 	long            indent;
 	bcb6_std_string strParam;
 } TSSSplit;

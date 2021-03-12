@@ -10,30 +10,36 @@
 #define typename size_t
 #include "bcb6_std_vector_template.h"
 
+#pragma pack(push, 1)
 typedef struct _Vector_base
 {
 	LPVOID _M_start;
 	LPVOID _M_finish;
 	LPVOID allocator_type[2];
 	LPVOID _M_end_of_storage;
-	size_t tblIndex;
+	signed lutIndex;
 } bcb6_std_vector, *pbcb6_std_vector;
+#pragma pack(pop)
 
+#pragma pack(push, 1)
 typedef struct _Bit_iterator_base
 {
 	unsigned int *_M_p;
 	unsigned int  _M_offset;
 } _Bit_iter;
+#pragma pack(pop)
 
+#pragma pack(push, 1)
 typedef struct _Bvector_base
 {
 	_Bit_iter     _M_start;
 	_Bit_iter     _M_finish;
-	void   const *__chunk_allocator_type;
+	LPCVOID const __chunk_allocator_type;
 	ptrdiff_t     tblIndex;
 	unsigned int *_M_end_of_storage;
-	LPCVOID       padding;
+    __int32 : 32;
 } bcb6_std_bvector, *pbcb6_std_bvector;
+#pragma pack(pop)
 
 #define bcb6_std_bvector_size(Bvec) \
     (size_t)((Bvec._M_finish._M_p - Bvec._M_start._M_p << 5) + Bvec._M_finish._M_offset - Bvec._M_start._M_offset)

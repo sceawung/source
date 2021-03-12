@@ -36,12 +36,6 @@ extern void __cdecl ClearGuideBuffer();
 
 void __cdecl OnSSGCtrlCleared(IN TSSGCtrl *SSGCtrl)
 {
-	TSSGSubjectProperty *const prop = GetSubjectProperty(&dummySSGS);
-	if (prop)
-	{
-		dummySSGS.propertyIndex = MAXDWORD;
-		TSSGSubjectProperty_dtor(prop, TRUE);
-	}
 	ClearSubjectProperty();
 
 #if ALLOCATE_SUPPORT

@@ -179,7 +179,7 @@ __declspec(naked) char * __cdecl strrichrSSE42(const char *string, int c)
 		lea     eax, [edx + ecx]
 		jnz     loop_begin
 	epilog:
-		ret
+		rep ret
 
 		#undef string
 		#undef c

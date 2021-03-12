@@ -173,14 +173,12 @@ FAILED:
 	return -1;
 }
 
-void __stdcall ReplaceDefine(TSSGAttributeSelector *attributeSelector, string *line)
+string * __stdcall ReplaceDefine(TSSGAttributeSelector *const attributeSelector, string *const line)
 {
-	vector_TSSGAttributeElement *attributes;
-
-	attributes = TSSGAttributeSelector_GetNowAtteributeVec(attributeSelector);
-	if (attributes == NULL)
-		return;
-	ReplaceDefineByAttributeVector(attributes, line);
+	vector_TSSGAttributeElement *const attributes = TSSGAttributeSelector_GetNowAtteributeVec(attributeSelector);
+	if (attributes)
+		ReplaceDefineByAttributeVector(attributes, line);
+	return line;
 }
 
 void __stdcall ReplaceDefineDynamic(TSSGSubject *SSGS, string *line)

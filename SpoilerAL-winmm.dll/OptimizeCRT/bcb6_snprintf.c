@@ -27,7 +27,7 @@ __declspec(naked) int __cdecl bcb6_snprintf(char *buffer, size_t count, const ch
 		mov     dword ptr [eax], BCB6_ERANGE
 		or      eax, -1
 	L1:
-		ret
+		rep ret
 
 		#undef buffer
 		#undef count

@@ -1,3 +1,4 @@
+#include "xx.h"
 #define USING_NAMESPACE_BCB6_STD
 #include "TStringDivision.h"
 #include "TSSGCtrl.h"
@@ -14,7 +15,6 @@ void __cdecl TSSGCtrl_TrimString();
 
 extern const DWORD _STL_string_substr;
 extern const DWORD F0050123C;
-extern const DWORD __InitExceptBlockLDTC;
 
 __declspec(naked) void __cdecl TSSGCtrl_EnumReadSSR_SwitchTmpS_0()
 {
@@ -120,7 +120,7 @@ __declspec(naked) void __cdecl TSSGCtrl_EnumReadSSR_SwitchTmpS_0()
 		mov     ebx, dword ptr [this]
 		lea     esi, [tmpS]
 		add     ebx, offset TSSGCtrl.strD
-		call    dword ptr [__InitExceptBlockLDTC]
+		call    __InitExceptBlockLDTC
 		push    0
 		push    0
 		sub     esp, 24

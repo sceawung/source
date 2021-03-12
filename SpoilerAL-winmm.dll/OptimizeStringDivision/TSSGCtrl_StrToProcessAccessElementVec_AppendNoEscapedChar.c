@@ -21,7 +21,7 @@ __declspec(naked) void __cdecl TSSGCtrl_StrToProcessAccessElementVec_AppendNoEsc
 
 		align   16
 	L1:
-		ret
+		rep ret
 	}
 #else
 	static const DWORD X005072DC = 0x005072DC;

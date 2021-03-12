@@ -19,7 +19,7 @@ static __declspec(naked) void TSSBundleCalc_Read_AE_reset()
 		rep   stosb
 		pop   edi
 	REVERT:
-		ret
+		rep ret
 	}
 }
 
@@ -79,7 +79,7 @@ static bool __cdecl TSSDir_IsSameChildren_IsSameSubject(TSSGSubject* const this,
 
 		movzx eax, [eax]TChildRWAttribute.spAccept
 	REVERT:
-		ret
+		rep ret
 	}
 }
 
@@ -96,7 +96,7 @@ EXTERN_C void __cdecl Attach_ErrorSkip()
 	// TSSBundleCalc::Read
 #if 0
 	*(LPBYTE )0x004BDCB7 = 0x83;
-	*(LPBYTE )0x004BDCB8 = 0x6E;
+	*(LPBYTE )0x004BDCB8 = 0x6E;// dec => sub
 	*(LPBYTE )0x004BDCBA = 0x03;
 	*(LPBYTE )0x004BDCBB = CALL_REL32;
 	*(LPDWORD)0x004BDCBC = (DWORD)TSSBundleCalc_Read_AE_reset - (0x004BDCBC + sizeof(DWORD));

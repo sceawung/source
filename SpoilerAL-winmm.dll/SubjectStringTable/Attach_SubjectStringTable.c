@@ -147,7 +147,7 @@ static void __declspec(naked) TSSToggle_Setting_GetAddressStub(unsigned long Off
 		call  TSSToggle_Setting_GetAddress
 		test  eax, eax
 		jz    PASS
-		ret
+		rep ret
 
 		align 16
 	PASS:
@@ -973,7 +973,7 @@ static __inline void AttachOperator()
 	// TFindNameForm::EnumSubjectNameFind
 	//   omit Token ctor
 	*(LPWORD )0x004851DA = BSWAP16(0x83EC);
-	*(LPBYTE )0x004851DC = sizeof(double) + sizeof(void*);
+	*(LPBYTE )0x004851DC = sizeof(void *) * 3;
 	*(LPBYTE )0x004851EA = 0xB8;// push => mov eax
 	NPAD1    (0x004851F3);
 	*(LPDWORD)0x004851F4 = BSWAP32(0x89028D48);// mov [edx], eax

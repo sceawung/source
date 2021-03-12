@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdbool.h>
 #include <windows.h>
 #include "bcb6_std_stack.h"
 #include "bcb6_std_vector_string.h"
@@ -21,6 +20,7 @@ enum Repeat
 	rtFORMAT         = 0x20,
 };
 
+#pragma pack(push, 1)
 typedef struct _TSSGCtrl
 {
 	struct _TFunctionTimer {
@@ -29,17 +29,19 @@ typedef struct _TSSGCtrl
 		TIMECAPS devCaps;
 		unsigned long oldTime, nowTime, interval;
 	} funcTimer;
-	BYTE                   padding1[4];
+	__int32 : 32;
 	TSSGAttributeSelector  attributeSelector;
 	LPVOID                 adjustmentListner;
 	LPVOID                 ssgActionListner;
 	unsigned long          lockTimerInterval;
-	BYTE                   padding2[4];
+	__int32 : 32;
 	bcb6_std_string        ssgDir;
 	bcb6_std_string        scriptDir;
 	bcb6_std_string        exeDir;
 	bool                   canLockWrite;
-	BYTE                   padding3[7];
+	__int8 : 8;
+	__int16 : 16;
+	__int32 : 32;
 	bcb6_std_map           lockMap;
 	bcb6_std_map           operatorMap;
 	bcb6_std_map           stringOperatorMap;
@@ -47,13 +49,16 @@ typedef struct _TSSGCtrl
 	bcb6_std_vector_string memo;
 	bcb6_std_vector_string processNameVec;
 	bool                   isMemoWordWrap;
-	BYTE                   padding4[7];
+	__int8 : 8;
+	__int16 : 16;
+	__int32 : 32;
 	bcb6_std_map           dataFileMap;
 	struct _TSSDir         *rootSubject;
-	BYTE                   padding5[4];
+	__int32 : 32;
 	TProcessCtrl           processCtrl;
 	TStringDivision        strD;
 } TSSGCtrl;
+#pragma pack(pop)
 
 #include "TSSDir.h"
 

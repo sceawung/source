@@ -19,7 +19,7 @@ __declspec(naked) struct
 		push    [Vec]bcb6_std_bvector._M_start._M_p
 		push    edx
 		push    ecx
-		call    dword ptr [TSSGCtrl_CheckFunnel]
+		call    TSSGCtrl_CheckFunnel
 		add     esp, 12
 		mov     edx, reNO_ERROR
 		ret

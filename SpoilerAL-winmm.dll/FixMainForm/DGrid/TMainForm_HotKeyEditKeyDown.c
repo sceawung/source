@@ -50,7 +50,7 @@ void __fastcall TMainForm_HotKeyEditKeyDown(TMainForm *this, LPVOID Sender, WORD
 	switch (Ascii)
 	{
 	case ' ':
-		if (this->LockCBox->Visible)
+		if (this->LockCBox->FVisible)
 			TCheckBox_SetChecked(this->LockCBox, !TCheckBox_GetChecked(this->LockCBox));
 		return;
 	case '*':
@@ -198,25 +198,25 @@ static __inline void TMainForm_HotKeyEditKeyDown_PageUp(TMainForm *this)
 	if (GetScrollInfo(DGridHandle, SB_HORZ, &si))
 		if (pos = si.nPos - si.nMin)
 			if (range = si.nMax - si.nMin)
-				rect.left = -MulDiv(this->DGrid->DefaultColWidth - clientWidth, pos, range);
-	rect.right = rect.left + this->DGrid->DefaultColWidth;
+				rect.left = -MulDiv(this->DGrid->FDefaultColWidth - clientWidth, pos, range);
+	rect.right = rect.left + this->DGrid->FDefaultColWidth;
 	if (this->invertGridRow < 0)
 		this->invertGridRow = 0;
-	topRow = this->DGrid->TopRow >= 0 ? this->DGrid->TopRow : 0;
-	rect.top = (this->invertGridRow - topRow) * this->DGrid->DefaultRowHeight;
-	rect.bottom = rect.top + this->DGrid->DefaultRowHeight;
+	topRow = this->DGrid->FTopLeft.Y >= 0 ? this->DGrid->FTopLeft.Y : 0;
+	rect.top = (this->invertGridRow - topRow) * this->DGrid->FDefaultRowHeight;
+	rect.bottom = rect.top + this->DGrid->FDefaultRowHeight;
 	row = this->invertGridRow;
-	clientRows = clientHeight / this->DGrid->DefaultRowHeight;
+	clientRows = clientHeight / this->DGrid->FDefaultRowHeight;
 	this->invertGridRow = this->invertGridRow > clientRows ? this->invertGridRow - clientRows : 0;
-	TMainForm_DrawTreeCell(this, this->DGrid->Canvas, row, &rect);
+	TMainForm_DrawTreeCell(this, this->DGrid->FCanvas, row, &rect);
 	bottomRow = topRow - 1;
 	if (bottomRow < clientRows)
 		bottomRow = clientRows;
 	if (this->invertGridRow > bottomRow)
 		this->invertGridRow = bottomRow;
-	rect.top = (this->invertGridRow - topRow) * this->DGrid->DefaultRowHeight;
-	rect.bottom = rect.top + this->DGrid->DefaultRowHeight;
-	TMainForm_DrawTreeCell(this, this->DGrid->Canvas, this->invertGridRow, &rect);
+	rect.top = (this->invertGridRow - topRow) * this->DGrid->FDefaultRowHeight;
+	rect.bottom = rect.top + this->DGrid->FDefaultRowHeight;
+	TMainForm_DrawTreeCell(this, this->DGrid->FCanvas, this->invertGridRow, &rect);
 	if (topRow)
 	{
 		topRow = topRow > clientRows ? topRow - clientRows : 0;
@@ -244,31 +244,31 @@ static __inline void TMainForm_HotKeyEditKeyDown_PageDown(TMainForm *this)
 	if (GetScrollInfo(DGridHandle, SB_HORZ, &si))
 		if (pos = si.nPos - si.nMin)
 			if (range = si.nMax - si.nMin)
-				rect.left = -MulDiv(this->DGrid->DefaultColWidth - clientWidth, pos, range);
-	rect.right = rect.left + this->DGrid->DefaultColWidth;
+				rect.left = -MulDiv(this->DGrid->FDefaultColWidth - clientWidth, pos, range);
+	rect.right = rect.left + this->DGrid->FDefaultColWidth;
 	if (this->invertGridRow < 0)
 		this->invertGridRow = 0;
-	topRow = this->DGrid->TopRow >= 0 ? this->DGrid->TopRow : 0;
-	clientRows = clientHeight / this->DGrid->DefaultRowHeight;
+	topRow = this->DGrid->FTopLeft.Y >= 0 ? this->DGrid->FTopLeft.Y : 0;
+	clientRows = clientHeight / this->DGrid->FDefaultRowHeight;
 	bottomRow = topRow + clientRows;
 	if (this->invertGridRow < topRow)
 	{
 		this->invertGridRow = bottomRow;
-		rect.top = clientRows * this->DGrid->DefaultRowHeight;
+		rect.top = clientRows * this->DGrid->FDefaultRowHeight;
 	}
 	else
 	{
 		int row;
 
-		rect.top = (this->invertGridRow - topRow) * this->DGrid->DefaultRowHeight;
-		rect.bottom = rect.top + this->DGrid->DefaultRowHeight;
+		rect.top = (this->invertGridRow - topRow) * this->DGrid->FDefaultRowHeight;
+		rect.bottom = rect.top + this->DGrid->FDefaultRowHeight;
 		row = this->invertGridRow;
 		if (this->invertGridRow < bottomRow)
 		{
 			int maxRow;
 
 			this->invertGridRow += clientRows;
-			maxRow = this->DGrid->RowCount - 2;
+			maxRow = this->DGrid->FRowCount - 2;
 			if (this->invertGridRow > maxRow)
 				this->invertGridRow = maxRow;
 		}
@@ -276,17 +276,17 @@ static __inline void TMainForm_HotKeyEditKeyDown_PageDown(TMainForm *this)
 		{
 			this->invertGridRow = bottomRow + clientRows - 1;
 		}
-		TMainForm_DrawTreeCell(this, this->DGrid->Canvas, row, &rect);
-		rect.top = (this->invertGridRow - topRow) * this->DGrid->DefaultRowHeight;
+		TMainForm_DrawTreeCell(this, this->DGrid->FCanvas, row, &rect);
+		rect.top = (this->invertGridRow - topRow) * this->DGrid->FDefaultRowHeight;
 	}
-	rect.bottom = rect.top + this->DGrid->DefaultRowHeight;
-	TMainForm_DrawTreeCell(this, this->DGrid->Canvas, this->invertGridRow, &rect);
-	if (topRow < (this->DGrid->RowCount > clientRows ? this->DGrid->RowCount - clientRows : 0))
+	rect.bottom = rect.top + this->DGrid->FDefaultRowHeight;
+	TMainForm_DrawTreeCell(this, this->DGrid->FCanvas, this->invertGridRow, &rect);
+	if (topRow < (this->DGrid->FRowCount > clientRows ? this->DGrid->FRowCount - clientRows : 0))
 	{
 		int maxTopRow;
 
 		topRow = bottomRow;
-		maxTopRow = this->DGrid->RowCount - clientRows;
+		maxTopRow = this->DGrid->FRowCount - clientRows;
 		if (topRow > maxTopRow)
 			topRow = maxTopRow;
 		TDrawGrid_SetTopRow(this->DGrid, topRow);
@@ -304,8 +304,8 @@ static __inline void TMainForm_HotKeyEditKeyDown_End(TMainForm *this)
 	GetClientRect(DGridHandle, &rect);
 	clientWidth = rect.right - rect.left;
 	clientHeight = rect.bottom - rect.top;
-	topRow = this->DGrid->TopRow >= 0 ? this->DGrid->TopRow : 0;
-	maxRow = this->DGrid->RowCount > 2 ? this->DGrid->RowCount - 2 : 0;
+	topRow = this->DGrid->FTopLeft.Y >= 0 ? this->DGrid->FTopLeft.Y : 0;
+	maxRow = this->DGrid->FRowCount > 2 ? this->DGrid->FRowCount - 2 : 0;
 	if (this->invertGridRow != maxRow)
 	{
 		RECT       rect;
@@ -318,19 +318,19 @@ static __inline void TMainForm_HotKeyEditKeyDown_End(TMainForm *this)
 		if (GetScrollInfo(DGridHandle, SB_HORZ, &si))
 			if (pos = si.nPos - si.nMin)
 				if (range = si.nMax - si.nMin)
-					rect.left = -MulDiv(this->DGrid->DefaultColWidth - clientWidth, pos, range);
-		rect.right = rect.left + this->DGrid->DefaultColWidth;
+					rect.left = -MulDiv(this->DGrid->FDefaultColWidth - clientWidth, pos, range);
+		rect.right = rect.left + this->DGrid->FDefaultColWidth;
 		row = this->invertGridRow >= 0 ? this->invertGridRow : 0;
 		this->invertGridRow = maxRow;
-		rect.top = (row - topRow) * this->DGrid->DefaultRowHeight;
-		rect.bottom = rect.top + this->DGrid->DefaultRowHeight;
-		TMainForm_DrawTreeCell(this, this->DGrid->Canvas, row, &rect);
-		rect.top = (maxRow - topRow) * this->DGrid->DefaultRowHeight;
-		rect.bottom = rect.top + this->DGrid->DefaultRowHeight;
-		TMainForm_DrawTreeCell(this, this->DGrid->Canvas, maxRow, &rect);
+		rect.top = (row - topRow) * this->DGrid->FDefaultRowHeight;
+		rect.bottom = rect.top + this->DGrid->FDefaultRowHeight;
+		TMainForm_DrawTreeCell(this, this->DGrid->FCanvas, row, &rect);
+		rect.top = (maxRow - topRow) * this->DGrid->FDefaultRowHeight;
+		rect.bottom = rect.top + this->DGrid->FDefaultRowHeight;
+		TMainForm_DrawTreeCell(this, this->DGrid->FCanvas, maxRow, &rect);
 	}
-	clientRows = clientHeight / this->DGrid->DefaultRowHeight;
-	TDrawGrid_SetTopRow(this->DGrid, this->DGrid->RowCount > clientRows ? this->DGrid->RowCount - clientRows : 0);
+	clientRows = clientHeight / this->DGrid->FDefaultRowHeight;
+	TDrawGrid_SetTopRow(this->DGrid, this->DGrid->FRowCount > clientRows ? this->DGrid->FRowCount - clientRows : 0);
 }
 
 static __inline void TMainForm_HotKeyEditKeyDown_Home(TMainForm *this)
@@ -350,17 +350,17 @@ static __inline void TMainForm_HotKeyEditKeyDown_Home(TMainForm *this)
 	if (GetScrollInfo(DGridHandle, SB_HORZ, &si))
 		if (pos = si.nPos - si.nMin)
 			if (range = si.nMax - si.nMin)
-				rect.left = -MulDiv(this->DGrid->DefaultColWidth - clientWidth, pos, range);
-	rect.right = rect.left + this->DGrid->DefaultColWidth;
+				rect.left = -MulDiv(this->DGrid->FDefaultColWidth - clientWidth, pos, range);
+	rect.right = rect.left + this->DGrid->FDefaultColWidth;
 	row = this->invertGridRow >= 0 ? this->invertGridRow : 0;
 	this->invertGridRow = 0;
-	topRow = this->DGrid->TopRow >= 0 ? this->DGrid->TopRow : 0;
-	rect.top = (row - topRow) * this->DGrid->DefaultRowHeight;
-	rect.bottom = rect.top + this->DGrid->DefaultRowHeight;
-	TMainForm_DrawTreeCell(this, this->DGrid->Canvas, row, &rect);
-	rect.top = -topRow * this->DGrid->DefaultRowHeight;
-	rect.bottom = rect.top + this->DGrid->DefaultRowHeight;
-	TMainForm_DrawTreeCell(this, this->DGrid->Canvas, 0, &rect);
+	topRow = this->DGrid->FTopLeft.Y >= 0 ? this->DGrid->FTopLeft.Y : 0;
+	rect.top = (row - topRow) * this->DGrid->FDefaultRowHeight;
+	rect.bottom = rect.top + this->DGrid->FDefaultRowHeight;
+	TMainForm_DrawTreeCell(this, this->DGrid->FCanvas, row, &rect);
+	rect.top = -topRow * this->DGrid->FDefaultRowHeight;
+	rect.bottom = rect.top + this->DGrid->FDefaultRowHeight;
+	TMainForm_DrawTreeCell(this, this->DGrid->FCanvas, 0, &rect);
 	TDrawGrid_SetTopRow(this->DGrid, 0);
 }
 
@@ -368,7 +368,7 @@ static __inline void TMainForm_HotKeyEditKeyDown_Up(TMainForm *this)
 {
 	int topRow;
 
-	topRow = this->DGrid->TopRow >= 0 ? this->DGrid->TopRow : 0;
+	topRow = this->DGrid->FTopLeft.Y >= 0 ? this->DGrid->FTopLeft.Y : 0;
 	if (this->invertGridRow)
 	{
 		HWND       DGridHandle;
@@ -387,35 +387,35 @@ static __inline void TMainForm_HotKeyEditKeyDown_Up(TMainForm *this)
 		if (GetScrollInfo(DGridHandle, SB_HORZ, &si))
 			if (pos = si.nPos - si.nMin)
 				if (range = si.nMax - si.nMin)
-					rect.left = -MulDiv(this->DGrid->DefaultColWidth - clientWidth, pos, range);
-		rect.right = rect.left + this->DGrid->DefaultColWidth;
+					rect.left = -MulDiv(this->DGrid->FDefaultColWidth - clientWidth, pos, range);
+		rect.right = rect.left + this->DGrid->FDefaultColWidth;
 		if (this->invertGridRow >= 0)
 		{
 			int bottomRow;
 
-			rect.top = (this->invertGridRow - topRow) * this->DGrid->DefaultRowHeight;
-			rect.bottom = rect.top + this->DGrid->DefaultRowHeight;
-			TMainForm_DrawTreeCell(this, this->DGrid->Canvas, this->invertGridRow--, &rect);
-			bottomRow = clientHeight / this->DGrid->DefaultRowHeight + topRow - 2;
+			rect.top = (this->invertGridRow - topRow) * this->DGrid->FDefaultRowHeight;
+			rect.bottom = rect.top + this->DGrid->FDefaultRowHeight;
+			TMainForm_DrawTreeCell(this, this->DGrid->FCanvas, this->invertGridRow--, &rect);
+			bottomRow = clientHeight / this->DGrid->FDefaultRowHeight + topRow - 2;
 			if (this->invertGridRow <= bottomRow)
 			{
 				rect.bottom = rect.top;
-				rect.top -= this->DGrid->DefaultRowHeight;
+				rect.top -= this->DGrid->FDefaultRowHeight;
 			}
 			else
 			{
 				this->invertGridRow = bottomRow;
-				rect.top = (this->invertGridRow - topRow) * this->DGrid->DefaultRowHeight;
-				rect.bottom = rect.top + this->DGrid->DefaultRowHeight;
+				rect.top = (this->invertGridRow - topRow) * this->DGrid->FDefaultRowHeight;
+				rect.bottom = rect.top + this->DGrid->FDefaultRowHeight;
 			}
 		}
 		else
 		{
 			this->invertGridRow = 0;
-			rect.top = -topRow * this->DGrid->DefaultRowHeight;
-			rect.bottom = rect.top + this->DGrid->DefaultRowHeight;
+			rect.top = -topRow * this->DGrid->FDefaultRowHeight;
+			rect.bottom = rect.top + this->DGrid->FDefaultRowHeight;
 		}
-		TMainForm_DrawTreeCell(this, this->DGrid->Canvas, this->invertGridRow, &rect);
+		TMainForm_DrawTreeCell(this, this->DGrid->FCanvas, this->invertGridRow, &rect);
 	}
 	if (topRow)
 	{
@@ -457,33 +457,33 @@ static __inline void TMainForm_HotKeyEditKeyDown_Down(TMainForm *this)
 	if (GetScrollInfo(DGridHandle, SB_HORZ, &si))
 		if (pos = si.nPos - si.nMin)
 			if (range = si.nMax - si.nMin)
-				rect.left = -MulDiv(this->DGrid->DefaultColWidth - clientWidth, pos, range);
-	rect.right = rect.left + this->DGrid->DefaultColWidth;
+				rect.left = -MulDiv(this->DGrid->FDefaultColWidth - clientWidth, pos, range);
+	rect.right = rect.left + this->DGrid->FDefaultColWidth;
 	if (this->invertGridRow < 0)
 		this->invertGridRow = 0;
-	topRow = this->DGrid->TopRow >= 0 ? this->DGrid->TopRow : 0;
+	topRow = this->DGrid->FTopLeft.Y >= 0 ? this->DGrid->FTopLeft.Y : 0;
 	do	/* do { ... } while (0); */
 	{
 		if (this->invertGridRow < topRow)
 		{
 			this->invertGridRow = topRow + 1;
-			rect.top = this->DGrid->DefaultRowHeight;
-			rect.bottom = this->DGrid->DefaultRowHeight * 2;
+			rect.top = this->DGrid->FDefaultRowHeight;
+			rect.bottom = this->DGrid->FDefaultRowHeight * 2;
 		}
 		else
 		{
-			if (this->invertGridRow >= this->DGrid->RowCount - 2)
+			if (this->invertGridRow >= this->DGrid->FRowCount - 2)
 				break;
-			rect.top = (this->invertGridRow - topRow) * this->DGrid->DefaultRowHeight;
-			rect.bottom = rect.top + this->DGrid->DefaultRowHeight;
-			TMainForm_DrawTreeCell(this, this->DGrid->Canvas, this->invertGridRow++, &rect);
+			rect.top = (this->invertGridRow - topRow) * this->DGrid->FDefaultRowHeight;
+			rect.bottom = rect.top + this->DGrid->FDefaultRowHeight;
+			TMainForm_DrawTreeCell(this, this->DGrid->FCanvas, this->invertGridRow++, &rect);
 			rect.top = rect.bottom;
-			rect.bottom += this->DGrid->DefaultRowHeight;
+			rect.bottom += this->DGrid->FDefaultRowHeight;
 		}
-		TMainForm_DrawTreeCell(this, this->DGrid->Canvas, this->invertGridRow, &rect);
+		TMainForm_DrawTreeCell(this, this->DGrid->FCanvas, this->invertGridRow, &rect);
 	} while (0);
-	clientRows = clientHeight / this->DGrid->DefaultRowHeight;
-	if (topRow < this->DGrid->RowCount - clientRows)
+	clientRows = clientHeight / this->DGrid->FDefaultRowHeight;
+	if (topRow < this->DGrid->FRowCount - clientRows)
 	{
 		int bottomRow;
 
@@ -491,9 +491,9 @@ static __inline void TMainForm_HotKeyEditKeyDown_Down(TMainForm *this)
 		if (this->invertGridRow > bottomRow)
 		{
 			this->invertGridRow = bottomRow;
-			rect.top = (this->invertGridRow - topRow) * this->DGrid->DefaultRowHeight;
-			rect.bottom = rect.top + this->DGrid->DefaultRowHeight;
-			TMainForm_DrawTreeCell(this, this->DGrid->Canvas, this->invertGridRow, &rect);
+			rect.top = (this->invertGridRow - topRow) * this->DGrid->FDefaultRowHeight;
+			rect.bottom = rect.top + this->DGrid->FDefaultRowHeight;
+			TMainForm_DrawTreeCell(this, this->DGrid->FCanvas, this->invertGridRow, &rect);
 		}
 		TDrawGrid_SetTopRow(this->DGrid, topRow + 1);
 	}

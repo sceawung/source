@@ -9,13 +9,20 @@ void __fastcall TSSGSubject_ctor(TSSGSubject *const this, DWORD const prop)
 	this->evaluateAtRead = FALSE;
 	this->stable = MAXWORD;
 	this->lastAddr = NULL;
+#pragma region Unnamed bit-field members are not initialized.
+	this->fields._M_header = NULL;
+	this->fields._M_node_count = 0;
+#pragma endregion
 	switch (prop)
 	{
 		extern TSSGSubject dummySSGS;
 	default: prop > MAXWORD || !prop;
+		this->folder = NULL;
 		this->propertyIndex = MAXDWORD;
 		break;
-	case 1:
+#pragma warning(suppress: 4101)
+	case 1: TSSGSubject SSGS;// TSSGCtrl::LoopSSRFile
+		this->folder = dummySSGS.folder;
 		this->propertyIndex = dummySSGS.propertyIndex;
 		break;
 	}

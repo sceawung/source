@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdbool.h>
 #include <windows.h>
 #include "bcb6_std_string.h"
 #include "bcb6_std_map.h"
@@ -351,7 +350,7 @@ typedef struct _TChildRWAttribute {
 	unsigned char prohibit;
 	bool          spAccept;
 	bool          spIgnore;
-	BYTE          reserved;
+	__int8 : 8;
 } TChildRWAttribute, TOnErrorAttribute;
 #pragma pack(pop)
 
@@ -421,7 +420,7 @@ typedef struct _TAdjustCheckAttribute {
 	};
 	bool    check;
 	bool    mustCheck;
-	BYTE    padding[2];
+	__int16 : 16;
 } TAdjustCheckAttribute;
 #pragma pack(pop)
 
@@ -540,7 +539,7 @@ typedef struct _TSearchAdjustmentAttribute {
 	bcb6_std_string minAddressStr;
 	bcb6_std_string maxAddressStr;
 	unsigned long   step;
-	DWORD           padding2;
+	__int32 : 32;
 	bcb6_std_string searchCode;
 	bcb6_std_map    diffMap;
 } TSearchAdjustmentAttribute;
@@ -560,7 +559,9 @@ typedef struct _TDialogAdjustmentAttribute {
 	bcb6_std_string        fileName;
 	bcb6_std_string        valStr;
 	bool                   isMemoWordWrap;
-	BYTE                   padding3[7];
+	__int8 : 8;
+	__int16 : 16;
+	__int32 : 32;
 	bcb6_std_vector_string memo;
 	bcb6_std_vector_string answerVec;
 	bcb6_std_vector_byte   flagVec;

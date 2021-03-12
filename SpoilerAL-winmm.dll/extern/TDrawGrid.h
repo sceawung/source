@@ -5,29 +5,136 @@
 
 #define DEFINE_TCUSTOMCONTROL                   \
     DEFINE_TWINCONTROL;                         \
-    TCanvas       *Canvas;                      \
-    BYTE          padding_TCustomControl1[4]
+    TCanvas      *FCanvas;                      \
+    __int32 : 32
+
+#pragma pack(push, 4)
+typedef struct GridCoord
+{
+	int X;
+	int Y;
+} TGridCoord;
+#pragma pack(pop)
+
+typedef struct GridOptions
+{
+	bool goFixedVertLine     : 1;
+	bool goFixedHorzLine     : 1;
+	bool goVertLine          : 1;
+	bool goHorzLine          : 1;
+	bool goRangeSelect       : 1;
+	bool goDrawFocusSelected : 1;
+	bool goRowSizing         : 1;
+	bool goColSizing         : 1;
+	bool goRowMoving         : 1;
+	bool goColMoving         : 1;
+	bool goEditing           : 1;
+	bool goTabs              : 1;
+	bool goRowSelect         : 1;
+	bool goAlwaysShowEditor  : 1;
+	bool goThumbTracking     : 1;
+	__int16 : 0;
+} TGridOptions;
+
+typedef char TScrollStyle, TGridState;
 
 #define DEFINE_TCUSTOMGRID                      \
     DEFINE_TCUSTOMCONTROL;                      \
-    BYTE          padding_TCustomGrid1[32];     \
-    const int     DefaultColWidth;              \
-    const int     DefaultRowHeight;             \
-    BYTE          padding_TCustomGrid2[20];     \
-    const int     RowCount;                     \
-    BYTE          padding_TCustomGrid3[12];     \
-    const int     TopRow;                       \
-    BYTE          padding_TCustomGrid4[56]
+    TGridCoord       FAnchor;                   \
+    TFormBorderStyle FBorderStyle;              \
+    bool             FCanEditModify;            \
+    __int16 : 16;                               \
+    int              FColCount;                 \
+    void            *FColWidths;                \
+    void            *FTabStops;                 \
+    TGridCoord       FCurrent;                  \
+    int        const FDefaultColWidth;          \
+    int        const FDefaultRowHeight;         \
+    int              FFixedCols;                \
+    int              FFixedRows;                \
+    TColor           FFixedColor;               \
+    int              FGridLineWidth;            \
+    TGridOptions     FOptions;                  \
+    __int16 : 16;                               \
+    int        const FRowCount;                 \
+    void            *FRowHeights;               \
+    TScrollStyle     FScrollBars;               \
+    __int8 : 8;                                 \
+    __int16 : 16;                               \
+    TGridCoord const FTopLeft;                  \
+    int              FSizingIndex;              \
+    int              FSizingPos;                \
+    int              FSizingOfs;                \
+    int              FMoveIndex;                \
+    int              FMovePos;                  \
+    TPoint           FHitTest;                  \
+    TInplaceEdit    *FInplaceEdit;              \
+    int              FInplaceCol;               \
+    int              FInplaceRow;               \
+    int              FColOffset;                \
+    bool             FDefaultDrawing;           \
+    bool             FEditorMode;               \
+    TGridState       FGridState;                \
+    bool             FSaveCellExtents;          \
+    TGridOptions     DesignOptionsBoost;        \
+    bool             VirtualView;               \
+    __int8 : 8;                                 \
+    __int32 : 32
+
+typedef struct GridDrawState
+{
+	bool gdSelected : 1;
+	bool gdFocused  : 1;
+	bool gdFixed    : 1;
+	__int8 : 0;
+} TGridDrawState;
+
+typedef struct MovedEvent
+{// Borland
+	void(__fastcall *Method)(TObject *Sender, int FromIndex, int ToIndex);
+	void      const *This;
+} TMovedEvent;
+
+typedef struct DrawCellEvent
+{// Borland
+	void(__fastcall *Method)(TObject *Sender, int ACol, int ARow, const TRect *Rect, TGridDrawState State);
+	void      const *This;
+} TDrawCellEvent;
+
+typedef struct GetEditEvent
+{// Borland
+	void(__fastcall *Method)(TObject *Sender, int ACol, int ARow, AnsiString *Value);
+	void      const *This;
+} TGetEditEvent;
+
+typedef struct SelectCellEvent
+{// Borland
+	void(__fastcall *Method)(TObject *Sender, int ACol, int ARow, bool *CanSelect);
+	void      const *This;
+} TSelectCellEvent;
+
+typedef struct SetEditEvent
+{// Borland
+	void(__fastcall *Method)(TObject *Sender, int ACol, int ARow, const AnsiString Value);
+	void      const *This;
+} TSetEditEvent;
 
 #define DEFINE_TCUSTOMDRAWGRID                  \
     DEFINE_TCUSTOMGRID;                         \
-    BYTE          padding_TCustomDrawGrid1[64]
+    TMovedEvent      FOnColumnMoved;            \
+    TDrawCellEvent   FOnDrawCell;               \
+    TGetEditEvent    FOnGetEditMask;            \
+    TGetEditEvent    FOnGetEditText;            \
+    TMovedEvent      FOnRowMoved;               \
+    TSelectCellEvent FOnSelectCell;             \
+    TSetEditEvent    FOnSetEditText;            \
+    TNotifyEvent     FOnTopLeftChanged
 
 #define DEFINE_TDRAWGRID                        \
     DEFINE_TCUSTOMDRAWGRID
 
 #pragma pack(push, 1)
-typedef struct _TDrawGrid
+typedef struct DrawGrid
 {
 	DEFINE_TDRAWGRID;
 } TDrawGrid;

@@ -213,7 +213,7 @@ EXTERN_C __declspec(naked) double __cdecl _CIexp(/*st0 x*/)
 		jb      L3                              /* Is not +-Inf, jump. */
 		set_errno(ERANGE)                       /* Set range error (ERANGE) */
 	L3:
-		ret
+		rep ret
 
 		align   16
 	L4:
@@ -224,7 +224,7 @@ EXTERN_C __declspec(naked) double __cdecl _CIexp(/*st0 x*/)
 		fstp    st(0)
 		fldz                                    /* Set result to 0. */
 	L5:
-		ret
+		rep ret
 	}
 
 	#undef set_errno

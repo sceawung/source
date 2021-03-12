@@ -4,6 +4,7 @@
 #include "bcb6_std_string.h"
 #include "bcb6_std_map.h"
 
+#pragma pack(push, 1)
 typedef struct _TSSGScriptStruct
 {
 	bcb6_std_map    distinctionMap;
@@ -11,6 +12,7 @@ typedef struct _TSSGScriptStruct
 	unsigned long   sPos;
 	unsigned long   ePos;
 } TSSGScriptStruct;
+#pragma pack(pop)
 
 EXTERN_C long __stdcall TSSGScriptStruct_GetTitleTextWidth(const TSSGScriptStruct *this, HDC hDC);
 

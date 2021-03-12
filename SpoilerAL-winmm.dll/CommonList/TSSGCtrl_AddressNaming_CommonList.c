@@ -1,4 +1,5 @@
-#include <windows.h>
+#include <stdlib.h>
+#include "bcb6_std_string.h"
 
 __declspec(naked) void __cdecl TSSGCtrl_AddressNaming_CommonList()
 {
@@ -7,26 +8,19 @@ __declspec(naked) void __cdecl TSSGCtrl_AddressNaming_CommonList()
 		#define Src     (esp + 4)
 		#define Default (esp + 8)
 
-		mov     eax, dword ptr [Src]
-		lea     ecx, [Default]
-		mov     eax, dword ptr [eax]
+		mov     ecx, [Src]
+		lea     eax, [Default]
 		push    0
-		push    ecx
 		push    eax
+		push    [ecx]bcb6_std_string._M_start
 		call    strtoul
-		mov     ecx, dword ptr [Src     + 12]
-		mov     edx, dword ptr [Default + 12]
-		mov     ecx, dword ptr [ecx]
-		add     esp, 12
-		cmp     ecx, edx
-		jne     L1
-		add     esp, 4 + 8
-		push    1
-		push    005059D0H
-	L1:
-		ret
-
-		#undef Src
+		pop     edx
+		add     esp, 8
+		cmp     edx, [Default]
+		sbb     edx, edx
+		ret     8
+		
 		#undef Default
+		#undef Src
 	}
 }

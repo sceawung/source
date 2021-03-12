@@ -5825,7 +5825,6 @@ uint64_t __cdecl InternalParsing(TSSGCtrl *const this, TSSGSubject *const SSGS, 
 	wchar_t                     *wcstok_context;
 	unsigned char               *mbstok_context;
 	BOOLEAN                     bCompoundAssign;
-	TSSGSubjectProperty *const  lpProp = GetSubjectProperty(SSGS);
 
 	qwResult               = 0;
 	bCached                = FALSE;
@@ -6197,7 +6196,7 @@ uint64_t __cdecl InternalParsing(TSSGCtrl *const this, TSSGSubject *const SSGS, 
 			size_t              nPrevNumberOfVariable;
 			size_t              nSize, nCapacity, nForward;
 
-			lpProperty = lpProp;
+			lpProperty = GetSubjectProperty(SSGS);
 			if (!lpProperty)
 				break;
 			if (!lpProperty->RepeatDepth)
@@ -12669,10 +12668,8 @@ uint64_t __cdecl InternalParsing(TSSGCtrl *const this, TSSGSubject *const SSGS, 
 						goto PARSING_ERROR;
 					Source = vector_begin(File);
 					Finish = vector_end  (File);
-#if EMBED_BREADTH
-					if (Lexical && (!lpProp || !(Object = &lpProp->ParentEntry->super)))
+					if (Lexical && !(Object = &SSGS->folder->super))
 						goto PARSING_ERROR;
-#endif
 				}
 				lpParams = NULL;
 				if (count = lpMarkup->NumberOfOperand)
@@ -12854,8 +12851,8 @@ uint64_t __cdecl InternalParsing(TSSGCtrl *const this, TSSGSubject *const SSGS, 
 				{
 #if SCOPE_SUPPORT
 					map_iterator it = NULL;
-					map *variantMap = lpProp;
-					ScopeVariant sv = { { p + 1, p + length, NULL, NULL, p + 1, MAXDWORD }, 0, 0 };
+					map *variantMap = &SSGS->fields;
+					ScopeVariant sv = { { p + 1, p + length, ._M_end_of_storage = p + 1 }, 0, 0 };
 #endif
 					if (!(nNumberOfVariable & 0x0F))
 					{
@@ -12874,11 +12871,11 @@ uint64_t __cdecl InternalParsing(TSSGCtrl *const this, TSSGSubject *const SSGS, 
 					element->Value.Quad = 0;
 					element->Value.IsQuad = !IsInteger;
 #if SCOPE_SUPPORT
-					if (variantMap && FixTheProcedure && *p == '.')
+					if (SSGS->type && SSGS->folder && FixTheProcedure && *p == '.')
 					{
 						if (!map_end(variantMap))
 						{
-							if (!(map_end(variantMap) = node_alloc_allocate(sizeof(struct _Rb_tree_node))))
+							if (!(map_end(variantMap) = node_alloc_allocate(sizeof(bcb6_std_map_node))))
 								goto ALLOC_ERROR;
 							map_end(variantMap)->_M_color  = FALSE;
 							map_end(variantMap)->_M_left   = map_end(variantMap);

@@ -71,7 +71,7 @@ __declspec(naked) size_t __cdecl _mbsnccnt(const unsigned char *string, size_t n
 		pop     esi
 		pop     ebx
 	L5:
-		ret
+		rep ret
 
 		#undef string
 		#undef number

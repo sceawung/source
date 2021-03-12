@@ -68,7 +68,7 @@ __declspec(naked) size_t __cdecl _mbsnbcnt(const unsigned char *string, size_t n
 		pop     esi
 		xor     eax, -1
 	L5:
-		ret
+		rep ret
 
 		align   16
 	L6:

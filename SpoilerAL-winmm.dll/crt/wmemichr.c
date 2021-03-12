@@ -439,7 +439,7 @@ __declspec(naked) static wchar_t * __cdecl wmemichr386(const wchar_t *buffer, wc
 	found:
 		pop     esi                                         // restore esi
 	retnull:
-		ret                                                 // __cdecl return
+		rep ret                                             // __cdecl return
 
 		#undef buffer
 		#undef c

@@ -43,20 +43,12 @@ extern vector *ProcessDetachAttribute;
 extern DWORD  IndexRoot, IndexTemp;
 
 TSSGSubject dummySSGS = {
-	TSSGSubject_VTable,                     // SubjectVtbl     *VTable;
-	FALSE,                                  // bool            isSeted;
-	stNONE,                                 // BYTE            type;
-	0,                                      // WORD            breadth;
-	NULL,                                   // bcb6_std_vector *attribute;
-	0,                                      // BYTE            status;
-	FALSE,                                  // bool            evaluateAtRead;
-	MAXWORD,                                // WORD            stable;
-	NULL,                                   // LPCVOID         lastAddr;
-	{ NULL, NULL, NULL, NULL, NULL, 0 },    // bcb6_std_string name;
-	{ NULL, NULL, NULL, NULL, NULL, 0 },    // bcb6_std_string code;
-	{ NULL, NULL, NULL, NULL, NULL, 0 },    // bcb6_std_string subjectName;
-	MAXDWORD,                               // ptrdiff_t       propertyIndex;
-};
+	TSSGSubject_VTable,
+	.stable = MAXWORD,
+	.fields = { NULL },
+	.folder = NULL,
+	.propertyIndex = MAXDWORD,
+};// the remaining members or elements of the aggregate type are initialized to 0.
 
 void __cdecl TSSGCtrl_EnumReadSSG(
 	TSSGCtrl                   *this,
@@ -73,7 +65,6 @@ void __cdecl TSSGCtrl_EnumReadSSG(
 	#define stack_PTSSDir_push(Stack, Value) stack_ptr_push((stack_ptr *)(Stack), Value)
 	#define stack_PTSSDir_pop(Stack)         stack_ptr_pop((stack_ptr *)(Stack))
 
-	TSSGSubjectProperty *prop;
 	size_t invalid = FALSE, condition = TRUE;
 	for (string *it = vector_begin(SSGFile); it != vector_end(SSGFile); ++it)
 	{
@@ -572,31 +563,11 @@ void __cdecl TSSGCtrl_EnumReadSSG(
 		case IF:
 			if (!invalid)
 			{
-				if (prop = GetSubjectProperty(&dummySSGS))
-				{
-					if (RepeatDepth)
-					{
-						prop->OuterRepeat = OuterRepeat;
-						prop->RepeatDepth = RepeatDepth;
-						prop->RepeatIndex = RepeatIndex;
-					}
-#if EMBED_BREADTH
-					prop->ParentEntry = stack_PTSSDir_top(ParentStack);
-#endif
-				}
-				invalid = !(condition = !!Parsing(this, &dummySSGS, &(string) { p, string_end(it), NULL, NULL, p, MAXDWORD }, 0));
-				if (prop)
-				{
-					if (RepeatDepth)
-					{
-						prop->OuterRepeat = MAXDWORD;
-						prop->RepeatDepth = 0;
-						prop->RepeatIndex = 0;
-					}
-#if EMBED_BREADTH
-					prop->ParentEntry = NULL;
-#endif
-				}
+				dummySSGS.folder = stack_PTSSDir_top(ParentStack);
+				dummySSGS.propertyIndex = OuterRepeat;
+				invalid = !(condition = !!Parsing(this, &dummySSGS, &(string) { p, string_end(it), ._M_end_of_storage = p }, 0));
+				dummySSGS.propertyIndex = MAXDWORD;
+				dummySSGS.folder = NULL;
 			}
 			else
 				invalid++;
@@ -616,7 +587,7 @@ void __cdecl TSSGCtrl_EnumReadSSG(
 			{
 				string              Name, Code, Tag;
 				TSSGSubject         *SSGS; // 項目名、コード部分、項目種別の取得
-				TSSGSubjectProperty *prop;
+				TSSGSubjectProperty *const prop = GetProperty(OuterRepeat);
 
 				string_ctor_assign_cstr_with_length(&Code, p, string_end(it) - p);
 				TStringDivision_Half_WithoutTokenDtor(&Name, &this->strD, &Code, ":", 1, 0, dtESCAPE);
@@ -659,17 +630,11 @@ void __cdecl TSSGCtrl_EnumReadSSG(
 				vector_push_back(&stack_PTSSDir_top(ParentStack)->childVec, SSGS);
 				TSSGSubject_SetAttribute(SSGS, TSSGAttributeSelector_GetNowAtteributeVec(&this->attributeSelector));
 
-				if (!ADJElem && (prop = AppendSubjectProperty(SSGS)))
+				if (!ADJElem)
 				{
-					if (RepeatDepth)
-					{
-						prop->OuterRepeat = OuterRepeat;
-						prop->RepeatDepth = RepeatDepth;
-						prop->RepeatIndex = RepeatIndex;
-					}
-#if EMBED_BREADTH
-					prop->ParentEntry = stack_PTSSDir_top(ParentStack);
-#endif
+					SSGS->folder = stack_PTSSDir_top(ParentStack);
+					SSGS->propertyIndex = OuterRepeat;
+					if (prop) prop->DirectChild++;
 				}
 
 				if (SSGS->type == stDIR)
@@ -729,19 +694,11 @@ void __cdecl TSSGCtrl_EnumReadSSG(
 
 				string_ctor_assign(&FName, &NewAElem->fileName);
 				string_ctor_assign_cstr_with_length(&DefaultExt, ".SSC", 4);
-				if (prop = IndexTemp == MAXDWORD ? NULL : SubjectProperty + IndexTemp)
-				{
-					prop->OuterRepeat = OuterRepeat;
-					prop->RepeatDepth = RepeatDepth;
-					prop->RepeatIndex = RepeatIndex;
-#if EMBED_BREADTH
-					prop->ParentEntry = stack_PTSSDir_top(ParentStack);
-#endif
-				}
-				dummySSGS.propertyIndex = IndexTemp;
+				dummySSGS.folder = stack_PTSSDir_top(ParentStack);
+				dummySSGS.propertyIndex = OuterRepeat;
 				tmpL = TSSGCtrl_GetSSGDataFile(this, &dummySSGS, FName, DefaultExt, NULL);
-				dummySSGS.propertyIndex = IndexRoot;
-				if (prop && map_end(prop)) TSSGSubjectProperty_dtor(prop, TRUE);
+				dummySSGS.propertyIndex = MAXDWORD;
+				dummySSGS.folder = NULL;
 				if (tmpL == NULL)
 				{
 					delete_TReplaceAttribute(NewAElem);
@@ -1165,7 +1122,6 @@ void __cdecl TSSGCtrl_EnumReadSSG(
 				string              LineS, tmpS, Name;
 				TSSGSubject         *SSGS;
 				BOOLEAN             CanUnknown;
-				TSSGSubjectProperty *prop;
 
 				string_ctor_assign_cstr_with_length(&LineS, p, string_end(it) - p);
 				ReplaceDefine(&this->attributeSelector, &LineS);
@@ -1189,12 +1145,6 @@ void __cdecl TSSGCtrl_EnumReadSSG(
 				TSSGSubject_SetCode_stdstr(SSGS, &LineS);
 				string_dtor(&LineS);
 				SSGS->isAdjustment = TRUE;
-				if (RepeatDepth && (prop = GetSubjectProperty(SSGS)))
-				{// No appending properties because not destructed via TSSDir::ClearChild.
-					prop->OuterRepeat  = OuterRepeat;
-					prop->RepeatDepth  = RepeatDepth;
-					prop->RepeatIndex  = RepeatIndex;
-				}
 				TSSGSubject_Setting(SSGS, this);
 				vector_push_back(&stack_PTSSDir_top(ParentStack)->childVec, SSGS);
 				TSSGSubject_SetAttribute(SSGS, TSSGAttributeSelector_GetNowAtteributeVec(&this->attributeSelector));
@@ -1410,31 +1360,11 @@ void __cdecl TSSGCtrl_EnumReadSSG(
 				NewAElem->VTable    = TReplaceAttribute_VTable;
 				NewAElem->type      = atFORMAT;
 				NewAElem->displace  = FALSE;
-				if (prop = GetSubjectProperty(&dummySSGS))
-				{
-					if (RepeatDepth)
-					{
-						prop->OuterRepeat = OuterRepeat;
-						prop->RepeatDepth = RepeatDepth;
-						prop->RepeatIndex = RepeatIndex;
-					}
-#if EMBED_BREADTH
-					prop->ParentEntry = stack_PTSSDir_top(ParentStack);
-#endif
-				}
+				dummySSGS.folder = stack_PTSSDir_top(ParentStack);
+				dummySSGS.propertyIndex = OuterRepeat;
 				NewAElem->offsetNum = Parsing(this, &dummySSGS, &vector_at(&tmpV, 0), specifier);
-				if (prop)
-				{
-					if (RepeatDepth)
-					{
-						prop->OuterRepeat = MAXDWORD;
-						prop->RepeatDepth = 0;
-						prop->RepeatIndex = 0;
-					}
-#if EMBED_BREADTH
-					prop->ParentEntry = NULL;
-#endif
-				}
+				dummySSGS.propertyIndex = MAXDWORD;
+				dummySSGS.folder = NULL;
 				string_ctor_assign(&NewAElem->offsetCode , &vector_at(&tmpV, 1));
 				string_ctor_assign(&NewAElem->fileName   , &vector_at(&tmpV, 2));
 				vector_dtor(&tmpV);

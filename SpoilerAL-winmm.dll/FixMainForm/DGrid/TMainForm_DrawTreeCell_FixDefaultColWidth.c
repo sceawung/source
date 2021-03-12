@@ -58,23 +58,15 @@ static void __stdcall FixDefaultColWidth(TSSGSubject *SSGS, LPVOID Canvas, int X
 	size.cx += X + 6;
 	if (SSGS)
 	{
-#if EMBED_BREADTH
-		assert(size.cx <= MAXWORD);
-		SSGS->breadth = (WORD)size.cx;
-#else
-		TSSGSubjectProperty *elem;
-
-		elem = GetSubjectProperty(SSGS);
-		if (elem)
-			elem->Breadth = size.cx;
-#endif
+		assert(size.cx >= 0 && size.cx <= MAXWORD);
+		SSGS->breadth = ( WORD)size.cx;
 	}
 	else
 	{
 		TitleWidth = size.cx;
 	}
 	this = MainForm;
-	if (this->DGrid->DefaultColWidth < size.cx)
+	if (this->DGrid->FDefaultColWidth < size.cx)
 	{
 		HWND         DGridHandle;
 		long         lStyle;
@@ -88,8 +80,8 @@ static void __stdcall FixDefaultColWidth(TSSGSubject *SSGS, LPVOID Canvas, int X
 		lStyle = GetWindowLongA(DGridHandle, GWL_STYLE);
 		TDrawGrid_SetDefaultColWidth(this->DGrid, size.cx);
 		ClientHeight = TDrawGrid_GetClientHeight(this->DGrid);
-		SubjectCount = this->DGrid->RowCount - 1;
-		SubjectHeight = this->DGrid->DefaultRowHeight * SubjectCount;
+		SubjectCount = this->DGrid->FRowCount - 1;
+		SubjectHeight = this->DGrid->FDefaultRowHeight * SubjectCount;
 		if (ClientHeight >= SubjectHeight)
 		{
 			FillHeight = ClientHeight - SubjectHeight;
@@ -97,7 +89,7 @@ static void __stdcall FixDefaultColWidth(TSSGSubject *SSGS, LPVOID Canvas, int X
 		}
 		else
 		{
-			FillHeight = this->DGrid->DefaultRowHeight + ClientHeight % this->DGrid->DefaultRowHeight;
+			FillHeight = this->DGrid->FDefaultRowHeight + ClientHeight % this->DGrid->FDefaultRowHeight;
 			wBar = SB_BOTH;
 		}
 		TDrawGrid_SetRowHeights(this->DGrid, SubjectCount, FillHeight);
@@ -109,7 +101,7 @@ static void __stdcall FixDefaultColWidth(TSSGSubject *SSGS, LPVOID Canvas, int X
 			si.cbSize = sizeof(SCROLLINFO);
 			si.fMask = SIF_RANGE;
 			si.nMin = 0;
-			si.nMax = this->DGrid->DefaultColWidth - TDrawGrid_GetClientWidth(this->DGrid);
+			si.nMax = this->DGrid->FDefaultColWidth - TDrawGrid_GetClientWidth(this->DGrid);
 			SetScrollInfo(DGridHandle, SB_HORZ, &si, FALSE);
 		}
 	}

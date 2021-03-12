@@ -20,7 +20,7 @@ static __declspec(naked) void __fastcall TSSDoubleList_SwitchStatus(unsigned lon
 		cmove   edx, dword ptr [AddressTable + 0x08]
 		test    cl, cl
 		cmovz   edx, dword ptr [AddressTable + 0x0C]
-		mov     eax, reINDEX_ERROR
+		mov     eax, reNO_ERROR
 		jmp     edx
 		ud2
 
@@ -60,7 +60,7 @@ __declspec(naked) void __cdecl TSSDoubleList_Write_SwitchStatus()
 		0x004C5477,
 		0x004C555A,
 		0x004C5BF4,
-		0x004C627F
+		0x004C5512
 	};
 
 	__asm

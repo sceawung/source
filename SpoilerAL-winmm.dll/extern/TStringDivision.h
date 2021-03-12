@@ -25,6 +25,7 @@ typedef enum Dealt
 #define etTRIM      (etTRIM_L | etTRIM_R )
 #define etSOME_EDIT (etTRIM   | etREPLACE)
 
+#pragma pack(push, 1)
 typedef struct _TStringDivision
 {
 	LPVOID          *VTable;
@@ -33,9 +34,10 @@ typedef struct _TStringDivision
 	bcb6_std_string escapeTag;
 	bcb6_std_map    replaceMap;
 	bcb6_std_set    trimSet;
-	LPVOID          padding1;
+	__int32 : 32;
 
 } TStringDivision;
+#pragma pack(pop)
 
 EXTERN_C unsigned long __stdcall TStringDivision_Find_WithoutTokenDtor(
 	IN     TStringDivision       *this,

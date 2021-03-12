@@ -72,7 +72,7 @@ __declspec(naked) int __cdecl _mbsncmp(const unsigned char *string1, const unsig
 		pop     esi
 		pop     ebx
 	L4:
-		ret
+		rep ret
 
 		align   16
 	L5:

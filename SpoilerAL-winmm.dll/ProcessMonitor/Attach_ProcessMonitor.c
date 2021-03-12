@@ -104,7 +104,7 @@ static __declspec(naked) uintptr_t TProcessCtrl_GetProcessVec_SkipSystemProcess(
 		cmove eax, _M_insert_overflow
 
 	SKIP:
-		ret
+		rep ret
 	}
 }
 

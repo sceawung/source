@@ -1,9 +1,9 @@
 #pragma once
 
-#include <stdbool.h>
 #include <windows.h>
 #include "bcb6_std_vector.h"
 #include "bcb6_std_string.h"
+#include "bcb6_std_map.h"
 #include "SubjectStringTable.h"
 
 typedef enum Result
@@ -82,8 +82,17 @@ typedef struct _TSSGSubject
 		};
 	};
 	LPCVOID         lastAddr;
-	bcb6_std_string name;
-	bcb6_std_string code;
+	union {
+		struct {
+			bcb6_std_string name;
+			bcb6_std_string code;
+		};
+		struct {
+			__int32 : 32;
+			bcb6_std_map    fields;
+			struct _TSSDir *folder;
+		};
+	};
 	bcb6_std_string subjectName;
 	ptrdiff_t       propertyIndex;
 } TSSGSubject;

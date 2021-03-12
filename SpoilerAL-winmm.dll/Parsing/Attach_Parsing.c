@@ -89,6 +89,9 @@ static vector_dword* __fastcall TSSGCtrl_StrToProcessAccessElementVec_return_Cod
 #define MOV_EAX_TO_DWORD_PTR_EBP_IMM8 (WORD )0x4589
 #define LEA_EAX_EDI_MUL3              (WORD )0x048D
 #define LEA_EAX_EDI_MUL3_3RD_BYTE     (BYTE )0x7F
+#define TEST_EDX_EDX                  (WORD )0xD285
+#define JS_REL8                       (BYTE )0x78
+#define JE_REL8                       (BYTE )0x74
 #define NOP                           (BYTE )0x90
 #define NOP_X2                        (WORD )0x9066
 #define NOP_X4                        (DWORD)0x00401F0F
@@ -382,19 +385,38 @@ EXTERN_C void __cdecl Attach_Parsing()
 	*(LPDWORD)0x004EE58C = NOP_X4;
 
 	// TSSGCtrl::ReadSSRFile
+#if 1
+	*(LPBYTE )0x004FF36F = CALL_REL32;
+	*(LPDWORD)0x004FF370 = (DWORD)TSSGCtrl_ReadSSRFile_ReplaceDefine - (0x004FF370 + sizeof(DWORD));
+	*(LPWORD )0x004FF374 = NOP_X2;
+	*(LPWORD )0x004FF376 = TEST_EDX_EDX;
+	*(LPBYTE )0x004FF378 = JS_REL8;
+	*(LPBYTE )0x004FF379 = 0x004FF387 - (0x004FF379 + sizeof(BYTE));
+	*(LPBYTE )0x004FF37A = JE_REL8;
+#else
 	*(LPDWORD)(0x004FF37F + 1) = (DWORD)TSSGCtrl_ReadSSRFile_ReplaceDefine - (0x004FF37F + 1 + sizeof(DWORD));
+#endif
 
 	// TSSGCtrl::LoopSSRFile
 	*(LPDWORD)(0x00501DC4 + 1) = (DWORD)Caller_ParsingWithVal - (0x00501DC4 + 1 + sizeof(DWORD));
 
 	// TSSGCtrl::LoopSSRFile
+	//   File->at( Index% File->size() )
+#if 1
+	*(LPBYTE )0x0050217B = 0xFF;// mov edx
+	*(LPBYTE )0x0050217C = 0xB5;// => push
+	*(LPBYTE )0x00502181 = 0xFF;// mov eax => push
+	*(LPWORD )0x00502182 = BSWAP16(0x36 << 8 | CALL_REL32);
+	*(LPDWORD)0x00502184 = (DWORD)TSSGCtrl_LoopSSRFile_ReplaceDefine - (0x00502184 + sizeof(DWORD));
+	*(LPWORD )0x00502188 = BSWAP16(0x83C4);// add esp, ...
+	*(LPBYTE )0x0050218A = sizeof(uintptr_t) * 2;
+#else
 	*(LPBYTE )0x005021B5 = CALL_REL32;
 	*(LPDWORD)0x005021B6 = (DWORD)TSSGCtrl_LoopSSRFile_ReplaceDefine - (0x005021B6 + sizeof(DWORD));
 	*(LPBYTE )0x005021BA = NOP;
-
-	*(LPBYTE )0x005021CC = CALL_REL32;
-	*(LPDWORD)0x005021CD = (DWORD)TSSGCtrl_LoopSSRFile_ReplaceDefine_Release - (0x005021CD + sizeof(DWORD));
-	*(LPBYTE )0x005021D1 = NOP;
+#endif
+	*(LPBYTE )0x005021D5 = CALL_REL32;
+	*(LPDWORD)0x005021D6 = (DWORD)TSSGCtrl_LoopSSRFile_ReplaceDefine_Release - (0x005021D6 + sizeof(DWORD));
 
 	// TSSGCtrl::LoopSSRFile
 	*(LPDWORD)(0x0050212C + 1) = (DWORD)Caller_ParsingWithVal - (0x0050212C + 1 + sizeof(DWORD));

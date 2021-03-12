@@ -228,7 +228,7 @@ __declspec(naked) static size_t __cdecl wcslen386(const wchar_t *string)
 		inc     eax
 		test    dx, dx
 		jnz     loop_begin
-		ret
+		rep ret
 
 		#undef string
 	}

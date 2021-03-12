@@ -3,14 +3,18 @@
 #include <windows.h>
 #include "intrinsic.h"
 
+#pragma pack(push, 1)
 typedef struct _String_base
 {
 	LPSTR  _M_start;
 	LPSTR  _M_finish;
-	LPVOID allocator_type[2];// using as order @ TSSGAttributeElement
-	LPCSTR _M_end_of_storage;
 	signed sstIndex;
+	__int32 : 32;// using as order @ TSSGAttributeElement
+	LPCSTR _M_end_of_storage;
+	__int32 : 32;
+	__int32 : 0;// fix wronged size aggregate initializer
 } bcb6_std_string, *pbcb6_std_string;
+#pragma pack(pop)
 
 #ifdef USING_NAMESPACE_BCB6_STD
 typedef bcb6_std_string  string;

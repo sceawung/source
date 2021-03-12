@@ -70,11 +70,11 @@ void __fastcall TApplication_ActivateHint(TApplication *this, LPPOINT CursorPos)
 	HWND hWnd;
 	char lpClassName[16];
 
-	if (hHook || !this->Control || !hToolTip)
+	if (hHook || !this->FHintControl || !hToolTip)
 		return;
 	dwTrackPos = GetMessagePos();
-	ti.lpszText = (LPSTR)this->Control->Hint;
-	if ((hWnd = TWinControl_GetHandle(this->Control)) == (HWND)ti.uId)
+	ti.lpszText = (LPSTR)this->FHintControl->FHint;
+	if ((hWnd = TWinControl_GetHandle(this->FHintControl)) == (HWND)ti.uId)
 	{
 		SendMessageA(hToolTip, TTM_UPDATETIPTEXTA, 0, (LPARAM)&ti);
 	}
@@ -91,7 +91,7 @@ void __fastcall TApplication_ActivateHint(TApplication *this, LPPOINT CursorPos)
 		*(LPDWORD)&lpClassName[4] == BSWAP32('wGri') &&
 		*(LPWORD )&lpClassName[8] == BSWAP16('d\0'))
 	{
-		DrawGrid = (TDrawGrid *)this->Control;
+		DrawGrid = (TDrawGrid *)this->FHintControl;
 		MouseToCell(&dwTrackPos);
 	}
 	hHook = SetWindowsHookExA(WH_CALLWNDPROCRET, CallWndRetProc, NULL, GetCurrentThreadId());

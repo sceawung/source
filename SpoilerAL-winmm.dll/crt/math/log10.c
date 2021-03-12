@@ -77,7 +77,7 @@ __declspec(naked) double __cdecl _CIlog10(/*st0 x*/)
 		fstp    st(1)                           // x-1 : log10(2)
 		fyl2xp1                                 // log10(x)
 	L2:
-		ret
+		rep ret
 
 		align   16
 	L3:

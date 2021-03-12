@@ -439,7 +439,7 @@ __declspec(naked) static void * __cdecl memrichr386(const void *buffer, int c, s
 		or      edx, eax                                    // edx = all 4 bytes = [search char]
 		call    internal_memrichr386
 	retnull:
-		ret
+		rep ret
 
 		#undef buffer
 		#undef c

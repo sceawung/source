@@ -7,6 +7,7 @@
 #include "bcb6_std_vector_template.h"
 #undef  typename
 
+#pragma pack(push, 1)
 typedef struct _TProcessCtrl
 {
 	TStringDivision                strD;
@@ -17,6 +18,7 @@ typedef struct _TProcessCtrl
 	bcb6_std_vector_MODULEENTRY32A moduleList;
 	bcb6_std_vector                threadList;
 } TProcessCtrl;
+#pragma pack(pop)
 
 EXTERN_C void(__cdecl * const TProcessCtrl_Clear)(TProcessCtrl *this);
 EXTERN_C void(__cdecl * const TProcessCtrl_LoadHeapList)(TProcessCtrl *this);

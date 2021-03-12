@@ -1,17 +1,19 @@
 #include "xx.h"
 #define USING_NAMESPACE_BCB6_STD
+#include "bcb6_std_allocator.h"
 #include "TSSGSubject.h"
 #include "SSGSubjectProperty.h"
 
 #pragma warning(disable:4733)
 
-void(__cdecl * const TSSGSubject_GetSubjectName)(string *Result, TSSGSubject *this, struct _TSSGCtrl *SSGC) = (LPVOID)0x0052CF6C;
+void(__cdecl *const tree_string_double_M_erase)(struct _Rb_tree *this, struct _Rb_tree_node *__x) = (void *)0x0051C168;
+void(__cdecl *const TSSGSubject_GetSubjectName)(string *Result, TSSGSubject *this, struct _TSSGCtrl *SSGC) = (void *)0x0052CF6C;
 
-extern const DWORD __InitExceptBlockLDTC;
 extern const DWORD TSSGScriptStruct_GetTitleTextWidth_CtorData[];
 
 __declspec(naked) void __fastcall delete_TSSGSubject(TSSGSubject *this)
 {
+	TSSGSubject *fake[2];
 	static const struct DTT vt[] = {
 		(void *)0x00462E80, 0x0000500F, -(signed)(sizeof(LPVOID) * 3),
 		NULL,// sentinel, dttFrameOffs = void *[2] + args shadow
@@ -20,43 +22,60 @@ __declspec(naked) void __fastcall delete_TSSGSubject(TSSGSubject *this)
 		NULL, -(signed)(sizeof(REGREC_BC) + sizeof(LPVOID) * 3),
 		XB_DEST << 16 | /* 'outer' */0, /* 'min dtor count' */0, (uintptr_t)&vt,
 	};
-	TSSGSubject *fake[2];
 	__asm
 	{
-		test    ecx, ecx
-		jz      L1
+		jecxz   NUL
 
 		push    ebp
 		mov     ebp, esp
 		add     esp, ERRcXtab.xtBPoffs
-		
+
 		mov     this, ecx
 		mov     eax, offset ERRcXtab
 		call    __InitExceptBlockLDTC
 		mov     ecx, this
 
-		mov     eax, size TSSGSubjectProperty
-		mul     [ecx]TSSGSubject.propertyIndex
-		jc      NO_PROP
-
-		mov     edx, SubjectProperty
-		mov     [edx + eax]TSSGSubjectProperty.RepeatDepth, MAXDWORD
-		cmp     [edx + eax]TSSGSubjectProperty._M_header, 0
-		je      NO_PROP
-
-		lea     ecx, [edx + eax]
-		mov     edx, TRUE
-		call    TSSGSubjectProperty_dtor
-		mov     ecx, this
-
-	NO_PROP:
 		mov     eax, [ecx]TSSGSubject.VTable
 		mov     fake[1 * size LPVOID], eax// The second entry is the vtable pointer.
 		mov     fake[0 * size LPVOID], ecx// The first entry of the array is the pointer to be deleted.
 		mov     [esp]REGREC_BC.ERRcCCtx, 8// offset EXCTAB.xtTable
+		
+		mov     edx, SubjectProperty
+		mov     eax, [ecx]TSSGSubject.propertyIndex
+	IDX:
+		test    eax, eax
+		js      MAP
 
+		imul    eax, size  TSSGSubjectProperty
+		dec     [edx + eax]TSSGSubjectProperty.DirectChild
+		jnz     MAP
+		mov     eax, [edx + eax]TSSGSubjectProperty.OuterRepeat
+		jmp     IDX
+	MAP:
+		mov     edx, [ecx]TSSGSubject.fields._M_header
+		test    edx, edx
+		jz      DEL
+
+		lea     eax, [ecx]TSSGSubject.fields
+		push    [edx]bcb6_std_set_node._M_parent
+		push    eax
+		call    tree_string_double_M_erase
+		pop     eax
+		pop     edx
+		mov     ecx, [eax]bcb6_std_map._M_header
+#if OPTIMIZE_ALLOCATOR
+		call    node_alloc_deallocate
+#else
+		push    size bcb6_std_set_node
+		push    ecx
+		call    node_alloc_deallocate
+		add     esp, 8
+#endif
+		mov     ecx, this
+	DEL:
 		push    DTCVF_PTRVAL | DTCVF_DELPTR
 		push    ecx
+		mov     eax, [ecx]TSSGSubject.VTable
 		call    [eax]SubjectVtbl.dtor
 		add     esp, 8
 
@@ -65,8 +84,8 @@ __declspec(naked) void __fastcall delete_TSSGSubject(TSSGSubject *this)
 
 		mov     esp, ebp
 		pop     ebp
-	L1:
-		ret
+	NUL:
+		rep ret
 	}
 }
 
@@ -78,7 +97,7 @@ __declspec(naked) long __stdcall TSSGSubject_GetSubjectNameTextWidth(TSSGSubject
 		mov     eax, offset TSSGScriptStruct_GetTitleTextWidth_CtorData
 		mov     ebp, esp
 		sub     esp, 68
-		call    dword ptr [__InitExceptBlockLDTC]
+		call    __InitExceptBlockLDTC
 		mov     ecx, dword ptr [ebp + 10H]
 		mov     eax, dword ptr [ebp + 8H]
 		push    ecx

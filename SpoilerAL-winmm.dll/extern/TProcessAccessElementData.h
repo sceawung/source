@@ -19,12 +19,15 @@ typedef enum Valuation
 	voREVERSE_ENDIAN = 1,
 } ValueOpt;
 
+#pragma pack(push, 1)
 typedef struct _TProcessAccessElementDataBase {
 	TProcessAccessElementBase super;
 	CmpType                   compareType;
 	ValueOpt                  valueOption;
 } TProcessAccessElementDataBase;
+#pragma pack(pop)
 
+#pragma pack(push, 1)
 typedef struct _TProcessAccessElementData {
 	union {
 		struct {
@@ -35,9 +38,11 @@ typedef struct _TProcessAccessElementData {
 	};
 	bcb6_std_vector_byte data;
 } TProcessAccessElementData;
+#pragma pack(pop)
 
 #define TProcessAccessElementData_GetData(PAED) &(PAED)->data
 
+#pragma pack(push, 1)
 typedef struct _TProcessAccessElementMaskData {
 	union {
 		struct {
@@ -49,5 +54,6 @@ typedef struct _TProcessAccessElementMaskData {
 	bcb6_std_vector_byte data;
 	bcb6_std_vector_byte mask;
 } TProcessAccessElementMaskData;
+#pragma pack(pop)
 
 #define TProcessAccessElementMaskData_GetMask(PAEM) &(PAEM)->mask

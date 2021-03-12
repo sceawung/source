@@ -4,19 +4,24 @@
 #include <intrin.h>
 #include "bcb6_std_string.h"
 
+#pragma pack(push, 1)
 typedef struct _List_node
 {
 	struct _List_node *_M_next;
 	struct _List_node *_M_prev;
 	BYTE               _M_data[];
 } *_List_iterator, bcb6_std_list_node, *pbcb6_std_list_node, *bcb6_std_list_iterator, **pbcb6_std_list_iterator;
+#pragma pack(pop)
 
+#pragma pack(push, 1)
 typedef struct _List_base
 {
-	LPCVOID            _Node_allocator_type[2];
+	__int32 : 32;
+	__int32 : 32;
 	struct _List_node *_M_node;
-	LPCVOID            padding;
+	__int32 : 32;
 } bcb6_std_list, *pbcb6_std_list;
+#pragma pack(pop)
 
 #ifdef USING_NAMESPACE_BCB6_STD
 typedef bcb6_std_list_node      list_node;

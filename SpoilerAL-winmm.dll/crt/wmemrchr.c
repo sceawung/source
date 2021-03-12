@@ -460,7 +460,7 @@ __declspec(naked) static wchar_t * __cdecl wmemrchr386(const wchar_t *buffer, wc
 	found:
 		pop     ebx                                         // restore ebx
 	retnull:
-		ret                                                 // __cdecl return
+		rep ret                                             // __cdecl return
 
 		#undef buffer
 		#undef c

@@ -3,7 +3,7 @@
 
 EXTERN_C void __cdecl TMainForm_SubjectAccess_StoreFileNamePrefix();
 EXTERN_C void __cdecl TMainForm_SubjectAccess_CorrectListItemText();
-EXTERN_C void __cdecl TMainForm_SubjectAccess_ToULongDef();
+EXTERN_C void __cdecl TSSDoubleList_Read_ToULongDef();
 #define TSSGCtrl_DrawTreeCell_StoreFileNamePrefix TMainForm_SubjectAccess_StoreFileNamePrefix
 EXTERN_C void __cdecl TMainForm_DrawTreeCell_CorrectDrawText();
 #define TSSGCtrl_LoopSSRFile_StoreFileNamePrefix TMainForm_SubjectAccess_StoreFileNamePrefix
@@ -15,6 +15,11 @@ EXTERN_C void __cdecl Attach_CommonList()
 {
 	// TMainForm::SubjectAccess
 	// case ssgCtrl::atLONG_INDEX:
+#if 1
+	*(LPWORD )0x0043A4E6 = BSWAP16(0x7EBC);// ebp-2E0h => esi-44h
+	*(LPWORD )0x0043A4E8 = BSWAP16(0x366A);// push 0
+	*(LPBYTE )0x0043A4EA =         0x00   ;
+#else
 	/*
 		push    0                                   ; 0043A4ED _ 6A, 00
 		sub     esp, 24                             ; 0043A4EF _ 83. EC, 18
@@ -33,29 +38,25 @@ EXTERN_C void __cdecl Attach_CommonList()
 	*(LPDWORD)0x0043A500 = BSWAP32(0x51FF461C);
 	*(LPDWORD)0x0043A504 = BSWAP32(0x68D82C60);
 	*(LPBYTE )0x0043A508 =         0x00       ;
+#endif
 
 	*(LPDWORD)(0x0043A54F + 1) = (DWORD)TMainForm_SubjectAccess_StoreFileNamePrefix - (0x0043A54F + 1 + sizeof(DWORD));
 
 	/*
-		jmp     0043A79AH                           ; 0043A5A2 _ E9, 000001F3
+		jmp     0043A79CH                           ; 0043A5A2 _ E9, 000001F5
 	*/
-	*(LPDWORD)0x0043A5A3 = 0x000001F3;
+	*(LPDWORD)(0x0043A5A2 + 1) = 0x0043A79C - (0x0043A5A2 + 1 + sizeof(DWORD));
 
 	*(LPDWORD)(0x0043A648 + 1) = (DWORD)TMainForm_SubjectAccess_CorrectListItemText - (0x0043A648 + 1 + sizeof(DWORD));
 
 	/*
 		sub     dword ptr [esi + 1CH], 3            ; 0043A796 _ 83. 6E, 1C, 03
-		pop     ecx                                 ; 0043A79A _ 59
-		jmp     0043CBF1H                           ; 0043A79B _ E9, 00002451
-		nop                                         ; 0043A7A0 _ 90
-		nop                                         ; 0043A7A1 _ 90
-		nop                                         ; 0043A7A2 _ 90
-		nop                                         ; 0043A7A3 _ 90
+		nop                                         ; 0043A79A _ 66: 90
+		add     esp, 4                              ; 0043A79C _ 83. C4, 04
 	*/
-	*(LPWORD )0x0043A796 = BSWAP16(    0x836E);
-	*(LPDWORD)0x0043A798 = BSWAP32(0x1C0359E9);
-	*(LPDWORD)0x0043A79C = BSWAP32(0x51240000);
-	*(LPDWORD)0x0043A7A0 = BSWAP32(0x90909090);
+	*(LPWORD )0x0043A796 = BSWAP16(0x836E    );
+	*(LPDWORD)0x0043A798 = BSWAP32(0x1C036690);
+	*(LPDWORD)0x0043A79C = BSWAP32(0x83C404E9);
 
 #ifdef FORMAT_NOT_IMPLEMENTED
 	// TMainForm::DrawTreeCell
@@ -112,46 +113,53 @@ EXTERN_C void __cdecl Attach_CommonList()
 
 	// TSSDoubleList::Read
 	/*
-		mov     eax, dword ptr [eax]                ; 004C43D6 _ 8B. 00
-		lea     edx, [edx + edx * 2]                ; 004C43D8 _ 8D. 14 52
+		lea     edx, [edx + edx * 2]                ; 004C43D6 _ 8D. 14 52
+
 		mov     eax, dword ptr [eax + edx * 8]      ; 004C43DB _ 8B. 04 D0
 		xor     ecx, ecx                            ; 004C43DE _ 33. C9
-		push    eax                                 ; 004C43E0 _ 50
-		call    TMainForm_SubjectAccess_ToULongDef  ; 004C43E1 _ E8, <offset TMainForm_SubjectAccess_ToULongDef - 004C43E6>
+
+		call    TSSDoubleList_Read_ToULongDef       ; 004C43E1 _ E8, <offset TSSDoubleList_Read_ToULongDef - 004C43E6>
 	*/
-	*(LPWORD )0x004C43D6 = BSWAP16(    0x8B00);
-	*(LPDWORD)0x004C43D8 = BSWAP32(0x8D14528B);
+	*(LPWORD )0x004C43D6 = BSWAP16(0x8D14    );
+	*(LPBYTE )0x004C43D8 =         0x52       ;
+
+	*(LPBYTE )0x004C43DB =         0x8B       ;
 	*(LPDWORD)0x004C43DC = BSWAP32(0x04D033C9);
-	*(LPDWORD)0x004C43E2 = (DWORD)TMainForm_SubjectAccess_ToULongDef - 0x004C43E6;
+
+	*(LPDWORD)0x004C43E2 = (DWORD)TSSDoubleList_Read_ToULongDef - (0x004C43E2 + sizeof(DWORD));
 
 	// TSSDoubleList::Write
 	/*
-		mov     eax, dword ptr [eax]                ; 004C54BD _ 8B. 00
-		lea     edx, [edx + edx * 2]                ; 004C54BF _ 8D. 14 52
+		lea     edx, [edx + edx * 2]                ; 004C54BD _ 8D. 14 52
+
 		mov     eax, dword ptr [eax + edx * 8]      ; 004C54C2 _ 8B. 04 D0
 		mov     cl, 4                               ; 004C54C5 _ B1, 04
 		push    eax                                 ; 004C54C7 _ 50
-		call    TMainForm_SubjectAccess_ToULongDef  ; 004C54C8 _ E8, <offset TMainForm_SubjectAccess_ToULongDef - 004C54CD>
+		call    TSSDoubleList_Read_ToULongDef       ; 004C54C8 _ E8, <offset TSSDoubleList_Read_ToULongDef - 004C54CD>
 	*/
-	*(LPDWORD)0x004C54BC = BSWAP32(0xFF8B008D);
-	*(LPDWORD)0x004C54C0 = BSWAP32(0x14528B04);
+	*(LPBYTE )0x004C54BD =         0x8D       ;
+	*(LPWORD )0x004C54BE = BSWAP16(0x1452    );
+
+	*(LPWORD )0x004C54C2 = BSWAP16(0x8B04    );
 	*(LPDWORD)0x004C54C4 = BSWAP32(0xD0B10450);
-	*(LPDWORD)0x004C54C9 = (DWORD)TMainForm_SubjectAccess_ToULongDef - 0x004C54CD;
+	*(LPDWORD)0x004C54C9 = (DWORD)TSSDoubleList_Read_ToULongDef - (0x004C54C9 + sizeof(DWORD));
 
 	// TSSDoubleList::ToByteCode
 	/*
-		mov     eax, dword ptr [eax]                ; 004C679B _ 8B. 00
-		lea     edx, [edx + edx * 2]                ; 004C679D _ 8D. 14 52
+		lea     edx, [edx + edx * 2]                ; 004C679B _ 8D. 14 52
+
 		mov     eax, dword ptr [eax + edx * 8]      ; 004C67A0 _ 8B. 04 D0
 		mov     cl, 8                               ; 004C67A3 _ B1, 08
-		push    eax                                 ; 004C67A5 _ 50
-		call    TMainForm_SubjectAccess_ToULongDef  ; 004C67A6 _ E8, <offset TMainForm_SubjectAccess_ToULongDef - 004C67AB>
+
+		call    TSSDoubleList_Read_ToULongDef       ; 004C67A6 _ E8, <offset TSSDoubleList_Read_ToULongDef - 004C67AB>
 	*/
-	*(LPDWORD)0x004C6798 = BSWAP32(0xFDFFFF8B);
-	*(LPDWORD)0x004C679C = BSWAP32(0x008D1452);
+	*(LPBYTE )0x004C679B =         0x8D       ;
+	*(LPWORD )0x004C679C = BSWAP16(0x1452    );
+
 	*(LPDWORD)0x004C67A0 = BSWAP32(0x8B04D0B1);
 	*(LPBYTE )0x004C67A4 =         0x08       ;
-	*(LPDWORD)0x004C67A7 = (DWORD)TMainForm_SubjectAccess_ToULongDef - 0x004C67AB;
+
+	*(LPDWORD)0x004C67A7 = (DWORD)TSSDoubleList_Read_ToULongDef - (0x004C67A7 + sizeof(DWORD));
 
 	// TSSGCtrl::EnumReadSSR
 #if 0// replaced at "FixRepeat/Attach_FixRepeat.c"
@@ -159,6 +167,19 @@ EXTERN_C void __cdecl Attach_CommonList()
 #endif
 
 	// TSSGCtrl::LoopSSRFile
+#if 1
+	// (Type & ssgCtrl::rtNUMBER)!=0
+	*(LPDWORD)0x00501DAA = 0x00502084 - (0x00501DAA + sizeof(DWORD));
+
+	*(LPWORD )0x0050207B = BSWAP16(0x836B);// dec => sub
+	*(LPWORD )0x0050207E = BSWAP16(0x02E9);// jmp
+	*(LPDWORD)0x00502080 = 0x00502676 - (0x00502080 + sizeof(DWORD));
+	*(LPDWORD)0x00502084 = BSWAP32(0x83FF040F);// cmp edi, 4
+	*(LPBYTE )0x00502088 =         0x85       ;// jne ...
+	*(LPDWORD)0x00502089 = 0x005021DA - (0x00502089 + sizeof(DWORD));
+	*(LPBYTE )0x0050208D = 0x6A;// push
+	*(LPBYTE )0x0050208E = 0x00;// 0
+#else
 	// Type == ssgCtrl::rtFILE
 	/*
 		push    0                                   ; 00502091 _ 6A, 00
@@ -178,9 +199,22 @@ EXTERN_C void __cdecl Attach_CommonList()
 	*(LPDWORD)0x005020A4 = BSWAP32(0x50FF431C);
 	*(LPDWORD)0x005020A8 = BSWAP32(0x680D1C63);
 	*(LPDWORD)0x005020AC = BSWAP32(0x0052E835);
+#endif
 
 	*(LPDWORD)(0x005020EA + 1) = (DWORD)TSSGCtrl_LoopSSRFile_StoreFileNamePrefix - (0x005020EA + 1 + sizeof(DWORD));
 
+#if 1
+	*(LPBYTE )0x005020FF = 0x74;// je  short
+	*(LPBYTE )0x00502100 = 0x00502103 - (0x00502100 + sizeof(BYTE));
+	*(LPBYTE )0x00502101 = 0xEB;// jmp short
+	*(LPBYTE )0x00502102 = 0x00502109 - (0x00502102 + sizeof(BYTE));
+	*(LPBYTE )0x00502103 = 0x59;// pop ecx
+	*(LPBYTE )0x00502104 = 0xE9;// jmp near
+	*(LPDWORD)0x00502105 = 0x005026B6 - (0x00502105 + sizeof(DWORD));
+
+	*(LPWORD )0x00502122 = BSWAP16(0x10FF);// add   eax, 8 => 10h
+	*(LPWORD )0x00502124 = BSWAP16(0x7514);// push  dword ptr [ebp+14h]
+#else
 	/*
 		jnz     0050210BH                           ; 005020FF _ 75, 0A
 		pop     ecx                                 ; 00502101 _ 59
@@ -205,6 +239,7 @@ EXTERN_C void __cdecl Attach_CommonList()
 	*(LPDWORD)0x00502114 = BSWAP32(0x8B005189);
 	*(LPDWORD)0x00502118 = BSWAP32(0x8580FEFF);
 	*(LPDWORD)0x0050211C = BSWAP32(0xFF8D55A0);
+#endif
 
 	*(LPDWORD)(0x005021C7 + 1) = (DWORD)TSSGCtrl_LoopSSRFile_CommonList - (0x005021C7 + 1 + sizeof(DWORD));
 
@@ -216,4 +251,8 @@ EXTERN_C void __cdecl Attach_CommonList()
 	// TSSGCtrl::AddressNaming
 	//   if(Index!= TStringDivision::ToULongDef( strD.Half(&tmpS,"=") ))
 	*(LPDWORD)(0x005059BB + 1) = (DWORD)TSSGCtrl_AddressNaming_CommonList - (0x005059BB + 1 + sizeof(DWORD));
+	*(LPWORD ) 0x005059C0      = BSWAP16(0x4275);// inc   edx; jnz
+	*(LPBYTE )(0x005059C1 + 1) = 0x005059CF - (0x005059C1 + 1 + sizeof(BYTE));
+	*(LPWORD )(0x005059CC + 0) = BSWAP16(0x0FB6);// movzx edx, dl
+	*(LPBYTE )(0x005059CC + 2) =         0xD2   ;
 }

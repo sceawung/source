@@ -22,6 +22,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <TargetUniversalCRTVersion>10.0.10240.0</TargetUniversalCRTVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -57,7 +58,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)include;$(ProjectDir)crt;$(ProjectDir)crt\longdouble;$(ProjectDir)extern;$(ProjectDir)Verbose;$(ProjectDir)Plugin;$(ProjectDir)TranscodeMultiByte;$(ProjectDir)OptimizeAllocator;$(ProjectDir)IsBadPtr;$(ProjectDir)WaitCursor;$(ProjectDir)SnapWindow;$(ProjectDir)SubjectProperty;$(ProjectDir)SubjectStringTable;$(ProjectDir)regex;$(ProjectDir)Parsing;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <UseStandardPreprocessor>false</UseStandardPreprocessor>
-      <ForcedIncludeFiles>SDKDDKVer.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>stdbool.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -92,7 +93,7 @@
       <StringPooling>true</StringPooling>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <UseStandardPreprocessor>false</UseStandardPreprocessor>
-      <ForcedIncludeFiles>SDKDDKVer.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>stdbool.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -135,7 +136,7 @@
     <ClCompile Include="CommonList\TMainForm_DrawTreeCell_CorrectDrawText.c" />
     <ClCompile Include="CommonList\TMainForm_SubjectAccess_CorrectListItemText.c" />
     <ClCompile Include="CommonList\TMainForm_SubjectAccess_StoreFileNamePrefix.c" />
-    <ClCompile Include="CommonList\TMainForm_SubjectAccess_ToULongDef.c" />
+    <ClCompile Include="CommonList\TSSDoubleList_Read_ToULongDef.c" />
     <ClCompile Include="CommonList\TSSGCtrl_AddressNaming_CommonList.c" />
     <ClCompile Include="CommonList\TSSGCtrl_EnumReadSSR_SwitchCommonList.c" />
     <ClCompile Include="CommonList\TSSGCtrl_LoopSSRFile_CommonList.c" />
@@ -1309,7 +1310,7 @@
     <ClCompile Include="Parsing\TSSGCtrl_Funneling_Write.c" />
     <ClCompile Include="Parsing\TSSGCtrl_GetAddress_SaveAddress.c" />
     <ClCompile Include="Parsing\TSSGCtrl_GetSSGDataFile_OpenProcess.c" />
-    <ClCompile Include="Parsing\TSSGCtrl_IsEnabled_except1.c" />
+    <ClCompile Include="Parsing\TSSGCtrl_IsEnabled_GetAttribute.c" />
     <ClCompile Include="Parsing\TSSGCtrl_IsRemoteProcess.c" />
     <ClCompile Include="Parsing\TSSGCtrl_LoopSSRFile_ReplaceDefine.c" />
     <ClCompile Include="Parsing\TSSGCtrl_OpenProcess.c" />
@@ -1319,7 +1320,7 @@
     <ClCompile Include="Parsing\Wait.c" />
     <ClCompile Include="Plugin\Plugin.c" />
     <ClCompile Include="ProcessMonitor\Attach_ProcessMonitor.c" />
-    <ClCompile Include="ProcessMonitor\FindWindowContainsModule.c" />
+    <ClCompile Include="ProcessMonitor\FindWindowExceptInvalids.c" />
     <ClCompile Include="ProcessMonitor\GetFileTitlePointerA.c" />
     <ClCompile Include="ProcessMonitor\GetFileTitlePointerW.c" />
     <ClCompile Include="ProcessMonitor\LoadHeapList.c">
@@ -1335,7 +1336,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="ProcessMonitor\ProcessContainsModule.c" />
+    <ClCompile Include="ProcessMonitor\ProcessInfoValidation.c" />
     <ClCompile Include="ProcessMonitor\ProcessMonitor.c" />
     <ClCompile Include="ProcessMonitor\TProcessCtrl_Attach.c" />
     <ClCompile Include="ProcessMonitor\TProcessCtrl_FindProcess.c" />
@@ -1676,6 +1677,7 @@
     <ClInclude Include="extern\bcb6_std_vector.h" />
     <ClInclude Include="extern\bcb6_std_vector_string.h" />
     <ClInclude Include="extern\bcb6_std_vector_template.h" />
+    <ClInclude Include="extern\TCalcImage.h" />
     <ClInclude Include="extern\xx.h" />
     <ClInclude Include="extern\TApplication.h" />
     <ClInclude Include="extern\TBitmap.h" />
@@ -1746,10 +1748,10 @@
     </ClInclude>
     <ClInclude Include="Parsing\Unescape.h" />
     <ClInclude Include="Plugin\Plugin.h" />
-    <ClInclude Include="ProcessMonitor\FindWindowContainsModule.h" />
+    <ClInclude Include="ProcessMonitor\FindWindowExceptInvalids.h" />
     <ClInclude Include="ProcessMonitor\GetFileTitlePointer.h" />
     <ClInclude Include="ProcessMonitor\GetFileTitlePointerT.h" />
-    <ClInclude Include="ProcessMonitor\ProcessContainsModule.h" />
+    <ClInclude Include="ProcessMonitor\ProcessInfoValidation.h" />
     <ClInclude Include="ProcessMonitor\ProcessMonitor.h" />
     <ClInclude Include="regex\include\alloca.h" />
     <ClInclude Include="regex\include\langinfo.h" />

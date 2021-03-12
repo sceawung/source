@@ -8,7 +8,7 @@ const DWORD F004185E8                     = 0x004185E8;
 const DWORD F004185FC                     = 0x004185FC;
 const DWORD _STL_string_substr            = 0x00439D1C;
 const DWORD _TMainForm_SubjectAccess      = 0x00439F10;
-const DWORD F0043CC08                     = 0x0043CC08;
+const DWORD _STL_string_M_append_dispatch = 0x0043CC08;
 const DWORD _TMainForm_HotKeyEditKeyDown  = 0x00443054;
 const DWORD _TMainForm_M_TitleSelectClick = 0x0044906C;
 const DWORD F0044CA38                     = 0x0044CA38;
@@ -41,7 +41,7 @@ const DWORD _TSSGCtrl_GetNameString       = 0x00504284;
 const DWORD F0050E758                     = 0x0050E758;
 const DWORD _TSSGCtrl_MakeDataCode        = 0x0050F600;
 const DWORD F005111E0                     = 0x005111E0;
-const DWORD F005113F8                     = 0x005113F8;
+const DWORD _TSSGCtrl_Parsing             = 0x005113F8;
 const DWORD F0054B87C                     = 0x0054B87C;
 const DWORD F00559D94                     = 0x00559D94;
 const DWORD F00559DB8                     = 0x00559DB8;
@@ -54,7 +54,13 @@ const DWORD _TControl_SetWidth            = 0x00580430;
 const DWORD F005806A0                     = 0x005806A0;
 const DWORD F00580BBC                     = 0x00580BBC;
 const DWORD _TWinControl_GetHandle        = 0x0058750C;
-const DWORD __InitExceptBlockLDTC         = 0x005D54CC;
+const DWORD
+#ifdef _DLL
+_imp____InitExceptBlockLDTC
+#else
+__InitExceptBlockLDTC
+#endif
+= 0x005D54CC;
 const DWORD _TFont_SetName                = 0x0055D578;
 const DWORD vcl_System_AnsiString_ctor_sz = 0x005E0D50;
 const DWORD vcl_System_AnsiString_dtor    = 0x005E0EA8;

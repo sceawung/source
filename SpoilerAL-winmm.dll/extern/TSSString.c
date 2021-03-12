@@ -1,11 +1,10 @@
+#include "xx.h"
 #include "TSSString.h"
 
 #define MakeSubjectClass_SwitchSubjectTypeTable 0x004EC41F
 
 __declspec(naked) TSSString * __cdecl new_TSSString()
 {
-	extern const DWORD __InitExceptBlockLDTC;
-
 	__asm
 	{
 		push    ebp
@@ -18,7 +17,7 @@ __declspec(naked) TSSString * __cdecl new_TSSString()
 		lea     ebx, [ebp - 124]
 		push    edi
 		push    ecx
-		jmp     dword ptr [__InitExceptBlockLDTC]
+		jmp     __InitExceptBlockLDTC
 	}
 }
 

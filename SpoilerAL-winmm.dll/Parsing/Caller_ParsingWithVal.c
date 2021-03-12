@@ -3,7 +3,7 @@
 unsigned long __cdecl Parsing(void *this, void *SSGS, const void *Src, ...);
 
 extern BOOL EnableParserFix;
-extern const DWORD F005113F8;
+extern const DWORD _TSSGCtrl_Parsing;
 
 __declspec(naked) void __cdecl Caller_ParsingWithVal()
 {
@@ -29,7 +29,7 @@ __declspec(naked) void __cdecl Caller_ParsingWithVal()
 		ret
 
 	L1:
-		jmp     F005113F8
+		jmp     _TSSGCtrl_Parsing
 		ud2
 	}
 }

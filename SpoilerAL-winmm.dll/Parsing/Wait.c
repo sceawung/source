@@ -126,7 +126,7 @@ __declspec(naked) void __msfastcall Wait(DWORD dwMilliseconds)
 		pop     esi
 		pop     ebx
 	L7:
-		ret
+		rep ret
 	}
 }
 #endif

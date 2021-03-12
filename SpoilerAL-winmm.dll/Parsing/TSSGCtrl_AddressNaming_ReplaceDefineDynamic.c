@@ -53,7 +53,7 @@ __declspec(naked) void __cdecl TSSGCtrl_AddressNaming_ReplaceDefineDynamic2()
 		push    edx
 		call    ReplaceDefineDynamic
 	L1:
-		ret
+		rep ret
 
 		#undef SSGS
 		#undef ReturnString

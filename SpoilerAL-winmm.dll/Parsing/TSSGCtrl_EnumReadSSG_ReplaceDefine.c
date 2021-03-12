@@ -176,7 +176,7 @@ __declspec(naked) static void __cdecl TSSGCtrl_EnumReadSSG_ReplaceDefine()
 		push    ecx
 		call    ReplaceDefine
 	L1:
-		ret
+		rep ret
 
 		#undef this
 		#undef LineS

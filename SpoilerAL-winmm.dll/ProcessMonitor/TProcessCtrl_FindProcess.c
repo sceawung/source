@@ -17,7 +17,7 @@
 #include "tlhelp32fix.h"
 
 #include "ProcessMonitor.h"
-#include "FindWindowContainsModule.h"
+#include "FindWindowExceptInvalids.h"
 #include "GetFileTitlePointer.h"
 
 extern HANDLE hHeap;
@@ -215,7 +215,7 @@ unsigned long __cdecl TProcessCtrl_FindProcess(LPVOID this, string *ProcessName,
 			}
 			else if (lpClassName || lpWindowName)
 			{
-				if (FindWindowContainsModule(&dwProcessId, bIsRegex, lpClassName, lpWindowName, lpModuleName, lpCmdLineArg))
+				if (FindWindowExceptInvalids(&dwProcessId, bIsRegex, lpClassName, lpWindowName, lpModuleName, lpCmdLineArg))
 					StopProcessMonitor();
 			}
 			HeapFree(hHeap, 0, argv);

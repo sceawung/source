@@ -237,7 +237,7 @@ __declspec(naked) static void __cdecl IntelNewMethod()
 		cmp     eax, 1024
 
 	I900:
-		ret                                                 // carry flag set if fail
+		rep ret                                             // carry flag set if fail
 	}
 }
 
@@ -297,7 +297,7 @@ __declspec(naked) static void __cdecl IntelOldMethod()
 		cmp     eax, 1024
 
 	J900:
-		ret                                                 // carry flag set if fail
+		rep ret                                             // carry flag set if fail
 	}
 }
 
@@ -334,6 +334,6 @@ __declspec(naked) static void __cdecl AMDMethod()
 		cmp     eax, 1024
 
 	K900:
-		ret                                                 // carry flag set if fail
+		rep ret                                             // carry flag set if fail
 	}
 }

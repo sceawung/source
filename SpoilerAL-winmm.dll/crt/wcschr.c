@@ -324,7 +324,7 @@ __declspec(naked) wchar_t * __cdecl wcschr386(const wchar_t *string, wchar_t c)
 		jnz     main_loop
 		xor     eax, eax
 	epilog:
-		ret
+		rep ret
 
 		align   16
 	char_is_null:

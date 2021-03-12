@@ -1,11 +1,12 @@
 #pragma once
 
 #include <windows.h>
-#include "TSSArg.h"
+#include "TWinControl.h"
 
-typedef struct
+#pragma pack(push, 1)
+typedef struct _TCalcValBox
 {
-	LPVOID edit;
+	TEdit *edit;
 	DWORD  frontTColor;
 	DWORD  backTColor;
 	BYTE   backXOffset;
@@ -14,6 +15,7 @@ typedef struct
 	BYTE   frontYOffset;
 	DWORD  mode;
 } TCalcValBox;
+#pragma pack(pop)
 
 #define typename TCalcValBox
 #include "bcb6_std_vector_template.h"

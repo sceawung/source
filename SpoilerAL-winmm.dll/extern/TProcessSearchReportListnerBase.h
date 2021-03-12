@@ -1,15 +1,21 @@
 #pragma once
 
 #include <windows.h>
+#include "bcb6_std_vector.h"
+#include "TWinControl.h"
 
-typedef struct _TProcessSearchReportListnerBase
+#pragma pack(push, 1)
+typedef struct ProcessSearchReportListnerBase
 {
-	LPVOID        *vftable;
-	unsigned long reserveMode;
-	void          *thisPointer;
-	unsigned long reserveVal;
-	unsigned long reportSpan;
-	unsigned long start, min, max, step;
+	LPCVOID              *VTable;
+	unsigned long         reserveMode;
+	TForm                *thisPointer;
+	unsigned long         reserveVal;
+	unsigned long         reportSpan;
+	unsigned long         start, min, max, step;
+	__int32 : 32;
+	bcb6_std_vector_dword aeVec;
+	HANDLE                processHandle;
 
 } TProcessSearchReportListnerBase;
-
+#pragma pack(pop)

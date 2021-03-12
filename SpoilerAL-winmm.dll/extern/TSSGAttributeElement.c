@@ -112,7 +112,7 @@ void __fastcall delete_TChildRWAttribute(TChildRWAttribute *this)
 
 void __cdecl TChildRWAttribute_Setting(TChildRWAttribute *this, TStringDivision *StrD, const char *Code)
 {
-	string Token, Src = { (LPSTR)Code, (LPSTR)Code + strlen(Code), NULL, NULL, Code, MAXDWORD };
+	string Token, Src = { (LPSTR)Code, (LPSTR)Code + strlen(Code), ._M_end_of_storage = Code };
 	vector_string tmpV = { NULL };
 	string_ctor_assign_char(&Token, ',');
 	{

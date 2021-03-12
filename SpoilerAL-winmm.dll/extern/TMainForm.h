@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdbool.h>
 #include <windows.h>
 #include "bcb6_std_vector.h"
 #include "bcb6_std_string.h"
@@ -12,104 +11,110 @@
 #include "TCalcImage.h"
 #include "TGuideForm.h"
 #include "TSSGSubject.h"
+#include "TFindNameForm.h"
+
+typedef TForm TSearchForm;
 
 #pragma pack(push, 1)
 typedef struct _TMainForm
 {
-	LPVOID           *VTable;
-	BYTE             padding[748];
-	LPVOID           MainMenu1;
-	LPVOID           M_File;
-	LPVOID           M_Exit;
-	LPVOID           Splitter;
-	LPVOID           N1;
-	LPVOID           M_TitleSelect;
-	LPVOID           M_Memory;
-	LPVOID           M_MemorySetting;
-	LPVOID           M_View;
-	LPVOID           M_Customize;
-	LPVOID           N2;
-	LPVOID           M_AlwaysOnTop;
-	LPVOID           N4;
-	LPVOID           M_FindName;
-	LPVOID           M_SSGReFind;
-	LPVOID           M_Help;
-	LPVOID           M_UseHelp;
-	LPVOID           M_SSGHelp;
-	LPVOID           M_CLDHelp;
-	LPVOID           N3;
-	LPVOID           M_Version;
-	LPVOID           M_Creator;
-	LPVOID           M_HomePage;
-	LPVOID           M_OnMostTop;
-	LPVOID           M_ProcessAdd;
-	LPVOID           ListPMenu;
-	LPVOID           P_AllNonCheck;
-	LPVOID           P_AllCheck;
-	LPVOID           M_UnLockWrite;
-	LPVOID           P_SelectCheck;
-	LPVOID           P_NonSelectCheck;
-	LPVOID           P_OnlyNonSelectCheck;
-	LPVOID           P_OnlySelectCheck;
-	LPVOID           N5;
-	LPVOID           N8;
-	LPVOID           M_Address;
-	LPVOID           M_ClearSelectAdjustAttribute;
-	LPVOID           M_ClearAllAdjustAttribute;
-	LPVOID           M_AutoDialogAdjustment;
-	LPVOID           N6;
-	LPVOID           N10;
-	LPVOID           M_SaveSubjectStatus;
-	LPVOID           M_LoadSubjectStatus;
-	LPVOID           M_SearchAdjustment;
-	LPVOID           N9;
-	TDrawGrid        *DGrid;
-	LPVOID           M_UserMode;
-	LPVOID           M_BegginerMode;
-	LPVOID           M_NormalMode;
-	LPVOID           M_CreatorMode;
-	LPVOID           M_DebaggerMode;
-	LPVOID           M_SystemCheck;
-	LPVOID           HotKeyEdit;
-	LPVOID           PageCtrl;
-	LPVOID           CtrlTabS;
-	LPVOID           PanelImage;
-	TCheckBox        *LockCBox;
-	LPVOID           StringNowValEdit;
-	LPVOID           StringNewValEdit;
-	TCheckBox        *ToggleCBox;
-	LPVOID           StringEnterBtn;
-	LPVOID           MultiLBox;
-	LPVOID           ListLBox;
-	LPVOID           InfoTabS;
-	LPVOID           NoteREdit;
-	LPVOID           ScriptInfoPanel;
-	LPVOID           Label2;
-	LPVOID           Label1;
-	LPVOID           CreatorEdit;
-	LPVOID           MakerEdit;
-	LPVOID           CautionTabS;
-	LPVOID           CautionREdit;
-	COLORREF         titleColor;
-	COLORREF         dirColor;
-	COLORREF         calcColor;
-	COLORREF         toggleColor;
-	COLORREF         listColor;
-	COLORREF         bitListColor;
-	COLORREF         stringColor;
-	COLORREF         backColor;
-	COLORREF         traceColor;
-	COLORREF         panelBackColor;
+	union
+	{
+		LPCVOID *VTable;
+		TForm    super;
+	};
+	TMainMenu       *MainMenu1;
+	TMenuItem       *M_File;
+	TMenuItem       *M_Exit;
+	TSplitter       *Splitter;
+	TMenuItem       *N1;
+	TMenuItem       *M_TitleSelect;
+	TMenuItem       *M_Memory;
+	TMenuItem       *M_MemorySetting;
+	TMenuItem       *M_View;
+	TMenuItem       *M_Customize;
+	TMenuItem       *N2;
+	TMenuItem       *M_AlwaysOnTop;
+	TMenuItem       *N4;
+	TMenuItem       *M_FindName;
+	TMenuItem       *M_SSGReFind;
+	TMenuItem       *M_Help;
+	TMenuItem       *M_UseHelp;
+	TMenuItem       *M_SSGHelp;
+	TMenuItem       *M_CLDHelp;
+	TMenuItem       *N3;
+	TMenuItem       *M_Version;
+	TMenuItem       *M_Creator;
+	TMenuItem       *M_HomePage;
+	TMenuItem       *M_OnMostTop;
+	TMenuItem       *M_ProcessAdd;
+	TPopupMenu      *ListPMenu;
+	TMenuItem       *P_AllNonCheck;
+	TMenuItem       *P_AllCheck;
+	TMenuItem       *M_UnLockWrite;
+	TMenuItem       *P_SelectCheck;
+	TMenuItem       *P_NonSelectCheck;
+	TMenuItem       *P_OnlyNonSelectCheck;
+	TMenuItem       *P_OnlySelectCheck;
+	TMenuItem       *N5;
+	TMenuItem       *N8;
+	TMenuItem       *M_Address;
+	TMenuItem       *M_ClearSelectAdjustAttribute;
+	TMenuItem       *M_ClearAllAdjustAttribute;
+	TMenuItem       *M_AutoDialogAdjustment;
+	TMenuItem       *N6;
+	TMenuItem       *N10;
+	TMenuItem       *M_SaveSubjectStatus;
+	TMenuItem       *M_LoadSubjectStatus;
+	TMenuItem       *M_SearchAdjustment;
+	TMenuItem       *N9;
+	TDrawGrid       *DGrid;
+	TMenuItem       *M_UserMode;
+	TMenuItem       *M_BegginerMode;
+	TMenuItem       *M_NormalMode;
+	TMenuItem       *M_CreatorMode;
+	TMenuItem       *M_DebaggerMode;
+	TMenuItem       *M_SystemCheck;
+	TEdit           *HotKeyEdit;
+	TPageControl    *PageCtrl;
+	TTabSheet       *CtrlTabS;
+	TImage          *PanelImage;
+	TCheckBox       *LockCBox;
+	TEdit           *StringNowValEdit;
+	TEdit           *StringNewValEdit;
+	TCheckBox       *ToggleCBox;
+	TButton         *StringEnterBtn;
+	TListBox        *MultiLBox;
+	TListBox        *ListLBox;
+	TTabSheet       *InfoTabS;
+	TRichEdit       *NoteREdit;
+	TPanel          *ScriptInfoPanel;
+	TLabel          *Label2;
+	TLabel          *Label1;
+	TEdit           *CreatorEdit;
+	TEdit           *MakerEdit;
+	TTabSheet       *CautionTabS;
+	TRichEdit       *CautionREdit;
+	TColor           titleColor;
+	TColor           dirColor;
+	TColor           calcColor;
+	TColor           toggleColor;
+	TColor           listColor;
+	TColor           bitListColor;
+	TColor           stringColor;
+	TColor           backColor;
+	TColor           traceColor;
+	TColor           panelBackColor;
 	long             shadowColor;
 	long             shadowMode;
 	long             shadowOffset;
 	bool             isAutoSaveAdjustVal;
 	bool             isNowValueDraw;
-	BYTE             padding1[2];
+	__int16 : 16;
 	long             userMode;
-	LPVOID           panelG;
-	LPVOID           backG;
-	bcb6_std_vector_string *DistractionVec;// distinction
+	TBitmap         *panelG;
+	TBitmap         *backG;
+	__int32 : 32;
 	bcb6_std_string  backGPath;
 	bcb6_std_string  panelGPath;
 	bcb6_std_string  calcFreeName;
@@ -119,23 +124,25 @@ typedef struct _TMainForm
 	bool             isBackGUse;
 	bool             isPanelGUse;
 	bool             isSplashUse;
-	BYTE             greatTopModeKey;
-	BYTE             padding3[3];
+	byte             greatTopModeKey;
+	__int8 : 8;
+	__int16 : 16;
 	TSSGScriptStruct selectScript;
-	LPVOID           treeBackScreen;
-	LPVOID           invertImage;
-	LPVOID           mostTopImage;
-	TSSGSubject      *selectSubject;
-	TCalcImage       *calcImage;
-	BYTE             listCheckedVec[36];
+	TBitmap         *treeBackScreen;
+	TBitmap         *invertImage;
+	TBitmap         *mostTopImage;
+	TSSGSubject     *selectSubject;
+	TCalcImage      *calcImage;
+	__int32 : 32;
+	bcb6_std_bvector listCheckedVec;
 	long             treeFontWidth;
 	int              nowSelectSubjectIndex;
 	int              invertGridRow;
 	long             nowPanelType;
 	long             maxNameLength;
-	LPVOID           findNameForm;
-	LPVOID           searchForm;
-	TGuideForm       *guideForm;
+	TFindNameForm   *findNameForm;
+	TSearchForm     *searchForm;
+	TGuideForm      *guideForm;
 	long             guideFormLeft;
 	long             guideFormTop;
 	long             guideFormWidth;
@@ -155,11 +162,11 @@ typedef struct _TMainForm
 	long             titleSelectWindowHeight;
 	bool             isTitleFindUp;
 	bool             isAdjustGuideUse;
-	BYTE             padding4[2];
+	__int16 : 16;
 	bcb6_std_string  sortKey;
 	bool             nowAdjusting;
 	bool             canChange;
-	BYTE             padding5[2];
+	__int16 : 16;
 	long             wheelDeltaCount;
 	BYTE             topManager[8];
 	BYTE             topManagerListner[168];
@@ -168,8 +175,10 @@ typedef struct _TMainForm
 	TStringDivision  strD;
 	TSSGCtrl         ssgCtrl;
 	bcb6_std_string  exeDir;
-	BYTE             searchMode;
-	BYTE             padding6[7];
+	byte             searchMode;
+	__int8 : 8;
+	__int16 : 16;
+	bcb6_std_vector_string *DistractionVec;// distinction
 	bcb6_std_vector  keyToIndexMap;
 	bcb6_std_vector  scriptVec;
 	bcb6_std_vector  toScriptVec;
@@ -189,7 +198,7 @@ EXTERN_C void __cdecl TMainForm_CalcButtonPushFunc(TMainForm *this, long BtnNum)
 EXTERN_C void(__cdecl * const TMainForm_SetLockVisible)(TMainForm *this, TSSGSubject *SSGS, bool MustVisible);
 EXTERN_C void(__cdecl * const TMainForm_DrawTreeCell)(TMainForm *this, LPVOID DestCanvas, int ARow, RECT *Rect);
 EXTERN_C void(__cdecl * const TMainForm_ChangeSubjectPanel)(TMainForm *this, long Type);
-EXTERN_C void(__cdecl * const TMainForm_GoCalcHexChange)(TMainForm *this, boolean IsCalcHex);
+EXTERN_C void(__cdecl * const TMainForm_GoCalcHexChange)(TMainForm *this, bool IsCalcHex);
 
 #define DRAWTREE_CONVENTION 0
 EXTERN_C void

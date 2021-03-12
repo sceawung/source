@@ -7,7 +7,7 @@ unsigned long __cdecl Parsing(void *this, void *SSGS, const void *Src, ...);
 #endif
 
 extern BOOL EnableParserFix;
-extern const DWORD F005113F8;
+extern const DWORD _TSSGCtrl_Parsing;
 
 __declspec(naked) void __cdecl Caller_Parsing()
 {
@@ -16,7 +16,7 @@ __declspec(naked) void __cdecl Caller_Parsing()
 		cmp     EnableParserFix, FALSE
 #pragma warning(suppress: 4414)
 		jne     Parsing
-		jmp     F005113F8
+		jmp     _TSSGCtrl_Parsing
 		ud2
 	}
 }

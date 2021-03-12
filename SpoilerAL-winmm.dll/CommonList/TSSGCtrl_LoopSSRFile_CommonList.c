@@ -1,7 +1,7 @@
 #include <windows.h>
 #include "TStringDivision.h"
 
-extern const DWORD F0043CC08;
+extern const DWORD _STL_string_M_append_dispatch;
 
 __declspec(naked) void __cdecl TSSGCtrl_LoopSSRFile_CommonList()
 {
@@ -19,7 +19,7 @@ __declspec(naked) void __cdecl TSSGCtrl_LoopSSRFile_CommonList()
 		je      L1
 		cmp     al, '*'
 		je      L2
-		jmp     dword ptr [F0043CC08]
+		jmp     dword ptr [_STL_string_M_append_dispatch]
 
 		align   16
 	L1:
@@ -31,7 +31,7 @@ __declspec(naked) void __cdecl TSSGCtrl_LoopSSRFile_CommonList()
 		jne     L1
 		call    TrimLeftSpace
 		mov     dword ptr [begin], eax
-		jmp     dword ptr [F0043CC08]
+		jmp     dword ptr [_STL_string_M_append_dispatch]
 
 		align   16
 	L2:
@@ -56,6 +56,6 @@ __declspec(naked) void __cdecl TSSGCtrl_LoopSSRFile_CommonList()
 		call    TrimRightSpace
 	L5:
 		mov     dword ptr [end], eax
-		jmp     dword ptr [F0043CC08]
+		jmp     dword ptr [_STL_string_M_append_dispatch]
 	}
 }

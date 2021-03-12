@@ -5,6 +5,6 @@ __declspec(naked) void __cdecl _chkesp()
 		jz      L1
 		int     3
 	L1:
-		ret
+		rep ret
 	}
 }

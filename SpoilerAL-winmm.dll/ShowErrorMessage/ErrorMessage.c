@@ -12,12 +12,11 @@
 extern TMainForm *MainForm;
 #else
 #include <commctrl.h>
+#include "xx.h"
 #include "ToolTip\ToolTip.h"
 #include "TWinControl.h"
 #include "TMainForm.h"
 #endif
-
-extern const DWORD __InitExceptBlockLDTC;
 
 volatile DWORD dwErrorMessageId = ERROR_SUCCESS;
 
@@ -128,7 +127,7 @@ __declspec(naked) void __cdecl TSSGActionListner_OnSubjectDisabled_SetErrorMessa
 	__asm
 	{
 		mov     dword ptr [dwErrorMessageId], ERROR_DS_ILLEGAL_MOD_OPERATION
-		jmp     dword ptr [__InitExceptBlockLDTC]
+		jmp     __InitExceptBlockLDTC
 	}
 }
 #endif

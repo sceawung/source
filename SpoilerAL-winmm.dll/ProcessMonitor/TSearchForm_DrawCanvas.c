@@ -7,7 +7,7 @@ void __fastcall TSearchForm_DrawCanvas(TProcessSearchReportListnerBase *reportLi
 {
 	RECT rect  = { 0, 0, ImageWidth, 24 };
 	long denom = (reportListner->max - reportListner->min) / ImageWidth;
-	TBrush_SetColor(Canv->Brush, 0x000000);
+	TBrush_SetColor(Canv->FBrush, 0x000000);
 	if (Pos >= reportListner->start) {
 		TCanvas_FillRect(Canv, &rect);
 		rect.left = (reportListner->start - reportListner->min) / denom;
@@ -17,6 +17,6 @@ void __fastcall TSearchForm_DrawCanvas(TProcessSearchReportListnerBase *reportLi
 		TCanvas_FillRect(Canv, &rect);
 		rect.left = (Pos - reportListner->min) / denom;
 	}
-	TBrush_SetColor(Canv->Brush, 0x008000);
+	TBrush_SetColor(Canv->FBrush, 0x008000);
 	TCanvas_FillRect(Canv, &rect);
 }

@@ -7,12 +7,33 @@ extern void __stdcall ReplaceDefine(void *attributeSelector, void *line);
 
 extern BOOL EnableParserFix;
 
-__declspec(naked) void __cdecl TSSGCtrl_LoopSSRFile_ReplaceDefine()
+#define _Str  (ebp - 110H)
+
+__declspec(naked) string * __cdecl TSSGCtrl_LoopSSRFile_ReplaceDefine(
+	string const *const File_begin,
+	size_t        const __n)
 {
 	__asm
 	{
 		#define this  (ebp + 8H)
-		#define _Str  (ebp - 110H)
+
+#if 1
+		mov     ecx, [esp + 4]
+		mov     edx, [esp + 8]
+		lea     eax, [edx + edx * 2]
+		lea     eax, [ecx + eax * 8]
+		cmp     EnableParserFix, FALSE
+		je      L1
+		
+		mov     edx, eax
+		lea     ecx, [_Str]
+		call    string_ctor_assign
+		push    eax
+		mov     ecx, [this]
+		lea     edx, [ecx]TSSGCtrl.attributeSelector
+		push    edx
+		call    ReplaceDefine
+#else
 		#define begin (ebp - 1F8H)
 		#define _end  (ebp - 1F4H)
 
@@ -32,13 +53,14 @@ __declspec(naked) void __cdecl TSSGCtrl_LoopSSRFile_ReplaceDefine()
 		mov     ecx, dword ptr [_Str]
 		mov     eax, dword ptr [_Str + 4]
 		mov     dword ptr [begin], ecx
+		
+		#undef _end
+		#undef begin
+#endif
 	L1:
-		ret
+		rep ret
 
 		#undef this
-		#undef _Str
-		#undef begin
-		#undef _end
 	}
 }
 
@@ -46,17 +68,15 @@ __declspec(naked) void __cdecl TSSGCtrl_LoopSSRFile_ReplaceDefine_Release()
 {
 	__asm
 	{
-		#define _Str (ebp - 110H)
+		cmp     EnableParserFix, FALSE
+		jne     L1
+		rep ret
 
-		mov     eax, dword ptr [EnableParserFix]
-		lea     ecx, [_Str]
-		test    eax, eax
-		jz      L1
-		call    string_dtor
+		align   16
 	L1:
-		mov     word ptr [ebx + 10H], 20
-		ret
-
-		#undef _Str
+		lea     ecx, [_Str]
+		jmp     string_dtor
 	}
 }
+
+#undef _Str

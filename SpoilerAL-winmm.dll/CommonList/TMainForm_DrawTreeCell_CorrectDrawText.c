@@ -5,6 +5,7 @@
 
 extern const DWORD F00415A60;
 
+#ifdef FORMAT_NOT_IMPLEMENTED
 __declspec(naked) void __cdecl TMainForm_DrawTreeCell_CorrectDrawText()
 {
 	__asm
@@ -59,3 +60,4 @@ __declspec(naked) void __cdecl TMainForm_DrawTreeCell_CorrectDrawText()
 		ret
 	}
 }
+#endif

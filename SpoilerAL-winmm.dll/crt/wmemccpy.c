@@ -62,7 +62,7 @@ __declspec(naked) wchar_t * __cdecl _wmemccpy(wchar_t *dest, const wchar_t *src,
 		pop     edi                                         // restore register
 		pop     esi                                         //
 	retnull:
-		ret                                                 // __cdecl return
+		rep ret                                             // __cdecl return
 
 		#undef dest
 		#undef src

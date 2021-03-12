@@ -214,7 +214,7 @@ __declspec(naked) static char * __cdecl strlwruprSSE42(char *string)
 		pxor    xmm0, xmm1                                  // change case bit in masked bytes of string
 		movdqa  xmmword ptr [edx], xmm0                     // write changed value
 	finish:
-		ret
+		rep ret
 	}
 
 	#undef maskbit
@@ -287,7 +287,7 @@ __declspec(naked) static char * __cdecl strlwruprSSE2(char *string)
 		pxor    xmm0, xmm1                                  // negation of the 5th bit - lowercase letters
 		movdqa  xmmword ptr [edx], xmm0                     // store 16 bytes
 	epilog:
-		ret
+		rep ret
 	}
 
 	#undef maskbit

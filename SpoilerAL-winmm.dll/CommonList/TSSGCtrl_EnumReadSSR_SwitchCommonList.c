@@ -1,5 +1,6 @@
 #include <windows.h>
 
+#if 0
 __declspec(naked) void __cdecl TSSGCtrl_EnumReadSSR_SwitchCommonList()
 {
 	static const DWORD X005009AF = 0x005009AF;
@@ -22,3 +23,4 @@ __declspec(naked) void __cdecl TSSGCtrl_EnumReadSSR_SwitchCommonList()
 		ud2
 	}
 }
+#endif

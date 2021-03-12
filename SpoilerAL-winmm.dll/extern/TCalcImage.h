@@ -2,36 +2,53 @@
 
 #include <windows.h>
 #include "bcb6_std_vector.h"
+#include "TSSArg.h"
+#include "TControl.h"
+
+typedef struct CalcButtonPushFunc
+{
+	void(__cdecl *Method)(long BtnNum);
+	void   const *This;
+} TCalcButtonPushFunc;
+
 #include "TCalcValBox.h"
 
-typedef struct {
+#pragma pack(push, 1)
+typedef struct _TCalcButton
+{
 	RECT hitRect;       // ボタン矩形
 	RECT exclusionRect; // 除外矩形
 	BYTE status;        // 押／上トグル形式のボタンは、状態を記録
+	__int8 : 8;
+	__int16 : 16;
 } TCalcButton;
+#pragma pack(pop)
 
 #define typename TCalcButton
 #include "bcb6_std_vector_template.h"
 
-typedef struct
+#pragma pack(push, 1)
+typedef struct _TCalcImage
 {
-	LPVOID                      *VTable;
-	BYTE                        padding1[380];
+	LPVOID                     *VTable;
+	BYTE                        padding_TImage[380];
 	int                         mouseX;
 	int                         mouseY;
-	LPVOID                      naturalVal;
-	LPVOID                      pushGpc;
-	LPVOID                      freeGpc;
-	LPVOID                      sprite;
-	LPVOID                      drawImage;
-	LPVOID                      padding2;
+	TSSArg                     *naturalVal;
+	TBitmap                    *pushGpc;
+	TBitmap                    *freeGpc;
+	TBitmap                    *sprite;
+	TBitmap                    *drawImage;
+	__int32 : 32;
 	bcb6_std_vector_TCalcButton btnVec;
 	bcb6_std_vector_TCalcValBox valBox;
-	BOOLEAN                     isPush;
+	bool                        isPush;
+	__int8 : 8;
+	__int16 : 16;
 	long                        mouseNowBtn;
-	LPVOID                      calcButtonPushFunc;
-	LPVOID                      padding3;
+	TCalcButtonPushFunc         calcButtonPushFunc;
 } TCalcImage;
+#pragma pack(pop)
 
 EXTERN_C void(__cdecl * const TCalcImage_SetStatus)(TCalcImage *this, long Index, BYTE Status);
 EXTERN_C BYTE(__cdecl * const TCalcImage_GetStatus)(TCalcImage *this, long Index);

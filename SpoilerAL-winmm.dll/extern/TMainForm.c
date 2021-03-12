@@ -1,3 +1,4 @@
+#include "xx.h"
 #include "TMainForm.h"
 
 #pragma warning(disable:4733)
@@ -6,7 +7,7 @@ void(__cdecl * const TMainForm_GoCalcEnter)(TMainForm *this) = (LPVOID)0x0043F45
 void(__cdecl * const TMainForm_SetLockVisible)(TMainForm *this, TSSGSubject *SSGS, BOOLEAN MustVisible) = (LPVOID)0x00444490;
 void(__cdecl * const TMainForm_DrawTreeCell)(TMainForm *this, LPVOID DestCanvas, int ARow, RECT *Rect) = (LPVOID)0x00444848;
 void(__cdecl * const TMainForm_ChangeSubjectPanel)(TMainForm *this, long Type) = (LPVOID)0x004465AC;
-void(__cdecl * const TMainForm_GoCalcHexChange)(TMainForm *this, boolean IsCalcHex) = (LPVOID)0x00447194;
+void(__cdecl * const TMainForm_GoCalcHexChange)(TMainForm *this, bool IsCalcHex) = (LPVOID)0x00447194;
 
 __declspec(naked) void __fastcall TMainForm_StringEnterBtnClick(TMainForm *this, LPVOID Sender)
 {
@@ -20,7 +21,6 @@ __declspec(naked) void __fastcall TMainForm_StringEnterBtnClick(TMainForm *this,
 
 __declspec(naked) void __stdcall TMainForm_Guide(const char *Mes, int Flags)
 {
-	extern const DWORD __InitExceptBlockLDTC;
 	extern const DWORD F0048C1F8;
 	extern const DWORD F0056DDBC;
 
@@ -32,7 +32,7 @@ __declspec(naked) void __stdcall TMainForm_Guide(const char *Mes, int Flags)
 		sub     esp, 36
 		push    ebx
 		mov     ebx, dword ptr ds:[_MainForm]
-		call    dword ptr [__InitExceptBlockLDTC]
+		call    __InitExceptBlockLDTC
 		mov     ecx, [ebx]TMainForm.userMode
 		mov     eax, [ebx]TMainForm.guideForm
 #ifdef GUIDE_LIMITED

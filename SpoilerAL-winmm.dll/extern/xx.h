@@ -7,6 +7,18 @@
 
 #include <windows.h>
 
+extern
+#ifdef _DLL
+__declspec(dllimport) void
+#else
+DWORD
+#endif
+__InitExceptBlockLDTC
+#ifdef _DLL
+()
+#endif
+;
+
 #ifndef __BORLANDC__
 /*
  *      C/C++ Run Time Library - Version 2.0

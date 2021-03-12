@@ -34,7 +34,7 @@ __declspec(naked) unsigned int __cdecl _mbsnextc(const unsigned char *string)
 		mov     cl, byte ptr [edx]
 		or      eax, ecx
 	L1:
-		ret
+		rep ret
 
 		#undef string
 	}

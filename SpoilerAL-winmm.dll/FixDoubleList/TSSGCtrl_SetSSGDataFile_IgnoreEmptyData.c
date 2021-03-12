@@ -17,6 +17,6 @@ __declspec(naked) void __cdecl TSSGCtrl_SetSSGDataFile_IgnoreEmptyData()
 		jmp     dword ptr [X004F0A51]
 
 	L1:
-		ret
+		rep ret
 	}
 }

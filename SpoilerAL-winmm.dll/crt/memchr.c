@@ -323,7 +323,7 @@ __declspec(naked) void * __cdecl memchr386(const void *buffer, int c, size_t cou
 		or      edx, eax                                    // edx = all 4 bytes = [search char]
 		call    internal_memchr386
 	retnull:
-		ret
+		rep ret
 
 		#undef buffer
 		#undef c

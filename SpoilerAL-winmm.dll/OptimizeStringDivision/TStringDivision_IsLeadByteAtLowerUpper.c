@@ -24,7 +24,7 @@ __declspec(naked) void __cdecl TStringDivision_IsLeadByteAtLowerUpper()
 	L1:
 		inc     eax
 	L2:
-		ret
+		rep ret
 #endif
 	}
 }

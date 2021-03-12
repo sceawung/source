@@ -1,6 +1,7 @@
 #include <string.h>
 #include <windows.h>
 #include "intrinsic.h"
+#include "xx.h"
 #define USING_NAMESPACE_BCB6_STD
 #include "bcb6_std_string.h"
 #include "bcb6_std_allocator.h"
@@ -10,7 +11,6 @@
 
 #pragma warning(disable:4733)
 
-extern const DWORD __InitExceptBlockLDTC;
 extern const DWORD _STL_string_substr;
 extern const DWORD F0048E0D8;
 extern const DWORD F00490434;
@@ -363,7 +363,7 @@ __declspec(naked) void __stdcall FixLoopByteArray(
 		sub     esp, 496
 		push    ebx
 		push    esi
-		call    dword ptr [__InitExceptBlockLDTC]
+		call    __InitExceptBlockLDTC
 		mov     edx, dword ptr [ebp + 10H]
 		mov     ecx, dword ptr [ebp + 1CH]
 		mov     edx, dword ptr [edx]

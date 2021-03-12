@@ -6,7 +6,7 @@
 void __cdecl TSSGCtrl_LoopSSRFile_LineListLoopContinue();
 
 extern BOOL EnableParserFix;
-extern const DWORD F0043CC08;
+extern const DWORD _STL_string_M_append_dispatch;
 
 const string* __fastcall TSSGCtrl_LoopSSRFile_FixWordRepeat(
 	string       *const tmpS,
@@ -56,7 +56,7 @@ const string* __fastcall TSSGCtrl_LoopSSRFile_FixWordRepeat(
 		push    edx
 		lea     ecx, [ebp - 78H]
 		push    ecx
-		call    dword ptr [F0043CC08]
+		call    dword ptr [_STL_string_M_append_dispatch]
 		add     esp, 16
 		inc     edi
 	L2:

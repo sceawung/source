@@ -13,15 +13,15 @@ __declspec(naked) void __cdecl TMainForm_LoadSetting_NoteREdit_Font_setName()
 		push    eax
 		push    edx
 		mov     eax, [this]TMainForm.MultiLBox
-		mov     eax, [eax]TControl.Font
+		mov     eax, [eax]TControl.FFont
 		call    _TFont_SetName
 		mov     edx, [esp]
 		mov     eax, [this]TMainForm.ListLBox
-		mov     eax, [eax]TControl.Font
+		mov     eax, [eax]TControl.FFont
 		call    _TFont_SetName
 		mov     edx, [esp]
 		mov     eax, [this]TMainForm.CautionREdit
-		mov     eax, [eax]TControl.Font
+		mov     eax, [eax]TControl.FFont
 		call    _TFont_SetName
 		pop     edx
 		pop     eax
@@ -41,11 +41,11 @@ __declspec(naked) void __cdecl TMainForm_LoadSetting_treeBackScreen_Canvas_Font_
 		push    eax
 		push    edx
 		mov     eax, [this]TMainForm.LockCBox
-		mov     eax, [eax]TControl.Font
+		mov     eax, [eax]TControl.FFont
 		call    _TFont_SetName
 		mov     edx, [esp]
 		mov     eax, [this]TMainForm.ToggleCBox
-		mov     eax, [eax]TControl.Font
+		mov     eax, [eax]TControl.FFont
 		call    _TFont_SetName
 		pop     edx
 		pop     eax

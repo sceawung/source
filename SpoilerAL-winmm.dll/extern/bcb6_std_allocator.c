@@ -91,7 +91,7 @@ __declspec(naked) void * __fastcall internal_allocate(size_t n)
 	L1:
 		xor     eax, eax
 	L2:
-		ret
+		rep ret
 	}
 }
 #endif
@@ -115,7 +115,7 @@ __declspec(naked) void __fastcall internal_deallocate(void *p, size_t n)
 	L2:
 		add     esp, 8
 	L3:
-		ret
+		rep ret
 	}
 }
 #elif !defined(_M_IX86)
@@ -137,7 +137,7 @@ __declspec(naked) void __fastcall internal_deallocate(void *p)
 		push    eax
 		call    HeapFree
 	L1:
-		ret
+		rep ret
 	}
 }
 #endif
@@ -229,7 +229,7 @@ __declspec(naked) void * __fastcall internal_reallocate(void *p, size_t n)
 	L4:
 		xor     eax, eax
 	L5:
-		ret
+		rep ret
 	}
 }
 #endif

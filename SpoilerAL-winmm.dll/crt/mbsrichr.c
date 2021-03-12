@@ -135,7 +135,7 @@ __declspec(naked) unsigned char * __cdecl _mbsrichr(const unsigned char *string,
 	L3:
 		xor     eax, eax
 	L4:
-		ret
+		rep ret
 
 		#undef string
 		#undef c

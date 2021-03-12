@@ -42,7 +42,7 @@ __declspec(naked) double __cdecl bcb6_strtod(const char *nptr, char **endptr)
 		call    dword ptr [_bcb6_errno]
 		mov     dword ptr [eax], BCB6_ERANGE
 	L1:
-		ret
+		rep ret
 
 		#undef nptr
 		#undef endptr

@@ -55,7 +55,7 @@ __declspec(naked) void * __cdecl _memccpy(void *dest, const void *src, int c, si
 		pop     edi                                         // restore register
 		pop     esi                                         //
 	retnull:
-		ret                                                 // __cdecl return
+		rep ret                                             // __cdecl return
 
 		#undef dest
 		#undef src

@@ -1,8 +1,8 @@
+#include "xx.h"
 #include "TMenuItem.h"
 
 #pragma warning(disable:4733)
 
-extern const DWORD __InitExceptBlockLDTC;
 extern const DWORD vcl_System_AnsiString_ctor_sz;
 extern const DWORD F0054B87C;
 extern const DWORD vcl_System_AnsiString_dtor;
@@ -36,7 +36,7 @@ __declspec(naked) void __stdcall TMenuItem_SetCaption(LPVOID MenuItem, LPCSTR lp
 		mov     eax, offset data2
 		mov     ebp, esp
 		sub     esp, 40
-		call    dword ptr [__InitExceptBlockLDTC]
+		call    __InitExceptBlockLDTC
 		mov     edx, dword ptr [ebp + 0CH]
 		lea     eax, [ebp - 4H]
 		call    dword ptr [vcl_System_AnsiString_ctor_sz]

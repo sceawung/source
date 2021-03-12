@@ -3,28 +3,34 @@
 #include <windows.h>
 #include "bcb6_std_vector.h"
 #include "bcb6_std_string.h"
+#include "TWinControl.h"
+#include "TCheckBox.h"
 
 #pragma pack(push, 1)
 typedef struct _TFindNameForm
 {
-	LPVOID          *VTable;
-	BYTE            padding1[748];
-	LPVOID          Panel_T;
-	LPVOID          FindEdit;
-	LPVOID          FindStopBtn;
-	LPVOID          FindLBox;
-	LPVOID          FindStartBtn;
-	LPVOID          FindRGroup;
-	LPVOID          IsWordConvertCBox;
+	union
+	{
+		LPCVOID *VTable;
+		TForm    super;
+	};
+	TPanel         *Panel_T;
+	TEdit          *FindEdit;
+	TButton        *FindStopBtn;
+	TListBox       *FindLBox;
+	TButton        *FindStartBtn;
+	TRadioGroup    *FindRGroup;
+	TCheckBox      *IsWordConvertCBox;
 	LCID            findLCID;
 	long            findMode;
-	BYTE            padding2[4];
+	__int32 : 32;
 	bcb6_std_vector findIndexVec;
 	bcb6_std_vector findSubjectVec;
-	BOOLEAN         isWordConvert;
-	BYTE            padding3[7];
+	bool            isWordConvert;
+	__int8 : 8;
+	__int16 : 16;
+	__int32 : 32;
 } TFindNameForm;
 #pragma pack(pop)
 
 EXTERN_C bcb6_std_string * __cdecl TFindNameForm_CnvString(bcb6_std_string *Result, TFindNameForm *this, const bcb6_std_string *Src);
-

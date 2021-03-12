@@ -79,7 +79,7 @@ __declspec(naked) double __cdecl expm1(double x)
 		fdiv
 		fmul
 	L3:
-		ret
+		rep ret
 
 		align   16
 	L4:

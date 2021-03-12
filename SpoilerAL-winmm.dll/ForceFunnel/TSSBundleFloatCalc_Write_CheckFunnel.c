@@ -18,15 +18,14 @@ __declspec(naked) struct
 		#define Val     (ebp - 0x84)
 
 		lea     eax, [Val]
-		cmp     FixTheProcedure, 0
-		je      SKIP
 		mov     ecx, [Arg]
-		lea     eax, [ecx]TSSArgDouble.value
-	SKIP:
+		lea     edx, [ecx]TSSArgDouble.value
+		cmp     FixTheProcedure, FALSE
+		cmovne  eax, edx
 		push    eax
 		push    SSGS
 		push    SSGC
-		call    dword ptr [TSSGCtrl_CheckFunnel]
+		call    TSSGCtrl_CheckFunnel
 		add     esp, 12
 		mov     edx, dword ptr [SHandle]
 		ret

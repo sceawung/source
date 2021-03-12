@@ -374,7 +374,7 @@ __declspec(naked) void __cdecl _ultod3()
 		addsd   xmm0, xmm1
 
 	ultod3_uint32:
-		ret
+		rep ret
 	}
 }
 

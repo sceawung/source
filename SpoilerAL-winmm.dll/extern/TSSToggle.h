@@ -12,6 +12,7 @@ typedef struct _TSSToggle
 	bcb6_std_string offCode;
 	bcb6_std_string nowValHeadStr;
 	unsigned long   size;
+	__int32 : 32;
 } TSSToggle;
 #pragma pack(pop)
 

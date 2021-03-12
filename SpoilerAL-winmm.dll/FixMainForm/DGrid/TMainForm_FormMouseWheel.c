@@ -19,17 +19,17 @@ void __fastcall _TMainForm_FormMouseWheel(TMainForm *this, LPVOID Sender, WORD S
 		{
 			int topRow;
 
-			topRow = this->DGrid->TopRow - WheelDelta / 120;
+			topRow = this->DGrid->FTopLeft.Y - WheelDelta / 120;
 			if (topRow > 0)
 			{
 				int clientRows;
 
-				clientRows = TDrawGrid_GetClientHeight(this->DGrid) / this->DGrid->DefaultRowHeight;
-				if (this->DGrid->RowCount > clientRows)
+				clientRows = TDrawGrid_GetClientHeight(this->DGrid) / this->DGrid->FDefaultRowHeight;
+				if (this->DGrid->FRowCount > clientRows)
 				{
 					int maxTopRow;
 
-					maxTopRow = this->DGrid->RowCount - clientRows;
+					maxTopRow = this->DGrid->FRowCount - clientRows;
 					if (topRow > maxTopRow)
 					{
 						topRow = maxTopRow;

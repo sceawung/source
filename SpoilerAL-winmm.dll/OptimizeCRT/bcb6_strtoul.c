@@ -30,7 +30,7 @@ __declspec(naked) unsigned long __cdecl bcb6_strtoul(const char *nptr, char **en
 		mov     dword ptr [eax], ecx
 		pop     eax
 	L2:
-		ret
+		rep ret
 
 		#undef IS_UNSIGNED
 		#undef IS_INT64

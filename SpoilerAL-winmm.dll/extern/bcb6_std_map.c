@@ -1,3 +1,4 @@
+#include "xx.h"
 #define USING_NAMESPACE_BCB6_STD
 #include "bcb6_std_map.h"
 #include "bcb6_std_allocator.h"
@@ -15,7 +16,6 @@ map_iterator(__cdecl * const _Rb_global_M_decrement)(map_iterator it) = (LPVOID)
 void(__cdecl *const _Rb_global_Rebalance)(map_iterator, map_iterator *) = (LPVOID)0x005F4F9C;
 map_iterator(__cdecl *const _Rb_global_Rebalance_for_erase)(map_iterator, map_iterator *, map_iterator *, map_iterator *) = (LPVOID)0x005F5078;
 
-extern const DWORD __InitExceptBlockLDTC;
 extern const DWORD F004D3BAC;
 
 __declspec(naked) void __stdcall map_erase(map *map, map_iterator it)
@@ -43,7 +43,7 @@ __declspec(naked) void __stdcall map_erase(map *map, map_iterator it)
 		sub     esp, 152
 		push    ebx
 		mov     ebx, dword ptr [ebp + 8H]
-		call    dword ptr [__InitExceptBlockLDTC]
+		call    __InitExceptBlockLDTC
 		mov     eax, dword ptr [ebx + 8H]
 		mov     edx, dword ptr [ebp + 0CH]
 		add     eax, 12

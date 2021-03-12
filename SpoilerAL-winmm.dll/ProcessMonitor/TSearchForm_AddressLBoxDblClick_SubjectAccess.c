@@ -37,6 +37,6 @@ void __declspec(naked) __cdecl TSearchForm_AddressLBoxDblClick_SubjectAccess(TMa
 		jmp     dword ptr [_TMainForm_SubjectAccess]
 
 	NO_ACCESS:
-		ret
+		rep ret
 	}
 }

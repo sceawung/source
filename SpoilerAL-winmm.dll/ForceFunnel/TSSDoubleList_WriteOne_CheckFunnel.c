@@ -14,7 +14,7 @@ __declspec(naked) unsigned long __cdecl TSSDoubleList_WriteOne_CheckFunnel()
 		push    dword ptr [Index]
 		push    edx
 		push    ecx
-		call    dword ptr [TSSGCtrl_CheckFunnel]
+		call    TSSGCtrl_CheckFunnel
 		add     esp, 12
 		mov     eax, reNO_ERROR
 		ret

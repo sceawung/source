@@ -26,7 +26,7 @@ __declspec(naked) void __cdecl TSSBundleList_Write_ErrorSkip()
 		test    eax, eax
 		setnz   al
 	L2:
-		ret
+		rep ret
 
 		#undef ReturnAddress
 		#undef SSGC

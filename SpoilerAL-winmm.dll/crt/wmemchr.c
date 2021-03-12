@@ -377,7 +377,7 @@ __declspec(naked) static wchar_t * __cdecl wmemchr386(const wchar_t *buffer, wch
 		jne     loop_begin
 		lea     eax, [edx + eax * 2]
 	retnull:
-		ret                                                 // __cdecl return
+		rep ret                                             // __cdecl return
 
 		#undef buffer
 		#undef c

@@ -26,20 +26,6 @@ static __declspec(naked) uint64_t __cdecl TSSGAttributeSelector_StartElementChec
 {
 	__asm {
 #pragma region TSSGAttributeSelector.AESet
-		mov  ecx, size bcb6_std_set
-#if OPTIMIZE_ALLOCATOR
-		call bcb6_operator_new
-#else
-		push ecx
-		call bcb6_operator_new
-		pop  ecx
-#endif
-		mov  [esi]TSSGAttributeSelector.AESet, eax
-		mov  [eax]bcb6_std_set._M_node_count , 0
-		mov  [eax]bcb6_std_set._M_key_compare, eax
-		lea  edx, [eax + size LPVOID]
-		mov  [eax]bcb6_std_set._M_key_compare[size LPVOID], edx
-
 		mov  ecx, size bcb6_std_set_node
 #if OPTIMIZE_ALLOCATOR
 		call node_alloc_allocate
@@ -48,12 +34,14 @@ static __declspec(naked) uint64_t __cdecl TSSGAttributeSelector_StartElementChec
 		call node_alloc_allocate
 		pop  ecx
 #endif
-		mov  [eax]bcb6_std_set_node._M_color, FALSE
-		mov  dword ptr [eax]bcb6_std_set_node._M_parent, 0// Pointer is must specify size?
-		mov  [eax]bcb6_std_set_node._M_left , eax
-		mov  [eax]bcb6_std_set_node._M_right, eax
-		mov  ecx, [esi]TSSGAttributeSelector.AESet
-		mov  [ecx]bcb6_std_set._M_header, eax
+		xor  edx, edx
+		lea  ecx, [esi]TSSGAttributeSelector.AESet
+		mov  [eax]bcb6_std_set_node._M_color , dl
+		mov  [eax]bcb6_std_set_node._M_parent, edx
+		mov  [eax]bcb6_std_set_node._M_left  , eax
+		mov  [eax]bcb6_std_set_node._M_right , eax
+		mov  [ecx]bcb6_std_set._M_header     , eax
+		mov  [ecx]bcb6_std_set._M_node_count , edx
 #pragma endregion
 		xor  eax, eax
 		mov  seqElement, eax
@@ -72,7 +60,7 @@ static __declspec(naked) uint64_t __cdecl TSSGAttributeSelector_StartElementChec
 		xor  edx, edx
 
 	REVERT:
-		ret
+		rep ret
 	}
 }
 
@@ -82,17 +70,19 @@ static BOOL __fastcall TSSGAttributeSelector_EndElementCheck_delete_attributeSet
 
 	if (this->nowAttributeList)
 	{
-		if (this->AESet->_M_node_count)
-			tree_ptr_M_erase(this->AESet, set_end(this->AESet)->_M_parent);
+		if (this->AESet._M_node_count)
+		{
+			tree_ptr_M_erase(&this->AESet, set_end(&this->AESet)->_M_parent);
+			this->AESet._M_node_count = 0;
+		}
 		node_alloc_deallocate(
-			set_end(this->AESet)
+			set_end(&this->AESet)
 #if !OPTIMIZE_ALLOCATOR
 			, sizeof(bcb6_std_set_node)
 #endif
 		);
-		bcb6_operator_delete(this->AESet);
+		set_end(&this->AESet) = NULL;
 	}
-	this->AESet = NULL;
 	if (clear)
 		return TRUE;
 	else if (ExtensionTSSDir)
@@ -137,19 +127,20 @@ static void *__cdecl TSSGAttributeSelector_AddElement_MakeOnlyOneAtteribute(TSSG
 
 void __fastcall TSSGAttributeSelector_AESet_erase(TSSGAttributeSelector *const this, const TAdjustmentAttribute *const AElem)
 {
-	set_iterator const it = set_find(this->AESet, (LPDWORD)&AElem);
-	if (it != set_end(this->AESet))
-		node_alloc_deallocate(tree_erase_sans_delete(this->AESet, it)
+	set_iterator const it = set_find(&this->AESet, (LPDWORD)&AElem);
+	if (it != set_end(&this->AESet))
+		node_alloc_deallocate(
+			tree_erase_sans_delete(&this->AESet, it)
 #if !OPTIMIZE_ALLOCATOR
-							  , sizeof(bcb6_std_set_node) + sizeof(DWORD)
+			, sizeof(bcb6_std_set_node) + sizeof(DWORD)
 #endif
 		);
 }
 
 static void __fastcall TSSGAttributeSelector_PushElement_AESet_erase(
-	TSSGAttributeSelector *const      this,
-	const TAdjustmentAttribute *const AElem,
-	list_iterator const               VIt)
+	TSSGAttributeSelector      *const this,
+	TAdjustmentAttribute const *const AElem,
+	list_iterator               const VIt)
 {
 	const TAdjustmentAttribute **const data = (void *)VIt->_M_data;
 	TSSGAttributeSelector_AESet_erase(this, *data);
@@ -185,8 +176,10 @@ static int __cdecl cmpElement(LPCVOID const A, LPCVOID const B)
 	const TAdjustmentAttribute *const a = *(TAdjustmentAttribute **)A;
 	const TAdjustmentAttribute *const b = *(TAdjustmentAttribute **)B;
 	signed diff = a->type - b->type;
-	return diff ? diff : TSSGAttributeElement_GetType(a) == atDEFINE ?
-		strcmp(a->c_str, b->c_str) : a->seqElement - b->seqElement;
+	return diff ? diff : TSSGAttributeElement_GetType(a) == atDEFINE
+		? strcmp(a->c_str, b->c_str)
+		: a->seqElement - b->seqElement
+		;
 }
 
 #pragma intrinsic(_BitScanForward)
@@ -201,7 +194,7 @@ void __stdcall TSSGAttributeSelector_MakeNowAttributeVec_attributeSetMap_insert(
 } *const __v, const list_iterator It)
 {
 	COORD coords[0x20] = { { 0, 0 } };
-	vector const index = { coords, coords + _countof(coords) - 1, NULL, NULL, coords, MAXDWORD };
+	vector const index = { coords, coords + _countof(coords) - 1, ._M_end_of_storage = coords };
 
 	vector *const NewVec = __v->NewVec;
 	qsort(vector_begin(NewVec), vector_size_by_type(NewVec, void *), sizeof(void *), cmpElement);
@@ -218,7 +211,7 @@ void __stdcall TSSGAttributeSelector_MakeNowAttributeVec_attributeSetMap_insert(
 
 	NewVec->allocator_type[0] = retVal->first;
 	NewVec->allocator_type[1] = NULL;
-	NewVec->tblIndex = SubjectStringTable_insert((string *)&index);
+	NewVec->lutIndex = SubjectStringTable_insert((string *)&index);
 }
 
 static_assert(sizeof(CONSOLE_FONT_INFO) <= 8, "CONSOLE_FONT_INFO is greater than 8 bytes.");
@@ -227,7 +220,7 @@ CONSOLE_FONT_INFO __fastcall TSSGAttributeElement_GetViaCoord(AeType const Type,
 	TSSGAttributeElement const *AElem;
 	DWORD Index;
 	_BitScanForward(&Index, Type);
-	COORD coord = vector_type_at(&vector_at(&SubjectStringTable_array, AttrV->tblIndex), COORD, Index);
+	COORD coord = vector_type_at(&vector_at(&SubjectStringTable_array, AttrV->lutIndex), COORD, Index);
 	return coord.X ?// Give consideration to had been added attribute by TMainForm::AutoDialogAdjustment.
 		(CONSOLE_FONT_INFO) { vector_type_at(AttrV, DWORD, coord.Y), coord } :
 		TSSGAttributeElement_GetType(AElem = vector_type_at(
@@ -247,9 +240,10 @@ static void __fastcall TSSDir_GetSubjectVec_onOpen(TSSGSubject *const SSGS, TSSG
 	const string *Code = SubjectStringTable_GetString(&SSGS->code);
 	if (string_empty(Code))
 		return;
-	else if (TStringDivision_List(&SSGC->strD, Code, *string_ctor_assign_char(&Token, ','), &tmpV, FALSE
+	else if (TStringDivision_List(
+		&SSGC->strD, Code, *string_ctor_assign_char(&Token, ','), &tmpV, FALSE
 #if 0
-								  | dtNEST
+		| dtNEST
 #endif
 	) > 1)
 	{
@@ -315,7 +309,7 @@ static void __fastcall TSSDir_GetSubjectVec_onOpen(TSSGSubject *const SSGS, TSSG
 			if (prop)
 			{
 				RepeatDepth = prop->RepeatDepth;
-				repeat_ReadSSRFile(SSGC, &ParentStack, NULL, Code, prop->RepeatIndex, prop->OuterRepeat, SSGS);
+				repeat_ReadSSRFile(SSGC, &ParentStack, NULL, Code, prop->RepeatIndex, SSGS->propertyIndex, SSGS);
 			}
 			else
 			{
@@ -433,8 +427,8 @@ EXTERN_C void __cdecl Attach_FixClearChild()
 	*(UINT64 *)0x004D57F1 = NOP_X8;
 
 	// TSSGAttributeSelector::MakeNowAttributeVec
-	//   AESet = *this->AESet;
-	*(LPBYTE )(0x004D5891 + 0) =         0x8B;// mov eax, [esi]TSSGAttributeSelector.AESet
+	//   AESet = this->AESet;
+	*(LPBYTE )(0x004D5891 + 0) =         0x8D;// lea eax, [esi]TSSGAttributeSelector.AESet
 	*(LPWORD )(0x004D5891 + 1) = BSWAP16(0x46 << 8 | offsetof(TSSGAttributeSelector, AESet));
 
 	*(LPDWORD) 0x004D58A0      = BSWAP32(0x8D55E0F3);// lea    edx, AESet
@@ -453,9 +447,9 @@ EXTERN_C void __cdecl Attach_FixClearChild()
 
 	//   omit dtor AESet
 	*(LPBYTE )(0x004D59F2 + 0) = JMP_SHORT;
-	//   *this->AESet = AESet;
+	//   this->AESet = AESet;
 	*(LPBYTE ) 0x004D5A2D = NOP;
-	*(LPWORD ) 0x004D5A2E = BSWAP16(0x8B56    );// mov edx, [esi]TSSGAttributeSelector.AESet
+	*(LPWORD ) 0x004D5A2E = BSWAP16(0x8D56    );// lea edx, [esi]TSSGAttributeSelector.AESet
 	*(LPBYTE ) 0x004D5A30 = offsetof(TSSGAttributeSelector, AESet);
 	*(LPBYTE ) 0x004D5A37 =         0x89       ;// mov [edx]bcb6_std_set._M_header, ecx
 	*(LPDWORD) 0x004D5A38 = BSWAP32(0x4A088B4D);// mov ecx, AESet._M_node_count
@@ -478,9 +472,9 @@ EXTERN_C void __cdecl Attach_FixClearChild()
 
 	//   omit dtor AESet
 	*(LPBYTE )(0x004D5E6E + 0) = JMP_SHORT;
-	//   *this->AESet = AESet;
+	//   this->AESet = AESet;
 	*(LPBYTE ) 0x004D5E9E = NOP;
-	*(LPBYTE ) 0x004D5E9F =         0x8B       ;// mov edx, [esi]TSSGAttributeSelector.AESet
+	*(LPBYTE ) 0x004D5E9F =         0x8D       ;// lea edx, [esi]TSSGAttributeSelector.AESet
 	*(LPDWORD) 0x004D5EA0 = BSWAP32(0x56 << 24 | offsetof(TSSGAttributeSelector, AESet) << 16 | 0x897A);
 	*(LPDWORD) 0x004D5EA4 = BSWAP32(0x088B4DF0);// mov [edx]bcb6_std_set._M_header, edi
 	*(LPWORD ) 0x004D5EA8 = BSWAP16(0x894A    );// mov ecx, AESet._M_node_count

@@ -99,7 +99,7 @@ __declspec(naked) unsigned char * __cdecl _mbschr(const unsigned char *string, u
 		jz      internal_mbschr_single_byte
 		xor     eax, eax
 	L2:
-		ret
+		rep ret
 
 		#undef string
 		#undef c

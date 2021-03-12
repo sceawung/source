@@ -276,7 +276,7 @@ __declspec(naked) static wchar_t * __cdecl wcslwruprSSE42(wchar_t *string)
 		pxor    xmm0, xmm1                                  // change case bit in masked bytes of string
 		movdqa  xmmword ptr [edx], xmm0                     // write changed value
 	aligned_finish:
-		ret
+		rep ret
 
 		align   16
 	unaligned:
@@ -305,7 +305,7 @@ __declspec(naked) static wchar_t * __cdecl wcslwruprSSE42(wchar_t *string)
 		pxor    xmm0, xmm1                                  // change case bit in masked bytes of string
 		movdqa  xmmword ptr [edx], xmm0                     // write changed value
 	unaligned_first_finish:
-		ret
+		rep ret
 
 		align   16
 		// loop
@@ -328,7 +328,7 @@ __declspec(naked) static wchar_t * __cdecl wcslwruprSSE42(wchar_t *string)
 		pxor    xmm0, xmm1                                  // change case bit in masked bytes of string
 		movdqu  xmmword ptr [edx], xmm0                     // write changed value
 	unaligned_finish:
-		ret
+		rep ret
 	}
 
 	#undef maskbit
@@ -404,7 +404,7 @@ __declspec(naked) static wchar_t * __cdecl wcslwruprSSE2(wchar_t *string)
 		pxor    xmm0, xmm1                                  // negation of the 5th bit - lowercase letters
 		movdqa  xmmword ptr [edx], xmm0                     // store 16 bytes
 	aligned_epilog:
-		ret
+		rep ret
 
 		align   16
 	unaligned:
@@ -454,7 +454,7 @@ __declspec(naked) static wchar_t * __cdecl wcslwruprSSE2(wchar_t *string)
 		pxor    xmm0, xmm1                                  // negation of the 5th bit - lowercase letters
 		movdqu  xmmword ptr [edx], xmm0                     // store 16 bytes
 	unaligned_epilog:
-		ret
+		rep ret
 	}
 
 	#undef maskbit

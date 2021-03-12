@@ -9,7 +9,7 @@ typedef struct _TSSString
 	bcb6_std_string lockStr;
 	unsigned long   size;
 	WORD            codePage;// reserved for fully code page
-	BYTE            padString;
+	__int8 : 8;
 	bool            cautious;
 	bcb6_std_string addressStr;
 	bcb6_std_string endWord;

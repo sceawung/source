@@ -238,7 +238,7 @@ __declspec(naked) wchar_t * __cdecl wcsrchrSSE42(const wchar_t *string, wchar_t 
 		lea     eax, [edx + ecx * 2]
 		jnz     loop_begin
 	epilog:
-		ret
+		rep ret
 
 		#undef string
 		#undef c

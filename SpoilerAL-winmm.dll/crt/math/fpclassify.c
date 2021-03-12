@@ -66,7 +66,7 @@ short __cdecl _dclass(double x)
 		jae     infinite_or_nan                 ; Re-direct if x is infinity or NaN
 		cmp     ecx, 00100000H * 2              ; x < DBL_MIN ?
 		jb      subnormal                       ; Re-direct if x < DBL_MIN
-		ret
+		rep ret
 
 		align   16
 	zero_or_subnormal:

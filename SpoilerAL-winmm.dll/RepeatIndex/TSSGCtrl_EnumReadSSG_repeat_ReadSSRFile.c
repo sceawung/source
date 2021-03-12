@@ -5,7 +5,6 @@
 #include "SSGSubjectProperty.h"
 
 extern DWORD RepeatDepth;
-extern DWORD IndexRoot, IndexTemp;
 extern TSSGSubject dummySSGS;
 
 void __stdcall repeat_ReadSSRFile(
@@ -19,64 +18,47 @@ void __stdcall repeat_ReadSSRFile(
 {
 	vector_string       tmpV;
 	vector_dword        indices;
-	TSSGSubjectProperty *prop = NULL;
+	TSSGSubjectProperty *prop, *erty;// Don't get property at here because will be moved by GrowSubjectProperty
 
 	vector_ctor(&indices);
-	if (SSGS == &dummySSGS)
-	{
-		if (prop = IndexTemp == MAXDWORD ? NULL : SubjectProperty + IndexTemp)
-		{
-			prop->OuterRepeat = OuterRepeat;
-			prop->RepeatDepth = RepeatDepth;
-			prop->RepeatIndex = RepeatIndex;
-#if EMBED_BREADTH
-			prop->ParentEntry = *stack_top(ParentStack, TSSDir *);
-#endif
-		}
-		dummySSGS.propertyIndex = IndexTemp;
-	}
-	else
-		dummySSGS.propertyIndex = SSGS->propertyIndex;
+	dummySSGS.folder = *stack_top(ParentStack, TSSDir *);
+	dummySSGS.propertyIndex = OuterRepeat;
 	TSSGCtrl_ReadSSRFile(&tmpV, this, LineS, &indices, SSGS);
-	dummySSGS.propertyIndex = IndexRoot;
-	if (prop && map_end(prop)) TSSGSubjectProperty_dtor(prop, TRUE);
+	dummySSGS.propertyIndex = MAXDWORD;
+	dummySSGS.folder = NULL;
 	if (!vector_empty(&tmpV))
 	{
 		if (vector_size(&indices) > 1)
 		{
 			DWORD   outer;
-			string  *it;
-			LPDWORD repeat;
-			size_t  elementSize;
+			string  *it = vector_begin(&tmpV);
+			LPDWORD repeat = vector_begin(&indices);
+			size_t  const elementSize = *(repeat++);
 
-			if (!RepeatDepth)
-				outer = MAXDWORD;
-			else if (SSGS->type && SSGS->propertyIndex != MAXDWORD)
-				outer = SSGS->propertyIndex;
-			else if (prop = GrowSubjectProperty(&outer))
-			{
-				prop->OuterRepeat  = OuterRepeat;
-				prop->RepeatDepth  = RepeatDepth;
-				prop->RepeatIndex  = RepeatIndex;
-			}
-			RepeatDepth++;
-			it = vector_begin(&tmpV);
-			repeat = vector_begin(&indices);
-			elementSize = *(repeat++);
 			assert(vector_size(&tmpV) == (vector_size(&indices) - 1) * elementSize);
+			RepeatDepth++;
 			do
 			{
-				vector_string constElem = { ._M_start = it, ._M_end_of_storage = it };
+				vector_string constElem = { it, it, ._M_end_of_storage = it };
+				DWORD const repeatIndex = *(repeat++);
 
-				constElem._M_finish = it += elementSize;
-				TSSGCtrl_EnumReadSSG(this, &constElem, ParentStack, ADJElem, *(repeat++), outer);
-			} while (it < vector_end(&tmpV));
+				if (erty = GrowSubjectProperty(&outer))
+				{
+					erty->OuterRepeat = OuterRepeat;
+					erty->DirectChild = 1;
+					erty->RepeatDepth = RepeatDepth;
+					erty->RepeatIndex = repeatIndex;
+				}
+				vector_end(&constElem) = it += elementSize;
+				TSSGCtrl_EnumReadSSG(this, &constElem, ParentStack, ADJElem, repeatIndex, outer);
+				if ((erty = GetProperty(outer)) && --erty->DirectChild && (prop = GetProperty(OuterRepeat)))
+					prop->DirectChild++;
+			}
+			while (it < vector_end(&tmpV));
 			RepeatDepth--;
 		}
 		else
-		{
 			TSSGCtrl_EnumReadSSG(this, &tmpV, ParentStack, ADJElem, RepeatIndex, OuterRepeat);
-		}
 	}
 	vector_dtor(&indices);
 	vector_string_dtor(&tmpV);

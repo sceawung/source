@@ -2,6 +2,7 @@
 
 #include <windows.h>
 
+#pragma pack(push, 1)
 typedef struct _Deque_iterator_base
 {
 	void *_M_cur;
@@ -9,6 +10,7 @@ typedef struct _Deque_iterator_base
 	void *_M_last;
 	void**_M_node;
 } _Deque_iterator, bcb6_std_deque_iterator, *pbcb6_std_deque_iterator;
+#pragma pack(pop)
 
 #define bcb6_std_deque_iterator_less_than(__x, __y) \
 	((__x)->_M_node == (__y)->_M_node && (__x)->_M_cur < (__y)->_M_cur || (__x)->_M_node < (__y)->_M_node)
@@ -22,17 +24,21 @@ typedef struct _Deque_iterator_base
 #define bcb6_std_deque_iterator_decrement(this, type) \
 	((this)->_M_cur = (type*)((this)->_M_cur == (this)->_M_first ? _Deque_iterator_set_node(this, type, (this)->_M_node - 1) : (this)->_M_cur) - 1)
 
+#pragma pack(push, 1)
 typedef struct _Deque_base
 {
 	_Deque_iterator _M_start;
 	_Deque_iterator _M_finish;
-	LPCVOID         _Map_alloc_type[2];
+	__int32 : 32;
+	__int32 : 32;
 	void    const **_M_map;
-	LPCVOID         padding2;
-	LPCVOID         allocator_type[2];
+	__int32 : 32;
+	__int32 : 32;
+	__int32 : 32;
 	size_t          _M_map_size;
-	LPCVOID         padding4;
+	__int32 : 32;
 } bcb6_std_deque, *pbcb6_std_deque;
+#pragma pack(pop)
 
 #define bcb6_std_deque_empty(this) ((this)->_M_finish._M_cur == (this)->_M_start._M_cur)
 #define bcb6_std_deque_begin(this) ((this)->_M_start)

@@ -13,7 +13,7 @@ EXTERN_C void __stdcall ReplaceDefine(TSSGAttributeSelector *attributeSelector, 
 __inline TScopeAttribute *new_TScopeAttribute()
 {
 	static const char tag[] = "heap";
-	static const string Tag = { (LPSTR)tag, (LPSTR)tag + _countof(tag) - 1, NULL, NULL, tag, MAXDWORD };
+	static const string Tag = { (LPSTR)tag, (LPSTR)tag + _countof(tag) - 1, ._M_end_of_storage = tag };
 
 	THeapAdjustmentAttribute *const NewAElem = TSSGCtrl_MakeAdjustmentClass(&Tag);
 	assert(NewAElem && map_end(&NewAElem->heapMap)->_M_parent == NULL);// required when using different node type
@@ -64,7 +64,7 @@ __inline void Attribute_scope_open(TSSGCtrl *const this, string *const code)
 			BOOL assign = string_at(&label, 0) != '=';
 			string *var = assign ? &label : tmpS;
 			LPSTR start = &string_at(var, string_at(var, 0) == SCOPE_PREFIX);
-			ScopeVariant sv = { { start, string_end(var), NULL, NULL, start, MAXDWORD }, 0, 0 };
+			ScopeVariant sv = { { start, string_end(var),  ._M_end_of_storage = start }, 0, 0 };
 			map_iterator it = map_lower_bound(&scope->heapMap, &sv.Identifier);
 			if (it == map_end(&scope->heapMap) || !string_equals(&((ScopeVariant *)pair_first(it))->Identifier, &sv.Identifier))
 				map_string_quad_insert(&it, &scope->heapMap, it, &sv);

@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <windows.h>
 #define USING_NAMESPACE_BCB6_STD
 #include "TSSGCtrl.h"
@@ -13,7 +12,7 @@ __declspec(naked) bool __cdecl TSSGCtrl_Funneling_IsEnabled(TSSGCtrl *SSGC, TSSG
 		mov     eax, FixTheProcedure
 		test     al, al
 		jz      IsEnabled
-		ret
+		rep ret
 
 	IsEnabled:
 		jmp     TSSGCtrl_IsEnabled
@@ -28,7 +27,7 @@ __declspec(naked) unsigned long __cdecl TSSGCtrl_Funneling_GetAddress(TSSGCtrl *
 		mov     eax, FixTheProcedure
 		test    eax, eax
 		jz      GetAddress
-		ret
+		rep ret
 
 	GetAddress:
 		jmp     TSSGCtrl_GetAddress

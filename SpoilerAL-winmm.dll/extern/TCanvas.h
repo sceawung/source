@@ -1,52 +1,50 @@
 #pragma once
 
-#include <windows.h>
-#include <stdbool.h>
+#include "TControl.h"
 
-enum TFontStyle
+typedef struct CanvasState
 {
-	fsBold      = 0x01,
-	fsItalic    = 0x02,
-	fsUnderline = 0x04,
-	fsStrikeOut = 0x08,
-};
+	bool csHandleValid : 1;
+	bool csFontValid   : 1;
+	bool csPenValid    : 1;
+	bool csBrushValid  : 1;
+	__int8 : 0;
+} TCanvasState;
 
-typedef struct TFontStylesBase
-{
-	bool fsBold      : 1;
-	bool fsItalic    : 1;
-	bool fsUnderline : 1;
-	bool fsStrikeOut : 1;
-} TFSB;
+typedef TObject TPen, TBrush;
 
-typedef struct _TCanvas
+#pragma pack(push, 1)
+typedef struct Canvas
 {
-	LPVOID *vftable;
-	HDC    FHandle;
-	BYTE   State;
-	BYTE   padding1[3];
-	struct TFont {
-		LPVOID *vftable;
-		DWORD  FOnChange[3];
-		struct TResource {
-			struct TResource *Next;
-			int              RefCount;
-			unsigned         Handle;
-			WORD             HashCode;
-			union {
-				struct TFontData {
-					HFONT Handle;
-					int   Height;
-					BYTE  TFontPitch;
-					TFSB  Style;
-				} Font;
-			};
-		} *FResource;
-	}     *FFont;
-	LPVOID FPen;
-	LPVOID Brush;
-	BYTE   padding2[64];
+	LPCVOID         *VTable;
+	HDC              FHandle;
+	TCanvasState     State;
+	__int8 : 8;
+	__int16 : 16;
+	TFont           *FFont;
+	TPen            *FPen;
+	TBrush          *FBrush;
+	TPoint           FPenPos;
+	int              FCopyMode;
+	__int32 : 32;
+	TNotifyEvent     FOnChange;
+	TNotifyEvent     FOnChanging;
+	CRITICAL_SECTION FLock;
+	int              FLockCount;
+	int              FTextFlags;
 } TCanvas;
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+typedef struct ControlCanvas
+{
+	TCanvas   super;
+	TControl *FControl;
+	HDC       FDeviceContext;
+	HWND      FWindowHandle;
+	__int32 : 32;
+} TControlCanvas;
+#pragma pack(pop)
 
 EXTERN_C void __fastcall TCanvas_FillRect(LPVOID this, const RECT *rect);
 EXTERN_C void __fastcall TCanvas_Lock(LPVOID this);

@@ -32,7 +32,7 @@ __declspec(naked) void __cdecl TMainForm_DrawTreeCell_DrawFocusRect()
 		#define ARow     (ebp + 16)
 		#define BSCanvas esi
 
-		mov     eax, dword ptr [MainForm + TMainForm.nowSelectSubjectIndex]
+		mov     eax, [MainForm]TMainForm.nowSelectSubjectIndex
 		mov     ecx, dword ptr [ARow]
 		inc     eax
 		cmp     eax, ecx
@@ -42,15 +42,15 @@ __declspec(naked) void __cdecl TMainForm_DrawTreeCell_DrawFocusRect()
 
 		#define rcItem esp
 
-		mov     ecx, dword ptr [MainForm + TMainForm.DGrid]
-		mov     eax, dword ptr [ecx + TDrawGrid.DefaultColWidth]
-		mov     ecx, dword ptr [ecx + TDrawGrid.DefaultRowHeight]
+		mov     ecx, [MainForm]TMainForm.DGrid
+		mov     eax, [ecx]TDrawGrid.FDefaultColWidth
+		mov     ecx, [ecx]TDrawGrid.FDefaultRowHeight
 		sub     eax, 2
 		sub     ecx, 2
-		mov     dword ptr [rcItem + RECT.left  ], 2
-		mov     dword ptr [rcItem + RECT.top   ], 2
-		mov     dword ptr [rcItem + RECT.right ], eax
-		mov     dword ptr [rcItem + RECT.bottom], ecx
+		mov     [rcItem]RECT.left  , 2
+		mov     [rcItem]RECT.top   , 2
+		mov     [rcItem]RECT.right , eax
+		mov     [rcItem]RECT.bottom, ecx
 		mov     eax, BSCanvas
 		call    dword ptr [F0055E74C]
 		push    rcItem

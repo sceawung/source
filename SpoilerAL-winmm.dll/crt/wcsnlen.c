@@ -106,7 +106,7 @@ __declspec(naked) static size_t __cdecl wcsnlenAVX2(const wchar_t *string, size_
 		pop     esi                                         // restore esi
 		vzeroupper
 	retzero:
-		ret
+		rep ret
 
 		#undef string
 		#undef maxlen
@@ -182,7 +182,7 @@ __declspec(naked) static size_t __cdecl wcsnlenSSE42(const wchar_t *string, size
 	epilog:
 		pop     esi                                         // restore esi
 	retzero:
-		ret
+		rep ret
 
 		#undef string
 		#undef maxlen
@@ -226,7 +226,7 @@ __declspec(naked) static size_t __cdecl wcsnlenSSE2(const wchar_t *string, size_
 		jb      aligned_loop
 		pop     esi                                         // restore esi
 	retzero:
-		ret
+		rep ret
 
 		align   16
 	aligned_loop:
@@ -322,7 +322,7 @@ __declspec(naked) static size_t __cdecl wcsnlen386(const wchar_t *string, size_t
 		mov     eax, dword ptr [maxlen]
 		sub     eax, ecx
 	retzero:
-		ret
+		rep ret
 
 		#undef string
 		#undef maxlen

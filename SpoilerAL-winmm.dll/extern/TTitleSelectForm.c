@@ -188,7 +188,7 @@ __declspec(naked) static void __fastcall ToSortKey(char *s, LCID lcid)
 		test    al, al
 		jnz     L1
 	L6:
-		ret
+		rep ret
 	}
 }
 #endif

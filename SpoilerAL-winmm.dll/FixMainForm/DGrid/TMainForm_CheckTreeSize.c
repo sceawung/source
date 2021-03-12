@@ -54,33 +54,23 @@ void __cdecl TMainForm_CheckTreeSize(TMainForm *this, BOOLEAN AllWidthCheck)
 
 	// ‰¡•ûŒü‚ÌƒTƒCƒY’²®
 	SubjectCount = vector_size(&this->treeSubjectVec) + 1;
-	if (SubjectCount + 1 != (unsigned int)this->DGrid->RowCount)
+	if (SubjectCount + 1 != (unsigned int)this->DGrid->FRowCount)
 		TDrawGrid_SetRowCount(this->DGrid, SubjectCount + 1);
 
 	// calculate max width from all rows
 	SubjectWidth = TitleWidth;
 	for (TSSGSubject **it = vector_begin(&this->treeSubjectVec); it != vector_end(&this->treeSubjectVec); it++)
 	{
-#if EMBED_BREADTH
 		if (SubjectWidth < (*it)->breadth)
 			SubjectWidth = (*it)->breadth;
-#else
-		TSSGSubjectProperty *elem;
-
-		elem = GetSubjectProperty(*it);
-		if (elem == NULL)
-			continue;
-		if (SubjectWidth < (ULONG)elem->Breadth)
-			SubjectWidth = (ULONG)elem->Breadth;
-#endif
 	}
 
 	// calculate height of all rows
 	SubjectHeight = SubjectCount * RowHeight;
 
 	// calculate client area without scrollbar
-	cx = this->DGrid->Width;
-	cy = this->DGrid->Height;
+	cx = this->DGrid->FWidth;
+	cy = this->DGrid->FHeight;
 	cx -= (unsigned int)GetSystemMetrics(SM_CXEDGE) * 2;
 	cy -= (unsigned int)GetSystemMetrics(SM_CYEDGE) * 2;
 

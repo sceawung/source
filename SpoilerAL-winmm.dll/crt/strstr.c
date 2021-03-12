@@ -163,7 +163,7 @@ __declspec(naked) static char * __cdecl strstrAVX2(const char *string1, const ch
 		pop     esi
 		vzeroupper
 	empty_needle:
-		ret
+		rep ret
 
 		#undef haystack
 		#undef needle
@@ -457,7 +457,7 @@ __declspec(naked) static char * __cdecl strstr386(const char *string1, const cha
 		pop     esi
 		pop     ebx
 	EmptyNeedle:
-		ret
+		rep ret
 
 		#undef haystack
 		#undef needle

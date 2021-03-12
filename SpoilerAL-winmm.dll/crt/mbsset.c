@@ -54,7 +54,7 @@ __declspec(naked) unsigned char * __cdecl _mbsset(unsigned char *string, unsigne
 		call    memset
 		add     esp, 12
 	L1:
-		ret
+		rep ret
 
 		align   16
 	L2:
@@ -84,7 +84,7 @@ __declspec(naked) unsigned char * __cdecl _mbsset(unsigned char *string, unsigne
 		mov     eax, dword ptr [string + 16]
 		add     esp, 16
 	L4:
-		ret
+		rep ret
 
 		#undef string
 		#undef c
